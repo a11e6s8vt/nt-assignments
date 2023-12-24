@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 rand = "0.8"
 num-bigint = { version = "0.4", features = ["rand"] }
+<<<<<<< HEAD
 num-traits = "0.2.17"
 clap = { version = "4.4.6", features = ["derive", "cargo"] }
 fmtastic = "0.1.0"
@@ -18,6 +19,13 @@ table_to_html = "0.4.0"
 terminal_size = "0.3.0"
 dpc-pariter = "0.5.1"
 owo-colors = "4.0.0"
+=======
+#num-iter = "0.1.43"
+clap = { version = "4.4.6", features = ["derive", "cargo"] }
+fmtastic = "0.1.0"
+itertools = "0.12.0"
+rayon = "1.8.0"
+>>>>>>> 91ca284 (primality - trial division)
 
 [dependencies.num-iter]
 version = "0.1.35"

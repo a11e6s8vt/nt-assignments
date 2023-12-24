@@ -49,7 +49,6 @@ pub fn find_primes_in_range_trial_division_parallel(
         .into_par_iter()
         .map(|x| (x.clone(), is_prime_trial_division_parallel(&x)))
         .collect::<Vec<(BigInt, bool)>>();
-
     let mut primes: Vec<BigInt> = Vec::new();
     let mut composites: Vec<BigInt> = Vec::new();
     for x in nums_categorised {
