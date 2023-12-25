@@ -28,34 +28,7 @@ pub fn is_prime_trial_division(n: &BigInt) -> bool {
     true
 }
 
-pub fn primes_less_than_n(primes: &mut Vec<BigInt>, n: BigInt) {
-    loop {
-        let mut new_primes = Vec::<BigInt>::new();
-        let last_prime = primes.last().unwrap();
-        if last_prime > &n {
-            break;
-        }
-
-        new_primes.par_extend(
-            (range_inclusive(last_prime.clone(), last_prime * 2))
-                .map(|x| x)
-                .collect::<Vec<BigInt>>()
-                .into_par_iter()
-                .filter(|candidate| {
-                    let square_root = candidate.sqrt() + 1;
-                    primes
-                        .iter()
-                        .take_while(|p| p <= &&square_root)
-                        .all(|p| candidate % p != BigInt::from(0u64))
-                }),
-        );
-
-        primes.append(&mut new_primes);
-    }
-}
-
 pub fn is_prime_trial_division_parallel(n: &BigInt) -> bool {
-    println!("num = {}", &n);
     // returns true if the number is 2 or 3
     let zero = BigInt::from(0u64);
     let one = BigInt::from(1u64);
@@ -75,7 +48,6 @@ pub fn is_prime_trial_division_parallel(n: &BigInt) -> bool {
         .into_par_iter()
         .find_first(|divisor| n % divisor == BigInt::from(0u64))
     {
-        println!("{}/{} = {}", n, &divisor, n / &divisor);
         false
     } else {
         true

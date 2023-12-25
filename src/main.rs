@@ -1,9 +1,9 @@
-pub mod primality;
+mod primality;
 mod presets;
 
 use num_bigint::BigInt;
 use clap::{ArgAction, Parser, Subcommand};
-use presets::find_primes_in_range_trial_division;
+use presets::find_primes_in_range_trial_division_parallel;
 use std::ops::Range;
 use fmtastic::{Subscript, Superscript};
 use num_iter::range_inclusive;
@@ -39,7 +39,7 @@ fn main() {
 
     match args.command {
         Operations::ListPrimes { start, end } => {
-            find_primes_in_range_trial_division(start, end);
+            find_primes_in_range_trial_division_parallel(start, end);
         }
     }
 }
