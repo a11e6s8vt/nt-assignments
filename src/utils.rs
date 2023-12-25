@@ -1,4 +1,5 @@
 use num_bigint::BigInt;
+<<<<<<< HEAD
 use num_iter::range_inclusive;
 use num_traits::One;
 use rand::Rng;
@@ -49,6 +50,8 @@ impl Gcd for BigInt {
         gcd
     }
 }
+=======
+>>>>>>> 780bc8c (miller-rabin)
 
 ///
 /// Returns a non-negative integer a < m that satisfies a ≡ cˣ(mod m)
@@ -56,12 +59,20 @@ impl Gcd for BigInt {
 /// e: exponent
 /// m: modulus
 ///
+<<<<<<< HEAD
 pub fn modular_pow(base: &BigInt, e: &BigInt, modulus: &BigInt) -> BigInt {
+=======
+pub fn modular_pow(c: &BigInt, e: &BigInt, m: &BigInt) -> BigInt {
+>>>>>>> 780bc8c (miller-rabin)
     // initialization
     let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
     let mut exp = e.clone();
     let mut a: BigInt = BigInt::from(1u64);
+<<<<<<< HEAD
     let mut s: BigInt = base % modulus;
+=======
+    let mut s: BigInt = c % m;
+>>>>>>> 780bc8c (miller-rabin)
 
     // Converts exponent to its binary representation
     // Go through the digits from LSB to MSB in each iteration
@@ -70,10 +81,17 @@ pub fn modular_pow(base: &BigInt, e: &BigInt, modulus: &BigInt) -> BigInt {
     while exp > zero {
         // Extract the LSB from the exp.
         if &exp & &one == one {
+<<<<<<< HEAD
             a = (a * &s) % modulus;
         }
 
         s = (&s * &s) % modulus;
+=======
+            a = (a * &s) % m;
+        }
+
+        s = (&s * &s) % m;
+>>>>>>> 780bc8c (miller-rabin)
 
         // Division by 2 to get the next digit
         exp = exp / &two;
@@ -82,6 +100,7 @@ pub fn modular_pow(base: &BigInt, e: &BigInt, modulus: &BigInt) -> BigInt {
     a
 }
 
+<<<<<<< HEAD
 ///
 /// Generate a random integer in a given range
 ///
@@ -107,11 +126,14 @@ pub fn coprime_nums_less_than_n(n: &BigInt) -> Vec<BigInt> {
     coprimes
 }
 
+=======
+>>>>>>> 780bc8c (miller-rabin)
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
+<<<<<<< HEAD
     fn test_gcd_euclid_1() {
         let a = BigInt::from(100u64);
         let result = a.gcd_euclid(&BigInt::from(76u64));
@@ -123,6 +145,8 @@ mod tests {
     }
 
     #[test]
+=======
+>>>>>>> 780bc8c (miller-rabin)
     fn test_modular_pow() {
         let result = modular_pow(
             &BigInt::from(2u64),
