@@ -1,12 +1,11 @@
 mod primality;
 mod presets;
+mod utils;
 
 use num_bigint::BigInt;
 use clap::{ArgAction, Parser, Subcommand};
 use presets::find_primes_in_range_trial_division_parallel;
-use std::ops::Range;
 use fmtastic::{Subscript, Superscript};
-use num_iter::range_inclusive;
 
 
 #[derive(Debug, Parser)]

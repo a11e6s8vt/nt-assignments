@@ -57,7 +57,7 @@ pub fn find_primes_in_range_trial_division(
     }
     primes.sort();
     composites.sort();
-    println!("{:?}", primes);
+
     (primes, composites)
 }
 
