@@ -15,10 +15,7 @@ pub fn find_primes_in_range_trial_division_parallel(
         .into_par_iter()
         .map(|x| (x.clone(), is_prime_trial_division_parallel(&x)))
         .collect::<Vec<(BigInt, bool)>>();
-    // let mut categorised = range_inclusive(start, end)
-    //     .into_iter()
-    //     .map(|x| (x.clone(), is_prime_trial_division(&x)))
-    //     .collect::<Vec<(BigInt, bool)>>().sort();
+
     let mut primes: Vec<BigInt> = Vec::new();
     let mut composites: Vec<BigInt> = Vec::new();
     for x in nums_categorised {
@@ -30,7 +27,7 @@ pub fn find_primes_in_range_trial_division_parallel(
     }
     primes.sort();
     composites.sort();
-    println!("{:?}", primes);
+
     (primes, composites)
 }
 
@@ -42,10 +39,7 @@ pub fn find_primes_in_range_trial_division(
         .into_iter()
         .map(|x| (x.clone(), is_prime_trial_division(&x)))
         .collect::<Vec<(BigInt, bool)>>();
-    // let mut categorised = range_inclusive(start, end)
-    //     .into_iter()
-    //     .map(|x| (x.clone(), is_prime_trial_division(&x)))
-    //     .collect::<Vec<(BigInt, bool)>>().sort();
+
     let mut primes: Vec<BigInt> = Vec::new();
     let mut composites: Vec<BigInt> = Vec::new();
     for x in nums_categorised {
