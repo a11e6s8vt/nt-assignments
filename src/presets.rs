@@ -1,10 +1,24 @@
-use std::arch::x86_64;
-
-use crate::primality::{is_prime_trial_division, is_prime_trial_division_parallel};
-use itertools::Itertools;
+use crate::{
+    primality::{is_prime_trial_division, is_prime_trial_division_parallel},
+    prime_factors::PrimeFactors,
+};
+use fmtastic::{Subscript, Superscript};
 use num_bigint::BigInt;
-use num_iter::range_inclusive;
+use num_iter::{range, range_inclusive};
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
+
+use tabled::{
+    grid::config::Borders,
+    settings::{
+        style::{HorizontalLine, On, Style},
+        Border,
+    },
+    Table, Tabled,
+};
+
+const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
+    .line_horizontal(HorizontalLine::inherit(Style::modern()))
+    .remove_horizontals();
 
 pub fn find_primes_in_range_trial_division_parallel(
     start: BigInt,
@@ -53,6 +67,26 @@ pub fn find_primes_in_range_trial_division(
     composites.sort();
 
     (primes, composites)
+}
+
+pub fn list_prime_factors_in_range(start: &BigInt, end: &BigInt) {
+    let mut data: Vec<(String, String)> = Vec::new();
+    for num in range(start.clone(), end.clone()) {
+        let mut form: String = String::new();
+        let p_factors = num.prime_factors();
+        for (factor, exp) in p_factors {
+            form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
+        }
+        let mut form = form.trim_end().to_string();
+        form.pop();
+        data.push((num.to_string(), form))
+    }
+
+    let mut table1 = Table::new(data);
+    table1.with(STYLE_2);
+
+    let output1 = table1.to_string();
+    println!("{}", output1);
 }
 
 #[cfg(test)]

@@ -71,7 +71,7 @@ pub fn miller_rabin_primality(n: &BigInt) -> bool {
 
     let mut d: BigInt = n - &one;
     // Express n - 1 as 2ᶠ.m
-    while &d % 2 == one {
+    while &d % 2 == zero {
         d = &d / 2;
     }
     // d = (n - 1) / 2ᶠ
