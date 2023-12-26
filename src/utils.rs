@@ -1,9 +1,12 @@
 use num_bigint::BigInt;
 <<<<<<< HEAD
+<<<<<<< HEAD
 use num_iter::range_inclusive;
 use num_traits::One;
 use rand::Rng;
 
+=======
+>>>>>>> 5407e32 (prime factors - tabular print)
 pub trait Gcd {
     ///
     /// # Examples
@@ -50,8 +53,11 @@ impl Gcd for BigInt {
         gcd
     }
 }
+<<<<<<< HEAD
 =======
 >>>>>>> 780bc8c (miller-rabin)
+=======
+>>>>>>> 5407e32 (prime factors - tabular print)
 
 ///
 /// Returns a non-negative integer a < m that satisfies a ≡ cˣ(mod m)
@@ -134,6 +140,9 @@ mod tests {
 
     #[test]
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5407e32 (prime factors - tabular print)
     fn test_gcd_euclid_1() {
         let a = BigInt::from(100u64);
         let result = a.gcd_euclid(&BigInt::from(76u64));
@@ -145,8 +154,11 @@ mod tests {
     }
 
     #[test]
+<<<<<<< HEAD
 =======
 >>>>>>> 780bc8c (miller-rabin)
+=======
+>>>>>>> 5407e32 (prime factors - tabular print)
     fn test_modular_pow() {
         let result = modular_pow(
             &BigInt::from(2u64),

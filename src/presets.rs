@@ -40,6 +40,19 @@ const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
     .line_horizontal(HorizontalLine::inherit(Style::modern()))
     .remove_horizontals();
 
+use tabled::{
+    grid::config::Borders,
+    settings::{
+        style::{HorizontalLine, On, Style},
+        Border,
+    },
+    Table, Tabled,
+};
+
+const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
+    .line_horizontal(HorizontalLine::inherit(Style::modern()))
+    .remove_horizontals();
+
 pub fn find_primes_in_range_trial_division_parallel(
     start: BigInt,
     end: BigInt,
@@ -219,6 +232,26 @@ pub fn test_primality_miller_rabin(n: &BigInt, n_trials: u32) -> bool {
     }
 
     true
+}
+
+pub fn list_prime_factors_in_range(start: &BigInt, end: &BigInt) {
+    let mut data: Vec<(String, String)> = Vec::new();
+    for num in range(start.clone(), end.clone()) {
+        let mut form: String = String::new();
+        let p_factors = num.prime_factors();
+        for (factor, exp) in p_factors {
+            form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
+        }
+        let mut form = form.trim_end().to_string();
+        form.pop();
+        data.push((num.to_string(), form))
+    }
+
+    let mut table1 = Table::new(data);
+    table1.with(STYLE_2);
+
+    let output1 = table1.to_string();
+    println!("{}", output1);
 }
 
 #[cfg(test)]
