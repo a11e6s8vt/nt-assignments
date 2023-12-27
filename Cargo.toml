@@ -34,7 +34,11 @@ rayon = "1.8.0"
 >>>>>>> 91ca284 (primality - trial division)
 =======
 terminal_size = "0.3.0"
+<<<<<<< HEAD
 >>>>>>> 5407e32 (prime factors - tabular print)
+=======
+dpc-pariter = "0.5.1"
+>>>>>>> e259762 (trying parallel execution of prime-factors)
 
 [dependencies.num-iter]
 version = "0.1.35"

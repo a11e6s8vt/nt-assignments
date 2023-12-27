@@ -236,15 +236,39 @@ pub fn test_primality_miller_rabin(n: &BigInt, n_trials: u32) -> bool {
 
 pub fn list_prime_factors_in_range(start: &BigInt, end: &BigInt) {
     let mut data: Vec<(String, String)> = Vec::new();
+    let mut primes = vec![BigInt::from(2u64)];
     for num in range(start.clone(), end.clone()) {
         let mut form: String = String::new();
-        let p_factors = num.prime_factors();
+        let p_factors = num.prime_factors_v1(&mut primes);
         for (factor, exp) in p_factors {
             form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
         }
         let mut form = form.trim_end().to_string();
         form.pop();
         data.push((num.to_string(), form))
+    }
+
+    let mut table1 = Table::new(data);
+    table1.with(STYLE_2);
+
+    let output1 = table1.to_string();
+    println!("{}", output1);
+}
+
+pub fn list_prime_factors_in_range_form_pq(start: &BigInt, end: &BigInt) {
+    let mut data: Vec<(String, String)> = Vec::new();
+    for num in range(start.clone(), end.clone()) {
+        let mut form: String = String::new();
+        let (is_pq, p_factors) = num.is_prime_factors_form_pq();
+        for (factor, exp) in p_factors {
+            form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
+        }
+        let mut form = form.trim_end().to_string();
+        form.pop();
+
+        if is_pq {
+            data.push((num.to_string(), form))
+        }
     }
 
     let mut table1 = Table::new(data);

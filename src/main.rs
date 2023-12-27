@@ -29,8 +29,6 @@ fn main() {
             find_primes_in_range_trial_division_parallel(start, end);
         }
         Operations::PrimeFactors { num } => {}
-        Operations::PrimesFactorsRange { start, end } => list_prime_factors_in_range(&start, &end),
-        Operations::PrimeFactors { num } => {}
         Operations::PrimesFactorsRange(s) => match s.command {
             PFactorsCommands::All(pargs) => {
                 let start = pargs.start;
