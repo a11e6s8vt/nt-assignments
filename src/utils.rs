@@ -1,12 +1,17 @@
 use num_bigint::BigInt;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 use num_iter::range_inclusive;
 use num_traits::One;
 use rand::Rng;
 
 =======
 >>>>>>> 5407e32 (prime factors - tabular print)
+=======
+use rand::Rng;
+
+>>>>>>> 38a2ddd (gcd test for #primality)
 pub trait Gcd {
     ///
     /// # Examples
@@ -107,6 +112,7 @@ pub fn modular_pow(c: &BigInt, e: &BigInt, m: &BigInt) -> BigInt {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ///
 /// Generate a random integer in a given range
 ///
@@ -134,6 +140,13 @@ pub fn coprime_nums_less_than_n(n: &BigInt) -> Vec<BigInt> {
 
 =======
 >>>>>>> 780bc8c (miller-rabin)
+=======
+pub fn generate_random_int_in_range(a: &BigInt, b: &BigInt) -> BigInt {
+    let mut rng = rand::thread_rng();
+    rng.gen_range(a.clone()..b.clone())
+}
+
+>>>>>>> 38a2ddd (gcd test for #primality)
 #[cfg(test)]
 mod tests {
     use super::*;

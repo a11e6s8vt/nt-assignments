@@ -239,7 +239,7 @@ pub fn list_prime_factors_in_range(start: &BigInt, end: &BigInt) {
     let mut primes = vec![BigInt::from(2u64)];
     for num in range(start.clone(), end.clone()) {
         let mut form: String = String::new();
-        let p_factors = num.prime_factors_v1(&mut primes);
+        let p_factors = num.prime_factors(&mut primes);
         for (factor, exp) in p_factors {
             form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
         }
