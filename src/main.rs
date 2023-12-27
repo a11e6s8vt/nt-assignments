@@ -5,7 +5,7 @@ mod utils;
 
 use num_bigint::BigInt;
 use clap::{ArgAction, Parser, Subcommand};
-use presets::{find_primes_in_range_trial_division_parallel, list_prime_factors_in_range};
+use presets::{find_primes_in_range_trial_division_parallel, list_prime_factors_in_range, list_prime_factors_in_range_form_pq};
 use fmtastic::{Subscript, Superscript};
 use terminal_size::{terminal_size, Height as TerminalHeight, Width as TerminalWidth};
 
@@ -46,6 +46,14 @@ enum Operations {
         #[arg(short = 'e', long = "end", value_name = "END NUMBER")]
         end: BigInt,
     },
+    #[command(arg_required_else_help = true)]
+    PrimesFactorsPQ {
+        #[arg(short = 's', long = "start", value_name = "START NUMBER")]
+        start: BigInt,
+
+        #[arg(short = 'e', long = "end", value_name = "END NUMBER")]
+        end: BigInt,
+    },
 }
 
 
@@ -62,6 +70,9 @@ fn main() {
         },
         Operations::PrimesFactorsRange { start, end } => {
             list_prime_factors_in_range(&start, &end)
+        },
+        Operations::PrimesFactorsPQ { start, end } => {
+            list_prime_factors_in_range_form_pq(&start, &end) 
         }
     }
 }

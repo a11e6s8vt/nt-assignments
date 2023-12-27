@@ -181,6 +181,8 @@ mod tests {
         assert_eq!(result, false);
         let result = miller_rabin_primality(&BigInt::from(721u64));
         assert_eq!(result, false);
+        let result = miller_rabin_primality(&"49675218696612399034240799519655205503986657506787162015105425670413948962864456158664793804627084299081036134562339483478437262146378569515417671690110863951848724044479367633926630234074394356492223".parse::<BigInt>().unwrap());
+        assert_eq!(result, true);
     }
 
     // #[test]
