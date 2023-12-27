@@ -8,63 +8,17 @@ use num_bigint::BigInt;
 use num_iter::{range, range_inclusive, Range, RangeInclusive};
 use num_traits::identities::One;
 use num_traits::Zero;
-use rayon::iter::ParallelExtend;
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
+use rayon::iter::{IntoParallelRefIterator, ParallelExtend};
+use rayon::vec;
 
 pub trait PrimeFactors {
-    fn prime_factors(&self) -> Vec<(BigInt, usize)>;
-    fn prime_factors_v1(&self, primes: &mut Vec<BigInt>) -> Vec<(BigInt, usize)>;
+    fn prime_factors(&self, primes: &mut Vec<BigInt>) -> Vec<(BigInt, usize)>;
     fn is_prime_factors_form_pq(&self) -> (bool, Vec<(BigInt, usize)>);
 }
 
 impl PrimeFactors for BigInt {
-    fn prime_factors(&self) -> Vec<(Self, usize)> {
-        let mut n = self.clone();
-        // Check if n is prime
-        if miller_rabin_primality(&self) {
-            return vec![(self.clone(), 1)];
-        }
-
-        let start_no = BigInt::from(2u64);
-        let end_no: BigInt = self.sqrt() + 1; // +1 to get the ceiling value
-
-        let r = range(start_no, end_no);
-
-        let mut primes: Vec<BigInt> = Vec::new();
-
-        for m in r {
-            if miller_rabin_primality(&m) {
-                primes.push(m);
-            }
-        }
-
-        let mut res: HashMap<BigInt, usize> = HashMap::new();
-
-        'outer: while n > BigInt::one() {
-            for p in primes.iter() {
-                if &n % p == BigInt::zero() {
-                    res.entry(p.clone()).and_modify(|c| *c += 1).or_insert(1);
-                    n = n / p;
-                    if miller_rabin_primality(&n) {
-                        res.entry(n).and_modify(|c| *c += 1).or_insert(1);
-                        break 'outer;
-                    }
-                    break;
-                } else {
-                    continue;
-                }
-            }
-        }
-
-        let mut res = res
-            .into_iter()
-            .filter_map(|(key, value)| Some((key, value)))
-            .collect::<Vec<(BigInt, usize)>>();
-        res.sort_by_key(|k| k.0.clone());
-        res
-    }
-
-    fn prime_factors_v1(&self, primes: &mut Vec<BigInt>) -> Vec<(Self, usize)> {
+    fn prime_factors(&self, primes: &mut Vec<BigInt>) -> Vec<(Self, usize)> {
         let mut n = self.clone();
         // Check if n is prime
         if miller_rabin_primality(&self) {
@@ -75,7 +29,7 @@ impl PrimeFactors for BigInt {
         let square_root = self.sqrt();
         if square_root - start_no > BigInt::from(2u64) {
             let end_no: BigInt = self.sqrt() + 1; // +1 to get the ceiling value
-            println!("start = {}, end = {}", start_no, end_no);
+                                                  // println!("start = {}, end = {}", start_no, end_no);
 
             let r = range(start_no.clone(), end_no);
 
@@ -91,41 +45,70 @@ impl PrimeFactors for BigInt {
                 .map(|x| x)
                 .parallel_filter(|x| miller_rabin_primality(x))
                 .collect();
-            println!("{:?}", new_primes);
+            // println!("{:?}", new_primes);
             primes.extend(new_primes);
             let mut seen = HashSet::new();
             primes.retain(|c| seen.insert(c.clone()));
-            println!("{:?}", primes);
+            // println!("{:?}", primes);
         }
         let mut res: HashMap<BigInt, usize> = HashMap::new();
 
-        'outer: while n > BigInt::one() {
-            for p in primes.iter() {
-                println!("p = {}", p);
-                if &n % p == BigInt::zero() {
-                    res.entry(p.clone()).and_modify(|c| *c += 1).or_insert(1);
-                    n = n / p;
-                    if miller_rabin_primality(&n) {
-                        res.entry(n).and_modify(|c| *c += 1).or_insert(1);
-                        break 'outer;
-                    }
-                    break;
-                } else {
-                    continue;
-                }
+        // 'outer: while n > BigInt::one() {
+        //     for p in primes.iter() {
+        //         println!("p = {}", p);
+        //         if &n % p == BigInt::zero() {
+        //             res.entry(p.clone()).and_modify(|c| *c += 1).or_insert(1);
+        //             n = n / p;
+        //             if miller_rabin_primality(&n) {
+        //                 res.entry(n).and_modify(|c| *c += 1).or_insert(1);
+        //                 break 'outer;
+        //             }
+        //             break;
+        //         } else {
+        //             continue;
+        //         }
+        //     }
+        // }
+
+        let mut r = Vec::<BigInt>::new();
+        let mut product = BigInt::one();
+
+        while product < n {
+            let divisors = primes
+                .par_iter()
+                .filter(|x| (n.clone() / &product) % *x == BigInt::zero())
+                .map(|p| p.clone())
+                .collect::<Vec<BigInt>>();
+            r.extend(divisors.clone());
+            // println!("{:?}", res);
+            product = product
+                * divisors
+                    .iter()
+                    .fold(BigInt::one(), |acc: BigInt, a| acc * a);
+            let q = &n / &product;
+            if miller_rabin_primality(&q) {
+                r.push(q);
+                break;
             }
         }
 
-        let mut res = res
+        // println!("n = {}, res = {:?}", n, res);
+        let mut res = r
             .into_iter()
-            .filter_map(|(key, value)| Some((key, value)))
+            .fold(HashMap::<BigInt, usize>::new(), |mut m, x| {
+                *m.entry(x).or_default() += 1;
+                m
+            })
+            .into_iter()
+            .filter_map(|(k, v)| Some((k, v)))
             .collect::<Vec<(BigInt, usize)>>();
         res.sort_by_key(|k| k.0.clone());
         res
     }
 
     fn is_prime_factors_form_pq(&self) -> (bool, Vec<(BigInt, usize)>) {
-        let p_factors = self.prime_factors();
+        let mut primes = vec![BigInt::from(2u64)];
+        let p_factors = self.prime_factors(&mut primes);
         if p_factors.len() != 2 {
             return (false, vec![]);
         }
@@ -150,7 +133,8 @@ mod tests {
     #[test]
     fn test_prime_factors() {
         let b1 = BigInt::from(100u64);
-        let result = b1.prime_factors();
+        let mut primes = vec![BigInt::from(2u64)];
+        let result = b1.prime_factors(&mut primes);
         assert_eq!(
             result,
             vec![(BigInt::from(2u64), 2), (BigInt::from(5u64), 2)]

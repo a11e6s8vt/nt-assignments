@@ -1,4 +1,6 @@
 use num_bigint::BigInt;
+use rand::Rng;
+
 pub trait Gcd {
     ///
     /// # Examples
@@ -76,6 +78,11 @@ pub fn modular_pow(c: &BigInt, e: &BigInt, m: &BigInt) -> BigInt {
     }
 
     a
+}
+
+pub fn generate_random_int_in_range(a: &BigInt, b: &BigInt) -> BigInt {
+    let mut rng = rand::thread_rng();
+    rng.gen_range(a.clone()..b.clone())
 }
 
 #[cfg(test)]

@@ -1,4 +1,4 @@
-use crate::utils::modular_pow;
+use crate::utils::{generate_random_int_in_range, modular_pow, Gcd};
 use num_bigint::BigInt;
 use num_iter::range_inclusive;
 use rand::Rng;
@@ -92,9 +92,8 @@ pub fn miller_rabin_primality(n: &BigInt) -> bool {
 fn miller_test(d: &BigInt, n: &BigInt) -> bool {
     let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
     let mut d = d.clone();
-    let mut rng = rand::thread_rng();
     // Randomly generate a base: a such that 1 < a < n - 1
-    let a: BigInt = rng.gen_range(two.clone()..n - 1);
+    let a: BigInt = generate_random_int_in_range(&two, &(n - 1));
 
     // Calculate x ≡ a^d(mod n)
     let mut x = modular_pow(&a, &d, n);
@@ -126,6 +125,21 @@ fn miller_test(d: &BigInt, n: &BigInt) -> bool {
     }
 
     false
+}
+
+pub fn gcd_test(n: &BigInt) -> bool {
+    let r = generate_random_int_in_range(&BigInt::from(2u8), &(n - 1));
+    let gcd = n.gcd_euclid(&r);
+    match gcd == BigInt::from(1u8) {
+        true => {
+            println!("Not composite");
+            false
+        }
+        false => {
+            println!("gcd = {}", gcd);
+            true
+        }
+    }
 }
 
 #[cfg(test)]
