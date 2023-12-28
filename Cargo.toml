@@ -38,7 +38,11 @@ terminal_size = "0.3.0"
 >>>>>>> 5407e32 (prime factors - tabular print)
 =======
 dpc-pariter = "0.5.1"
+<<<<<<< HEAD
 >>>>>>> e259762 (trying parallel execution of prime-factors)
+=======
+owo-colors = "4.0.0"
+>>>>>>> 8e32e55 (gcd test printing)
 
 [dependencies.num-iter]
 version = "0.1.35"

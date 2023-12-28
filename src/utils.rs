@@ -143,6 +143,7 @@ pub fn coprime_nums_less_than_n(n: &BigInt) -> Vec<BigInt> {
 =======
 pub fn generate_random_int_in_range(a: &BigInt, b: &BigInt) -> BigInt {
     let mut rng = rand::thread_rng();
+    // return a random BigInt between a and b
     rng.gen_range(a.clone()..b.clone())
 }
 
