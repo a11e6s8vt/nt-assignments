@@ -1,17 +1,27 @@
+use core::num;
+
 use crate::{
-    primality::{is_prime_trial_division, is_prime_trial_division_parallel},
+    primality::{gcd_test, is_prime_trial_division, is_prime_trial_division_parallel},
     prime_factors::PrimeFactors,
 };
+use clap::builder::Str;
 use fmtastic::{Subscript, Superscript};
 use num_bigint::BigInt;
 use num_iter::{range, range_inclusive};
-use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
+use owo_colors::OwoColorize;
+use rand::seq::SliceRandom;
+use rayon::iter::{
+    IndexedParallelIterator, IntoParallelIterator, IntoParallelRefIterator, ParallelBridge,
+    ParallelIterator,
+};
 
 use tabled::{
     grid::config::Borders,
     settings::{
+        object::{Columns, Object, Rows, Segment},
         style::{HorizontalLine, On, Style},
-        Border,
+        themes::Colorization,
+        Border, Color, Format, Modify,
     },
     Table, Tabled,
 };
@@ -19,6 +29,22 @@ use tabled::{
 const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
     .line_horizontal(HorizontalLine::inherit(Style::modern()))
     .remove_horizontals();
+
+#[derive(Tabled)]
+#[tabled(rename_all = "PascalCase")]
+struct NumPQTable {
+    number: String,
+    factorisation: String,
+}
+
+impl NumPQTable {
+    fn new(number: String, factorisation: String) -> Self {
+        Self {
+            number,
+            factorisation,
+        }
+    }
+}
 
 pub fn find_primes_in_range_trial_division_parallel(
     start: BigInt,
@@ -83,34 +109,60 @@ pub fn list_prime_factors_in_range(start: &BigInt, end: &BigInt) {
         data.push((num.to_string(), form))
     }
 
+    let color_head = Color::BOLD | Color::BG_CYAN | Color::FG_BLACK;
     let mut table1 = Table::new(data);
-    table1.with(STYLE_2);
+    table1
+        .with(STYLE_2)
+        .with(Colorization::exact([color_head], Rows::first()));
 
     let output1 = table1.to_string();
     println!("{}", output1);
 }
 
-pub fn list_prime_factors_in_range_form_pq(start: &BigInt, end: &BigInt) {
-    let mut data: Vec<(String, String)> = Vec::new();
+pub fn list_prime_factors_in_range_form_pq(
+    start: &BigInt,
+    end: &BigInt,
+) -> (String, Vec<(BigInt, Vec<(BigInt, usize)>)>) {
+    let mut pq_nums: Vec<(BigInt, Vec<(BigInt, usize)>)> = Vec::new();
+    let mut table_data: Vec<NumPQTable> = Vec::new();
     for num in range(start.clone(), end.clone()) {
-        let mut form: String = String::new();
         let (is_pq, p_factors) = num.is_prime_factors_form_pq();
-        for (factor, exp) in p_factors {
-            form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
-        }
-        let mut form = form.trim_end().to_string();
-        form.pop();
 
         if is_pq {
-            data.push((num.to_string(), form))
+            pq_nums.push((num.clone(), p_factors.clone()));
+            let mut form: String = String::new();
+            for (factor, exp) in p_factors {
+                form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
+            }
+            let mut form = form.trim_end().to_string();
+            form.pop();
+            table_data.push(NumPQTable::new(num.to_string(), form))
         }
     }
 
-    let mut table1 = Table::new(data);
+    let mut table1 = Table::new(table_data);
     table1.with(STYLE_2);
 
     let output1 = table1.to_string();
-    println!("{}", output1);
+    (output1, pq_nums)
+}
+
+pub fn gcd_test_range(start: &BigInt, end: &BigInt) {
+    let pq_nums = list_prime_factors_in_range_form_pq(start, end);
+    let pq_nums = pq_nums.1;
+
+    // This will randomly choose three numbers which are of the form n = p.q
+    let selected_nums_pq = pq_nums
+        .choose_multiple(&mut rand::thread_rng(), 3)
+        .map(|x| x.clone())
+        .collect::<Vec<(BigInt, Vec<(BigInt, usize)>)>>();
+
+    let mut result = Vec::<(BigInt, Vec<(BigInt, usize)>, Vec<(BigInt, BigInt)>)>::new();
+    selected_nums_pq
+        .par_iter()
+        .map(|n| (n.0.clone(), n.1.clone(), gcd_test(&n.0, 10)))
+        .collect_into_vec(&mut result);
+    println!("{:?}", result);
 }
 
 #[cfg(test)]

@@ -127,19 +127,18 @@ fn miller_test(d: &BigInt, n: &BigInt) -> bool {
     false
 }
 
-pub fn gcd_test(n: &BigInt) -> bool {
-    let r = generate_random_int_in_range(&BigInt::from(2u8), &(n - 1));
-    let gcd = n.gcd_euclid(&r);
-    match gcd == BigInt::from(1u8) {
-        true => {
-            println!("Not composite");
-            false
-        }
-        false => {
-            println!("gcd = {}", gcd);
-            true
-        }
+pub fn gcd_test(n: &BigInt, num_trials: u8) -> Vec<(BigInt, BigInt)> {
+    let mut r = Vec::<BigInt>::new();
+    for _ in 0..num_trials {
+        r.push(generate_random_int_in_range(&BigInt::from(2u8), &(n - 1)));
     }
+
+    let mut result = Vec::<(BigInt, BigInt)>::new();
+    for a in r.iter() {
+        result.push((a.clone(), n.gcd_euclid(&a)));
+    }
+
+    result
 }
 
 #[cfg(test)]

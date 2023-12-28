@@ -82,6 +82,7 @@ pub fn modular_pow(c: &BigInt, e: &BigInt, m: &BigInt) -> BigInt {
 
 pub fn generate_random_int_in_range(a: &BigInt, b: &BigInt) -> BigInt {
     let mut rng = rand::thread_rng();
+    // return a random BigInt between a and b
     rng.gen_range(a.clone()..b.clone())
 }
 
