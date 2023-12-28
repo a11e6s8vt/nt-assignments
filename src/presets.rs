@@ -11,7 +11,6 @@ use crate::{
     },
     prime_factors::PrimeFactors,
 };
-use clap::builder::Str;
 use fmtastic::{Subscript, Superscript};
 use num_bigint::BigInt;
 use num_iter::{range, range_inclusive};
@@ -46,33 +45,17 @@ const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
 use tabled::{
     grid::config::Borders,
     settings::{
-        object::{Columns, Object, Rows, Segment},
-        style::{HorizontalLine, On, Style},
+        object::Rows,
+        style::{BorderSpanCorrection, HorizontalLine, On, Style},
         themes::Colorization,
-        Border, Color, Format, Modify,
+        Color, Merge,
     },
-    Table, Tabled,
+    Table,
 };
 
 const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
     .line_horizontal(HorizontalLine::inherit(Style::modern()))
     .remove_horizontals();
-
-#[derive(Tabled)]
-#[tabled(rename_all = "PascalCase")]
-struct NumPQTable {
-    number: String,
-    factorisation: String,
-}
-
-impl NumPQTable {
-    fn new(number: String, factorisation: String) -> Self {
-        Self {
-            number,
-            factorisation,
-        }
-    }
-}
 
 pub fn find_primes_in_range_trial_division_parallel(
     start: BigInt,
@@ -320,9 +303,31 @@ pub fn gcd_test_range(start: &BigInt, end: &BigInt) {
     let mut result = Vec::<(BigInt, Vec<(BigInt, usize)>, Vec<(BigInt, BigInt)>)>::new();
     selected_nums_pq
         .par_iter()
-        .map(|n| (n.0.clone(), n.1.clone(), gcd_test(&n.0, 10)))
+        .map(|n| (n.0.clone(), n.1.clone(), gcd_test(&n.0, 5)))
         .collect_into_vec(&mut result);
-    println!("{:?}", result);
+
+    let mut table_data = Vec::<GcdTestTable>::new();
+    for (num, p_factors, gcd_result) in result {
+        let mut form: String = String::new();
+        for (factor, exp) in p_factors {
+            form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
+        }
+        let mut form = form.trim_end().to_string();
+        form.pop();
+        let title = format!("{} = {}", num.to_string(), form);
+        for (i, trials) in gcd_result.iter().enumerate() {
+            let a = format!("a{} = {}", i + 1, trials.0);
+            let gcd = format!("gcd{} = {}", i + 1, trials.1);
+            table_data.push(GcdTestTable::new(title.to_owned(), a, gcd));
+        }
+    }
+    let table = Table::new(table_data)
+        .with(Merge::vertical())
+        .with(Style::modern())
+        .with(BorderSpanCorrection)
+        .to_string();
+
+    println!("\n{table}\n");
 }
 
 #[cfg(test)]
