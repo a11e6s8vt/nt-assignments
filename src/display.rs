@@ -1,24 +1,34 @@
 use num_bigint::BigInt;
-use tabled::{
-    settings::{
-        style::{BorderSpanCorrection, Style},
-        Merge,
-    },
-    Table, Tabled,
-};
+use tabled::Tabled;
 
 #[derive(Tabled)]
-struct GcdTestTable {
+pub struct GcdTestTable {
     #[tabled(rename = "n = p.q")]
     num: String,
     #[tabled(rename = "a (randomly selected)")]
-    a: BigInt,
+    a: String,
     #[tabled(rename = "gcd(n, a)")]
-    gcd: BigInt,
+    gcd: String,
 }
 
 impl GcdTestTable {
-    fn new(num: String, a: BigInt, gcd: BigInt) -> Self {
+    pub fn new(num: String, a: String, gcd: String) -> Self {
         Self { num, a, gcd }
+    }
+}
+
+#[derive(Tabled)]
+#[tabled(rename_all = "PascalCase")]
+pub struct NumPQTable {
+    number: String,
+    factorisation: String,
+}
+
+impl NumPQTable {
+    pub fn new(number: String, factorisation: String) -> Self {
+        Self {
+            number,
+            factorisation,
+        }
     }
 }
