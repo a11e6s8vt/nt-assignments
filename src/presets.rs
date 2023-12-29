@@ -1,13 +1,13 @@
-use core::num;
-
 use crate::{
-    display::{GcdTestTable, NumPQTable},
+    cli_ops::{PFactorsArgs, PFactorsCommands},
+    display::{format_prime_factors_print, GcdTestTable, NumFactorTable},
     primality::{gcd_test, is_prime_trial_division, is_prime_trial_division_parallel},
     prime_factors::PrimeFactors,
 };
 use fmtastic::{Subscript, Superscript};
 use num_bigint::BigInt;
 use num_iter::{range, range_inclusive};
+use num_traits::Num;
 use rand::seq::SliceRandom;
 use rayon::iter::{
     IndexedParallelIterator, IntoParallelIterator, IntoParallelRefIterator, ParallelBridge,
@@ -23,6 +23,13 @@ use tabled::{
     },
     Table,
 };
+
+pub enum NumCategory {
+    Primes,
+    Composites,
+    CompositesPQ,
+    All,
+}
 
 const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
     .line_horizontal(HorizontalLine::inherit(Style::modern()))
@@ -77,48 +84,67 @@ pub fn find_primes_in_range_trial_division(
     (primes, composites)
 }
 
-pub fn list_prime_factors_in_range(start: &BigInt, end: &BigInt) {
-    let mut data: Vec<(String, String)> = Vec::new();
-    let mut primes = vec![BigInt::from(2u64)];
-    for num in range(start.clone(), end.clone()) {
-        let mut form: String = String::new();
-        let p_factors = num.prime_factors(&mut primes);
-        for (factor, exp) in p_factors {
-            form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
-        }
-        let mut form = form.trim_end().to_string();
-        form.pop();
-        data.push((num.to_string(), form))
-    }
-
-    let color_head = Color::BOLD | Color::BG_CYAN | Color::FG_BLACK;
-    let mut table1 = Table::new(data);
-    table1
-        .with(STYLE_2)
-        .with(Colorization::exact([color_head], Rows::first()));
-
-    let output1 = table1.to_string();
-    println!("{}", output1);
-}
-
-pub fn list_prime_factors_in_range_form_pq(
+pub fn list_prime_factors_in_range(
     start: &BigInt,
     end: &BigInt,
+    opts: NumCategory,
 ) -> (String, Vec<(BigInt, Vec<(BigInt, usize)>)>) {
-    let mut pq_nums: Vec<(BigInt, Vec<(BigInt, usize)>)> = Vec::new();
-    let mut table_data: Vec<NumPQTable> = Vec::new();
-    for num in range(start.clone(), end.clone()) {
-        let (is_pq, p_factors) = num.is_prime_factors_form_pq();
-
-        if is_pq {
-            pq_nums.push((num.clone(), p_factors.clone()));
-            let mut form: String = String::new();
-            for (factor, exp) in p_factors {
-                form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
+    let mut table_data: Vec<NumFactorTable> = Vec::new();
+    let mut primes = vec![BigInt::from(2u64)];
+    let mut nums_pfactors: Vec<(BigInt, Vec<(BigInt, usize)>)> = Vec::new();
+    for num in range_inclusive(start.clone(), end.clone()) {
+        let mut form: String = String::new();
+        let p_factors = num.prime_factors(&mut primes);
+        match opts {
+            NumCategory::All => {
+                format_prime_factors_print(&num, &p_factors, &mut form, &mut table_data);
+                nums_pfactors.push((num.clone(), p_factors.clone()));
             }
-            let mut form = form.trim_end().to_string();
-            form.pop();
-            table_data.push(NumPQTable::new(num.to_string(), form))
+            NumCategory::Composites => {
+                if p_factors.len() >= 2 {
+                    let first = p_factors.first().unwrap();
+                    let second = p_factors.get(1).unwrap();
+
+                    match first.1 {
+                        1 => match second.1 {
+                            1 => {
+                                format_prime_factors_print(
+                                    &num,
+                                    &p_factors,
+                                    &mut form,
+                                    &mut table_data,
+                                );
+                                nums_pfactors.push((num.clone(), p_factors.clone()));
+                            }
+                            _ => {}
+                        },
+                        _ => {}
+                    }
+                }
+            }
+            NumCategory::CompositesPQ => {
+                if p_factors.len() == 2 {
+                    let first = p_factors.first().unwrap();
+                    let second = p_factors.get(1).unwrap();
+
+                    match first.1 {
+                        1 => match second.1 {
+                            1 => {
+                                format_prime_factors_print(
+                                    &num,
+                                    &p_factors,
+                                    &mut form,
+                                    &mut table_data,
+                                );
+                                nums_pfactors.push((num.clone(), p_factors.clone()));
+                            }
+                            _ => {}
+                        },
+                        _ => {}
+                    }
+                }
+            }
+            NumCategory::Primes => {}
         }
     }
 
@@ -126,11 +152,11 @@ pub fn list_prime_factors_in_range_form_pq(
     table1.with(STYLE_2);
 
     let output1 = table1.to_string();
-    (output1, pq_nums)
+    (output1, nums_pfactors)
 }
 
 pub fn gcd_test_range(start: &BigInt, end: &BigInt) {
-    let pq_nums = list_prime_factors_in_range_form_pq(start, end);
+    let pq_nums = list_prime_factors_in_range(start, end, NumCategory::Composites);
     let pq_nums = pq_nums.1;
 
     // This will randomly choose three numbers which are of the form n = p.q

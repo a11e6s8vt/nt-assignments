@@ -70,7 +70,9 @@ impl PrimeFactors for BigInt {
         //     }
         // }
 
-        let mut r = Vec::<BigInt>::new();
+        // all_divisors will contain all the divisors of num with repetition.
+        // The product of the elements of all_divisors will equal the "num"
+        let mut all_divisors = Vec::<BigInt>::new(); //
         let mut product = BigInt::one();
 
         while product < n {
@@ -79,7 +81,7 @@ impl PrimeFactors for BigInt {
                 .filter(|x| (n.clone() / &product) % *x == BigInt::zero())
                 .map(|p| p.clone())
                 .collect::<Vec<BigInt>>();
-            r.extend(divisors.clone());
+            all_divisors.extend(divisors.clone());
             // println!("{:?}", res);
             product = product
                 * divisors
@@ -87,13 +89,13 @@ impl PrimeFactors for BigInt {
                     .fold(BigInt::one(), |acc: BigInt, a| acc * a);
             let q = &n / &product;
             if miller_rabin_primality(&q) {
-                r.push(q);
+                all_divisors.push(q);
                 break;
             }
         }
 
         // println!("n = {}, res = {:?}", n, res);
-        let mut res = r
+        let mut res = all_divisors
             .into_iter()
             .fold(HashMap::<BigInt, usize>::new(), |mut m, x| {
                 *m.entry(x).or_default() += 1;
