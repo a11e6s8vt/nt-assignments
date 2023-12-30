@@ -1,9 +1,11 @@
-use crate::utils::{generate_random_int_in_range, modular_pow, Gcd};
+use crate::{
+    prime_factors::PrimeFactors,
+    utils::{coprime_nums_less_than_n, generate_random_int_in_range, modular_pow, Gcd},
+};
 use num_bigint::BigInt;
 use num_iter::range_inclusive;
-use rand::Rng;
+use num_traits::{One, Zero};
 use rayon::prelude::*;
-use std::{collections::HashMap, ops::Range};
 
 ///
 /// is_prime calculates if a number is prime by verifying numbers upto √n.
@@ -139,6 +141,44 @@ pub fn gcd_test(n: &BigInt, num_trials: u8) -> Vec<(BigInt, BigInt)> {
     }
 
     result
+}
+
+///
+/// Carmichael Numbers using FLT
+/// n: a composite number
+///
+pub fn carmichael_nums_flt(n: &BigInt) -> bool {
+    let n_minus_one = n - 1;
+    let coprimes_n = coprime_nums_less_than_n(n);
+    let fermat_witnesses = coprimes_n
+        .par_iter()
+        .filter(|x| modular_pow(&x, &n_minus_one, n) != BigInt::one())
+        .map(|x| x.clone())
+        .collect::<Vec<BigInt>>();
+
+    // No Fermat Witness means n is a Carmichael Number
+    fermat_witnesses.len() == 0
+}
+
+///
+/// Carmichael Numbers using Korselt's criteria
+/// n: a composite number
+///
+pub fn carmichael_nums_korselt(n: &BigInt) -> bool {
+    let mut primes = vec![BigInt::from(2u64)];
+    let p_factors = n.prime_factors(&mut primes);
+    let squarefree = p_factors.iter().fold(true, |squarefree: bool, factor| {
+        squarefree & (factor.1 == 1)
+    });
+    let mut p_m_o_divides_n_m_o = true;
+    if squarefree {
+        let n_minus_one = n - 1;
+        for (p, _) in p_factors.iter() {
+            p_m_o_divides_n_m_o &= &n_minus_one % (p - 1) == BigInt::zero();
+        }
+    }
+
+    squarefree & p_m_o_divides_n_m_o
 }
 
 #[cfg(test)]

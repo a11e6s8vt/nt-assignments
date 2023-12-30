@@ -1,9 +1,7 @@
-use std::arch::x86_64;
-use std::collections::{BTreeSet, HashMap, HashSet};
+use std::collections::{HashMap, HashSet};
 
 use crate::primality::miller_rabin_primality;
 use dpc_pariter::IteratorExt;
-use itertools::Itertools;
 use num_bigint::BigInt;
 use num_iter::{range, range_inclusive, Range, RangeInclusive};
 use num_traits::identities::One;
@@ -31,7 +29,7 @@ impl PrimeFactors for BigInt {
             let end_no: BigInt = self.sqrt() + 1; // +1 to get the ceiling value
                                                   // println!("start = {}, end = {}", start_no, end_no);
 
-            let r = range(start_no.clone(), end_no);
+            let r = range_inclusive(start_no.clone(), end_no);
 
             // let mut primes: Vec<BigInt> = Vec::new();
 
@@ -45,11 +43,9 @@ impl PrimeFactors for BigInt {
                 .map(|x| x)
                 .parallel_filter(|x| miller_rabin_primality(x))
                 .collect();
-            // println!("{:?}", new_primes);
             primes.extend(new_primes);
             let mut seen = HashSet::new();
             primes.retain(|c| seen.insert(c.clone()));
-            // println!("{:?}", primes);
         }
         let mut res: HashMap<BigInt, usize> = HashMap::new();
 
@@ -70,7 +66,7 @@ impl PrimeFactors for BigInt {
         //     }
         // }
 
-        // all_divisors will contain all the divisors of num with repetition.
+        // The all_divisors vec will contain all the divisors of num with repetition.
         // The product of the elements of all_divisors will equal the "num"
         let mut all_divisors = Vec::<BigInt>::new(); //
         let mut product = BigInt::one();
@@ -82,7 +78,6 @@ impl PrimeFactors for BigInt {
                 .map(|p| p.clone())
                 .collect::<Vec<BigInt>>();
             all_divisors.extend(divisors.clone());
-            // println!("{:?}", res);
             product = product
                 * divisors
                     .iter()
@@ -94,7 +89,6 @@ impl PrimeFactors for BigInt {
             }
         }
 
-        // println!("n = {}, res = {:?}", n, res);
         let mut res = all_divisors
             .into_iter()
             .fold(HashMap::<BigInt, usize>::new(), |mut m, x| {

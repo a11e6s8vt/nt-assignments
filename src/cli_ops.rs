@@ -1,5 +1,6 @@
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use num_bigint::BigInt;
+use num_traits::Num;
 
 #[derive(Debug, Parser)]
 #[command(
@@ -37,6 +38,10 @@ pub enum Operations {
     /// Primality checking
     #[command(arg_required_else_help = true)]
     Primality(PrimalityArgs),
+    
+    /// Carmichael Number search
+    #[command(arg_required_else_help = true)]
+    CarmichaelNums(CarmichaelNumsArgs),
 }
 
 #[derive(Debug, Args)]
@@ -49,13 +54,27 @@ pub struct PFactorsArgs {
 
 #[derive(Debug, Subcommand)]
 pub enum PFactorsCommands {
-    All(PFactorsRangeArgs),
-    Composites(PFactorsRangeArgs),
-    CompositesPQ(PFactorsRangeArgs),
+    All(NumRangeArgs),
+    Composites(NumRangeArgs),
+    CompositesPQ(NumRangeArgs),
+}
+
+#[derive(Debug, Args)]
+#[command(args_conflicts_with_subcommands = true)]
+#[command(flatten_help = true)]
+pub struct CarmichaelNumsArgs {
+    #[command(subcommand)]
+    pub command: CarmichaelNumsCommands,
+}
+
+#[derive(Debug, Subcommand)]
+pub enum CarmichaelNumsCommands {
+    Korselt(NumRangeArgs),
+    FermatLT(NumRangeArgs),
 }
 
 #[derive(Debug, Args, Clone)]
-pub struct PFactorsRangeArgs {
+pub struct NumRangeArgs {
     #[arg(
         short = 's',
         long = "start",

@@ -1,4 +1,6 @@
 use num_bigint::BigInt;
+use num_iter::range_inclusive;
+use num_traits::One;
 use rand::Rng;
 
 pub trait Gcd {
@@ -80,10 +82,29 @@ pub fn modular_pow(c: &BigInt, e: &BigInt, m: &BigInt) -> BigInt {
     a
 }
 
+///
+/// Generate a random integer in a given range
+///
 pub fn generate_random_int_in_range(a: &BigInt, b: &BigInt) -> BigInt {
     let mut rng = rand::thread_rng();
     // return a random BigInt between a and b
     rng.gen_range(a.clone()..b.clone())
+}
+
+///
+/// Generates a list of integers less than n and co-prime to n.
+///
+pub fn coprime_nums_less_than_n(n: &BigInt) -> Vec<BigInt> {
+    let mut coprimes: Vec<BigInt> = Vec::new();
+    let r = range_inclusive(BigInt::from(2u64), n.clone());
+
+    for num in r {
+        if n.gcd_euclid(&num) == BigInt::one() {
+            coprimes.push(num)
+        }
+    }
+    coprimes.sort();
+    coprimes
 }
 
 #[cfg(test)]

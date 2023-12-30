@@ -6,13 +6,14 @@ mod prime_factors;
 mod utils;
 
 use clap::{Args, Parser, Subcommand, ValueEnum};
-use cli_ops::{Cli, Operations, PFactorsCommands, PrimalityCommands};
+use cli_ops::{CarmichaelNumsCommands, Cli, Operations, PFactorsCommands, PrimalityCommands};
 use fmtastic::{Subscript, Superscript};
 use num_bigint::BigInt;
 use presets::{
-    find_primes_in_range_trial_division_parallel, gcd_test_range, list_prime_factors_in_range,
+    find_primes_in_range_trial_division_parallel, gcd_test_range, list_carmichael_nums,
+    list_prime_factors_in_range,
 };
-use primality::gcd_test;
+use primality::{carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
 use terminal_size::{terminal_size, Height as TerminalHeight, Width as TerminalWidth};
 
 use crate::presets::NumCategory;
@@ -64,6 +65,20 @@ fn main() {
             }
             PrimalityCommands::MillerRabin(miller_rabin_args) => {
                 println!("{:?}", miller_rabin_args)
+            }
+        },
+        Operations::CarmichaelNums(s) => match s.command {
+            CarmichaelNumsCommands::Korselt(cargs) => {
+                let start = cargs.start;
+                let end = cargs.end;
+                let carmichael_nums = list_carmichael_nums(&start, &end, carmichael_nums_korselt);
+                println!("\n{}\n", carmichael_nums.0);
+            }
+            CarmichaelNumsCommands::FermatLT(cargs) => {
+                let start = cargs.start;
+                let end = cargs.end;
+                let carmichael_nums = list_carmichael_nums(&start, &end, carmichael_nums_flt);
+                println!("\n{}\n", carmichael_nums.0);
             }
         },
     }
