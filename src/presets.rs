@@ -307,11 +307,39 @@ pub fn list_prime_factors_in_range(
     (output1, nums_pfactors)
 }
 
+///
+/// List of Carmichael Numbers in a range using FLT
+///
+pub fn list_carmichael_nums(
+    start: &BigInt,
+    end: &BigInt,
+    f: fn(&BigInt) -> bool,
+) -> (String, Vec<(BigInt, Vec<(BigInt, usize)>)>) {
+    let composites = list_prime_factors_in_range(start, end, NumCategory::Composites).1;
+    let carmichael_nums = composites
+        .par_iter()
+        .filter(|x| f(&x.0) == true)
+        .map(|x| x.clone())
+        .collect::<Vec<(BigInt, Vec<(BigInt, usize)>)>>();
+
+    let mut table_data: Vec<NumFactorTable> = Vec::new();
+    for item in carmichael_nums.iter() {
+        let mut form: String = String::new();
+        format_prime_factors_print(&item.0, &item.1, &mut form, &mut table_data);
+    }
+
+    let mut table1 = Table::new(table_data);
+    table1.with(STYLE_2);
+
+    let output1 = table1.to_string();
+    (output1, carmichael_nums)
+}
+
 pub fn gcd_test_range(start: &BigInt, end: &BigInt) {
     let pq_nums = list_prime_factors_in_range(start, end, NumCategory::Composites);
     let pq_nums = pq_nums.1;
 
-    // This will randomly choose three numbers which are of the form n = p.q
+    // This will randomly choose three numbers which are composites in the range given
     let selected_nums_pq = pq_nums
         .choose_multiple(&mut rand::thread_rng(), 3)
         .map(|x| x.clone())
@@ -320,7 +348,7 @@ pub fn gcd_test_range(start: &BigInt, end: &BigInt) {
     let mut result = Vec::<(BigInt, Vec<(BigInt, usize)>, Vec<(BigInt, BigInt)>)>::new();
     selected_nums_pq
         .par_iter()
-        .map(|n| (n.0.clone(), n.1.clone(), gcd_test(&n.0, 5)))
+        .map(|n| (n.0.clone(), n.1.clone(), gcd_test(&n.0, 4)))
         .collect_into_vec(&mut result);
 
     let mut table_data = Vec::<GcdTestTable>::new();

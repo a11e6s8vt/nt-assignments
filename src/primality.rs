@@ -8,7 +8,6 @@ use num_bigint::BigInt;
 use num_iter::range_inclusive;
 use num_traits::{One, Zero};
 use rayon::prelude::*;
-use std::{collections::HashMap, ops::Range};
 
 use tabled::{
     builder::Builder,

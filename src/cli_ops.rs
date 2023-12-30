@@ -42,10 +42,13 @@ pub enum Operations {
     /// Carmichael Number search
     #[command(arg_required_else_help = true)]
     CarmichaelNums(CarmichaelNumsArgs),
+<<<<<<< HEAD
 
     /// Ass1 - Question3
     #[command(arg_required_else_help = true)]
     Question3(NumRangeArgs),
+=======
+>>>>>>> 055b1cf (carmichael - flt and korselt)
 }
 
 #[derive(Debug, Args)]

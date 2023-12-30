@@ -2,6 +2,9 @@ use num_bigint::BigInt;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 055b1cf (carmichael - flt and korselt)
 use num_iter::range_inclusive;
 use num_traits::One;
 use rand::Rng;
@@ -113,6 +116,9 @@ pub fn modular_pow(c: &BigInt, e: &BigInt, m: &BigInt) -> BigInt {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 055b1cf (carmichael - flt and korselt)
 ///
 /// Generate a random integer in a given range
 ///
@@ -138,6 +144,7 @@ pub fn coprime_nums_less_than_n(n: &BigInt) -> Vec<BigInt> {
     coprimes
 }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 780bc8c (miller-rabin)
 =======
@@ -148,6 +155,8 @@ pub fn generate_random_int_in_range(a: &BigInt, b: &BigInt) -> BigInt {
 }
 
 >>>>>>> 38a2ddd (gcd test for #primality)
+=======
+>>>>>>> 055b1cf (carmichael - flt and korselt)
 #[cfg(test)]
 mod tests {
     use super::*;
