@@ -74,19 +74,27 @@ impl Gcd for BigInt {
 /// m: modulus
 ///
 <<<<<<< HEAD
+<<<<<<< HEAD
 pub fn modular_pow(base: &BigInt, e: &BigInt, modulus: &BigInt) -> BigInt {
 =======
 pub fn modular_pow(c: &BigInt, e: &BigInt, m: &BigInt) -> BigInt {
 >>>>>>> 780bc8c (miller-rabin)
+=======
+pub fn modular_pow(base: &BigInt, e: &BigInt, modulus: &BigInt) -> BigInt {
+>>>>>>> a95f397 (miller-rabin)
     // initialization
     let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
     let mut exp = e.clone();
     let mut a: BigInt = BigInt::from(1u64);
 <<<<<<< HEAD
+<<<<<<< HEAD
     let mut s: BigInt = base % modulus;
 =======
     let mut s: BigInt = c % m;
 >>>>>>> 780bc8c (miller-rabin)
+=======
+    let mut s: BigInt = base % modulus;
+>>>>>>> a95f397 (miller-rabin)
 
     // Converts exponent to its binary representation
     // Go through the digits from LSB to MSB in each iteration
@@ -95,6 +103,7 @@ pub fn modular_pow(c: &BigInt, e: &BigInt, m: &BigInt) -> BigInt {
     while exp > zero {
         // Extract the LSB from the exp.
         if &exp & &one == one {
+<<<<<<< HEAD
 <<<<<<< HEAD
             a = (a * &s) % modulus;
         }
@@ -106,6 +115,12 @@ pub fn modular_pow(c: &BigInt, e: &BigInt, m: &BigInt) -> BigInt {
 
         s = (&s * &s) % m;
 >>>>>>> 780bc8c (miller-rabin)
+=======
+            a = (a * &s) % modulus;
+        }
+
+        s = (&s * &s) % modulus;
+>>>>>>> a95f397 (miller-rabin)
 
         // Division by 2 to get the next digit
         exp = exp / &two;

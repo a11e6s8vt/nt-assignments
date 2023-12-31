@@ -254,24 +254,8 @@ pub fn list_prime_factors_in_range(
             }
             NumCategory::Composites => {
                 if p_factors.len() >= 2 {
-                    let first = p_factors.first().unwrap();
-                    let second = p_factors.get(1).unwrap();
-
-                    match first.1 {
-                        1 => match second.1 {
-                            1 => {
-                                format_prime_factors_print(
-                                    &num,
-                                    &p_factors,
-                                    &mut form,
-                                    &mut table_data,
-                                );
-                                nums_pfactors.push((num.clone(), p_factors.clone()));
-                            }
-                            _ => {}
-                        },
-                        _ => {}
-                    }
+                    format_prime_factors_print(&num, &p_factors, &mut form, &mut table_data);
+                    nums_pfactors.push((num.clone(), p_factors.clone()));
                 }
             }
             NumCategory::CompositesPQ => {
@@ -373,6 +357,26 @@ pub fn gcd_test_range(start: &BigInt, end: &BigInt) {
         .to_string();
 
     println!("\n{table}\n");
+}
+
+pub fn question_three(start: &BigInt, end: &BigInt) {
+    let mut composites = list_prime_factors_in_range(start, end, NumCategory::Composites).1;
+    // composite numbers with only two factors
+    composites.retain(|(num, p_factors)| p_factors.len() == 2 && num % 2 != BigInt::zero());
+    let sample_data = &composites[0..1];
+
+    let mut table_data: Vec<NumFactorTable> = Vec::new();
+    for item in sample_data.iter() {
+        miller_rabin_primality_v2(&item.0);
+        let mut form: String = String::new();
+        format_prime_factors_print(&item.0, &item.1, &mut form, &mut table_data);
+    }
+
+    let mut table1 = Table::new(table_data);
+    table1.with(STYLE_2);
+
+    let output1 = table1.to_string();
+    println!("\n{}\n", output1);
 }
 
 #[cfg(test)]
