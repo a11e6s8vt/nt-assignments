@@ -1,9 +1,11 @@
 use crate::{
     cli_ops::{PFactorsArgs, PFactorsCommands},
-    display::{format_prime_factors_print, GcdTestTable, NumFactorTable},
+    display::{
+        format_prime_factors_print, miller_rabin_output_print, GcdTestTable, NumFactorTable,
+    },
     primality::{
         carmichael_nums_flt, gcd_test, is_prime_trial_division, is_prime_trial_division_parallel,
-        miller_rabin_primality_v2,
+        miller_rabin_test,
     },
     prime_factors::PrimeFactors,
 };
@@ -210,24 +212,16 @@ pub fn gcd_test_range(start: &BigInt, end: &BigInt) {
     println!("\n{table}\n");
 }
 
-pub fn question_three(start: &BigInt, end: &BigInt) {
-    let mut composites = list_prime_factors_in_range(start, end, NumCategory::Composites).1;
-    // composite numbers with only two factors
-    composites.retain(|(num, p_factors)| p_factors.len() == 2 && num % 2 != BigInt::zero());
-    let sample_data = &composites[0..1];
-
-    let mut table_data: Vec<NumFactorTable> = Vec::new();
-    for item in sample_data.iter() {
-        miller_rabin_primality_v2(&item.0);
-        let mut form: String = String::new();
-        format_prime_factors_print(&item.0, &item.1, &mut form, &mut table_data);
+pub fn test_primality_miller_rabin(n: &BigInt, n_trials: u32) -> bool {
+    for base in range_inclusive(BigInt::from(2u64), n - 1) {
+        let output = miller_rabin_test(&n, &base);
+        miller_rabin_output_print(&output.1);
+        // if output.0 == false {
+        //     return false;
+        // }
     }
 
-    let mut table1 = Table::new(table_data);
-    table1.with(STYLE_2);
-
-    let output1 = table1.to_string();
-    println!("\n{}\n", output1);
+    true
 }
 
 #[cfg(test)]

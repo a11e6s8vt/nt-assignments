@@ -1,7 +1,21 @@
 use clap::builder::Str;
 use fmtastic::{Subscript, Superscript};
 use num_bigint::BigInt;
-use tabled::Tabled;
+use num_traits::Zero;
+use table_to_html::{Alignment, Entity, HtmlTable, Padding};
+use tabled::{
+    settings::{
+        object::Rows,
+        style::{BorderSpanCorrection, HorizontalLine, On, Style},
+        themes::Colorization,
+        Color, Merge,
+    },
+    Table, Tabled,
+};
+
+const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
+    .line_horizontal(HorizontalLine::inherit(Style::modern()))
+    .remove_horizontals();
 
 #[derive(Tabled)]
 pub struct GcdTestTable {
@@ -49,43 +63,116 @@ pub fn format_prime_factors_print(
     table_data.push(NumFactorTable::new(num.to_string(), form))
 }
 
-#[derive(Tabled)]
-pub struct MillerRabinTable<'w> {
+#[derive(Debug, Tabled)]
+pub struct MillerRabinTable {
     n: BigInt,
     #[tabled(rename = "n - 1 = m.2ˢ")]
-    n_minus_one_form: &'w String,
+    n_minus_one_form: String,
+    s: u32,
     #[tabled(rename = "a")]
-    a: &'w BigInt,
+    a: BigInt,
     k: u32,
     #[tabled(rename = "e = m.2ᵏ")]
     e: BigInt,
     #[tabled(rename = "x = aᵉ")]
     a_raised_e: BigInt,
-    #[tabled(rename = "x ≡ ±1 (mod n)")]
+    #[tabled(rename = "x ≡ 1 (mod n)")]
     x_congruent_1_mod_n: bool,
+    #[tabled(rename = "x ≡ -1 (mod n)")]
+    x_congruent_minus_1_mod_n: bool,
     message: String,
 }
 
-impl<'w> MillerRabinTable<'w> {
+impl MillerRabinTable {
     pub fn new(
         n: BigInt,
-        n_minus_one_form: &'w String,
-        a: &'w BigInt,
+        n_minus_one_form: String,
+        s: u32,
+        a: BigInt,
         k: u32,
         e: BigInt,
         a_raised_e: BigInt,
         x_congruent_1_mod_n: bool,
+        x_congruent_minus_1_mod_n: bool,
         message: String,
     ) -> Self {
         Self {
             n,
             n_minus_one_form,
+            s,
             a,
             k,
             e,
             a_raised_e,
             x_congruent_1_mod_n,
+            x_congruent_minus_1_mod_n,
             message,
         }
     }
+}
+
+// make the below function generic
+pub fn format_miller_rabin_steps_print(
+    n: BigInt,
+    n_minus_one_form: &String,
+    s: u32,
+    a: BigInt,
+    k: u32,
+    e: BigInt,
+    a_raised_e: BigInt,
+    x_congruent_1_mod_n: bool,
+    x_congruent_minus_1_mod_n: bool,
+    table_data: &mut Vec<MillerRabinTable>,
+) {
+    let mut message: String = String::new();
+    if &k == &0 {
+        if x_congruent_1_mod_n || x_congruent_minus_1_mod_n {
+            message.push_str(&format!("{} is Probably Prime", n));
+        } else {
+            message.push_str(&format!(
+                "{} is neither congruent to 1 (mod n) nor -1 (mod n). Search for sqaure roots of 1 (mod n)",
+                a_raised_e
+            ));
+        }
+    } else if &k < &s {
+        if x_congruent_minus_1_mod_n {
+            message.push_str(&format!("{} is Probably Prime", n));
+        } else if x_congruent_1_mod_n {
+            message.push_str(&format!("{} is composite", n));
+        }
+    } else if &k == &s {
+        message.push_str(&format!("{} is composite", n));
+    }
+
+    table_data.push(MillerRabinTable::new(
+        n,
+        n_minus_one_form.clone(),
+        s,
+        a,
+        k,
+        e,
+        a_raised_e,
+        x_congruent_1_mod_n,
+        x_congruent_minus_1_mod_n,
+        message,
+    ));
+}
+
+pub fn miller_rabin_output_print(table_data: &Vec<MillerRabinTable>) {
+    let table = Table::new(table_data)
+        .with(Merge::vertical())
+        .with(Style::modern())
+        .with(BorderSpanCorrection)
+        .to_string();
+
+    // let mut table1 = Table::new(table_data);
+    // table1.with(STYLE_2);
+
+    // let output1 = table1.to_string();
+    // println!("\n{}\n", table);
+    let mut html_table =
+        HtmlTable::with_header(Vec::<Vec<String>>::from(Table::builder(table_data)));
+    html_table.set_alignment(Entity::Row(1), Alignment::center());
+    html_table.set_border(3);
+    println!("{html_table}");
 }

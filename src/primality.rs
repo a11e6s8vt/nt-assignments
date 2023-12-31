@@ -1,5 +1,5 @@
 use crate::{
-    display::MillerRabinTable,
+    display::{format_miller_rabin_steps_print, MillerRabinTable},
     prime_factors::PrimeFactors,
     utils::{coprime_nums_less_than_n, generate_random_int_in_range, modular_pow, Gcd},
 };
@@ -147,74 +147,12 @@ fn miller_test(d: &BigInt, n: &BigInt) -> bool {
     false
 }
 
-/// Miller-Rabin Test Step-1
-/// It accepts an integer and returns a boolean value
-/// 1. Express n - 1 as 2ᶠm
-pub fn miller_rabin_primality_v2(n: &BigInt) -> bool {
-    let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
-    let three = BigInt::from(3u64);
-    if n <= &one || n == &BigInt::from(4u64) {
-        return false;
-    }
-    if n <= &three {
-        return true;
-    }
-
-    for _ in 0..5 {
-        let mut q: BigInt = n - &one;
-        // Express n - 1 as 2ᶠ.m
-        let mut k: usize = 0;
-        while &q % 2 == zero {
-            q = &q / 2;
-            k += 1;
-        }
-        // n - 1 = q.2ᵏ
-        println!("{} = {}.2^{} + 1", n, q, k);
-        let a: BigInt = generate_random_int_in_range(&two, &(n - 1));
-        println!("n = {}, q = {}, a = {}", n, q, a);
-        // Calculate x ≡ a^q(mod n)
-        let mut x = modular_pow(&a, &q, n);
-
-        // if x ≡ ±1 (mod n), return true
-        if x == one || x == n - 1 {
-            println!("Probably Prime");
-            // return true;
-        }
-
-        let mut i = 0;
-        // if x≢±1 (mod n), while d != n-1 .
-        // d was obtained by repeated division of (m - 1) by 2.
-        // multiplying it with 2 repeatedly until it equals (m - 1)
-        while q != n - 1 {
-            // sqaure x - This is a^((2^j)m)(mod n)
-            let e = &q * BigInt::from(2u64).pow(i);
-            x = modular_pow(&a, &e, n);
-            println!("n = {}, q = {}, a = {}, x = {}, e = {}", n, q, a, x, e);
-            // if x ≡ -1 (mod n) the input number is probably prime
-            if x == n - 1 {
-                println!("Probably Prime");
-                // return true;
-            }
-
-            // if x ≡ -1 (mod n), then x is a factor of n
-            if x == one {
-                println!("Composite");
-                // return false;
-            }
-
-            // multiplication by 2
-            q = q * &two;
-            i += 1;
-        }
-    }
-
-    println!("{} is composite", n);
-    true
-}
-
-/// Miller-Rabin Test - Step 2
 ///
-pub fn miller_test_v2(n: &BigInt) -> bool {
+/// Miller-Rabin Test
+///
+pub fn miller_rabin_test(n: &BigInt, base: &BigInt) -> (bool, Vec<MillerRabinTable>) {
+    let mut table_data: Vec<MillerRabinTable> = Vec::new();
+    let mut message = String::new();
     let mut is_prime = false;
     let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
     let n_minus_one: BigInt = n - 1;
@@ -228,114 +166,68 @@ pub fn miller_test_v2(n: &BigInt) -> bool {
 
     let n_minus_one_form = format!("{} = {}.2{}", n_minus_one, m, Superscript(s),);
 
-    let mut table_data: Vec<MillerRabinTable> = Vec::new();
-    // Randomly generate a base: a such that 1 < a < n - 1
+    // Randomly generate a base "a" such that 1 < a < n - 1
     let a: BigInt = generate_random_int_in_range(&two, &(n - 1));
     // let a = BigInt::from(1003u64);
 
     // Calculate x ≡ aᵐ(mod n)
-    let mut x = modular_pow(&a, &m, n);
+    let mut x = modular_pow(base, &m, n);
+
+    format_miller_rabin_steps_print(
+        n.clone(),
+        &n_minus_one_form,
+        s,
+        base.clone(),
+        0,
+        m.clone(),
+        x.clone(),
+        &x == &one,
+        &x == &(n - 1),
+        &mut table_data,
+    );
 
     // if x ≡ ±1 (mod n),
     // Why? We know that aⁿ⁻¹ ≡ (aᵐ²^ˢ) ≡ 1 (mod n), and we will not
     // find a square root of 1, other than ±1, in repeated squaring of am
     // to get an−1.
-    let mut message = String::new();
-    if &x == &one || x == n - 1 {
-        message = format!("Probably Prime");
-        is_prime = true;
-    } else {
-        message = format!("x ≆ ±1 (mod n)");
+    if &x == &one || &x == &(n - 1) {
+        return (true, table_data);
     }
-
-    table_data.push(MillerRabinTable::new(
-        n.clone(),
-        &n_minus_one_form,
-        &a,
-        0,
-        m.clone(),
-        x.clone(),
-        x == one || x == n - &one,
-        message.clone(),
-    ));
 
     let mut k = 1;
     while k <= s {
-        // sqaure x - This is a^((2^j)m)(mod n)
+        // loop for searching square-roots for 1 (mod n) other than ±1 (mod n)
         let e = &m * BigInt::from(2u64).pow(k);
         x = modular_pow(&a, &e, n);
+
+        format_miller_rabin_steps_print(
+            n.clone(),
+            &n_minus_one_form,
+            s,
+            base.clone(),
+            k,
+            e.clone(),
+            x.clone(),
+            &x == &one,
+            &x == &(n - 1),
+            &mut table_data,
+        );
+
         // if x ≡ -1 (mod n) the input number is probably prime
         if x == n - 1 {
-            message = format!("Probably Prime");
-            is_prime = true;
-            table_data.push(MillerRabinTable::new(
-                n.clone(),
-                &n_minus_one_form,
-                &a,
-                0,
-                m.clone(),
-                x.clone(),
-                x == n - &one,
-                message.clone(),
-            ));
-            break;
+            return (true, table_data);
         }
 
-        // if x ≡ -1 (mod n), then x is a factor of n
+        // if x ≡ 1 (mod n), then x is a factor of n
         if &x == &one {
-            message = format!("Composite");
-
-            table_data.push(MillerRabinTable::new(
-                n.clone(),
-                &n_minus_one_form,
-                &a,
-                0,
-                m.clone(),
-                x.clone(),
-                &x == &one,
-                message.clone(),
-            ));
-            is_prime = false;
-            break;
+            return (false, table_data);
         }
 
-        message = format!("x ≆ ±1 (mod n)");
-
-        if k == s {
-            table_data.push(MillerRabinTable::new(
-                n.clone(),
-                &n_minus_one_form,
-                &a,
-                k,
-                e.clone(),
-                x.clone(),
-                &x == &one && x == n - &one,
-                format!("By FLT, n is composite"),
-            ));
-        } else {
-            table_data.push(MillerRabinTable::new(
-                n.clone(),
-                &n_minus_one_form,
-                &a,
-                k,
-                e.clone(),
-                x.clone(),
-                &x == &one || x == n - &one,
-                message,
-            ));
-        }
         k += 1;
     }
 
-    let table = Table::new(table_data)
-        .with(Merge::vertical())
-        .with(Style::modern())
-        .with(BorderSpanCorrection)
-        .to_string();
-
-    println!("{table}");
     // a^n-1(mod n)≢ 1, then by FLT, n is composite and return false.
-    false
+    return (false, table_data);
 }
 
 pub fn gcd_test(n: &BigInt, num_trials: u8) -> Vec<(BigInt, BigInt)> {

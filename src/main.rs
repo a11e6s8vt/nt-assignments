@@ -7,13 +7,16 @@ mod utils;
 
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use cli_ops::{CarmichaelNumsCommands, Cli, Operations, PFactorsCommands, PrimalityCommands};
+use display::miller_rabin_output_print;
 use fmtastic::{Subscript, Superscript};
 use num_bigint::BigInt;
+use num_traits::Zero;
 use presets::{
     find_primes_in_range_trial_division_parallel, gcd_test_range, list_carmichael_nums,
-    list_prime_factors_in_range, question_three,
+    list_prime_factors_in_range, test_primality_miller_rabin,
 };
-use primality::{carmichael_nums_flt, carmichael_nums_korselt, gcd_test, miller_test_v2};
+use primality::{carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
+use rand::distributions::uniform::UniformSampler;
 use terminal_size::{terminal_size, Height as TerminalHeight, Width as TerminalWidth};
 
 use crate::presets::NumCategory;
@@ -82,8 +85,15 @@ fn main() {
             }
         },
         Operations::Question3(s) => {
-            // question_three(&s.start, &s.end);
-            miller_test_v2(&s.start);
+            let mut composites =
+                list_prime_factors_in_range(&s.start, &s.end, NumCategory::Composites).1;
+            // composite numbers with only two factors
+            composites.retain(|(num, p_factors)| p_factors.len() == 2 && num % 2 != BigInt::zero());
+            let sample_data = &composites[0..5];
+
+            for (num, p_factors) in sample_data.iter() {
+                test_primality_miller_rabin(num, 5);
+            }
         }
     }
 }
