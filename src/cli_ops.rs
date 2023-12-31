@@ -42,6 +42,10 @@ pub enum Operations {
     /// Carmichael Number search
     #[command(arg_required_else_help = true)]
     CarmichaelNums(CarmichaelNumsArgs),
+
+    /// Ass1 - Question3
+    #[command(arg_required_else_help = true)]
+    Question3(NumRangeArgs),
 }
 
 #[derive(Debug, Args)]

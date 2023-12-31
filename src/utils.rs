@@ -56,12 +56,12 @@ impl Gcd for BigInt {
 /// e: exponent
 /// m: modulus
 ///
-pub fn modular_pow(c: &BigInt, e: &BigInt, m: &BigInt) -> BigInt {
+pub fn modular_pow(base: &BigInt, e: &BigInt, modulus: &BigInt) -> BigInt {
     // initialization
     let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
     let mut exp = e.clone();
     let mut a: BigInt = BigInt::from(1u64);
-    let mut s: BigInt = c % m;
+    let mut s: BigInt = base % modulus;
 
     // Converts exponent to its binary representation
     // Go through the digits from LSB to MSB in each iteration
@@ -70,10 +70,10 @@ pub fn modular_pow(c: &BigInt, e: &BigInt, m: &BigInt) -> BigInt {
     while exp > zero {
         // Extract the LSB from the exp.
         if &exp & &one == one {
-            a = (a * &s) % m;
+            a = (a * &s) % modulus;
         }
 
-        s = (&s * &s) % m;
+        s = (&s * &s) % modulus;
 
         // Division by 2 to get the next digit
         exp = exp / &two;

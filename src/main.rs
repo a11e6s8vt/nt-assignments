@@ -11,9 +11,9 @@ use fmtastic::{Subscript, Superscript};
 use num_bigint::BigInt;
 use presets::{
     find_primes_in_range_trial_division_parallel, gcd_test_range, list_carmichael_nums,
-    list_prime_factors_in_range,
+    list_prime_factors_in_range, question_three,
 };
-use primality::{carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
+use primality::{carmichael_nums_flt, carmichael_nums_korselt, gcd_test, miller_test_v2};
 use terminal_size::{terminal_size, Height as TerminalHeight, Width as TerminalWidth};
 
 use crate::presets::NumCategory;
@@ -81,5 +81,9 @@ fn main() {
                 println!("\n{}\n", carmichael_nums.0);
             }
         },
+        Operations::Question3(s) => {
+            // question_three(&s.start, &s.end);
+            miller_test_v2(&s.start);
+        }
     }
 }

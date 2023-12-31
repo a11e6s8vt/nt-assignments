@@ -48,3 +48,44 @@ pub fn format_prime_factors_print(
     form.pop();
     table_data.push(NumFactorTable::new(num.to_string(), form))
 }
+
+#[derive(Tabled)]
+pub struct MillerRabinTable<'w> {
+    n: BigInt,
+    #[tabled(rename = "n - 1 = m.2ˢ")]
+    n_minus_one_form: &'w String,
+    #[tabled(rename = "a")]
+    a: &'w BigInt,
+    k: u32,
+    #[tabled(rename = "e = m.2ᵏ")]
+    e: BigInt,
+    #[tabled(rename = "x = aᵉ")]
+    a_raised_e: BigInt,
+    #[tabled(rename = "x ≡ ±1 (mod n)")]
+    x_congruent_1_mod_n: bool,
+    message: String,
+}
+
+impl<'w> MillerRabinTable<'w> {
+    pub fn new(
+        n: BigInt,
+        n_minus_one_form: &'w String,
+        a: &'w BigInt,
+        k: u32,
+        e: BigInt,
+        a_raised_e: BigInt,
+        x_congruent_1_mod_n: bool,
+        message: String,
+    ) -> Self {
+        Self {
+            n,
+            n_minus_one_form,
+            a,
+            k,
+            e,
+            a_raised_e,
+            x_congruent_1_mod_n,
+            message,
+        }
+    }
+}
