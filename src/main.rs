@@ -1,6 +1,5 @@
 mod cli_ops;
 mod display;
-mod display;
 mod presets;
 mod primality;
 mod prime_factors;

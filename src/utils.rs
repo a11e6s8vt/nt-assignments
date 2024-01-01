@@ -1,20 +1,8 @@
 use num_bigint::BigInt;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 055b1cf (carmichael - flt and korselt)
 use num_iter::range_inclusive;
 use num_traits::One;
 use rand::Rng;
 
-=======
->>>>>>> 5407e32 (prime factors - tabular print)
-=======
-use rand::Rng;
-
->>>>>>> 38a2ddd (gcd test for #primality)
 pub trait Gcd {
     ///
     /// # Examples
@@ -61,11 +49,6 @@ impl Gcd for BigInt {
         gcd
     }
 }
-<<<<<<< HEAD
-=======
->>>>>>> 780bc8c (miller-rabin)
-=======
->>>>>>> 5407e32 (prime factors - tabular print)
 
 ///
 /// Returns a non-negative integer a < m that satisfies a ≡ cˣ(mod m)
@@ -73,28 +56,12 @@ impl Gcd for BigInt {
 /// e: exponent
 /// m: modulus
 ///
-<<<<<<< HEAD
-<<<<<<< HEAD
 pub fn modular_pow(base: &BigInt, e: &BigInt, modulus: &BigInt) -> BigInt {
-=======
-pub fn modular_pow(c: &BigInt, e: &BigInt, m: &BigInt) -> BigInt {
->>>>>>> 780bc8c (miller-rabin)
-=======
-pub fn modular_pow(base: &BigInt, e: &BigInt, modulus: &BigInt) -> BigInt {
->>>>>>> a95f397 (miller-rabin)
     // initialization
     let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
     let mut exp = e.clone();
     let mut a: BigInt = BigInt::from(1u64);
-<<<<<<< HEAD
-<<<<<<< HEAD
     let mut s: BigInt = base % modulus;
-=======
-    let mut s: BigInt = c % m;
->>>>>>> 780bc8c (miller-rabin)
-=======
-    let mut s: BigInt = base % modulus;
->>>>>>> a95f397 (miller-rabin)
 
     // Converts exponent to its binary representation
     // Go through the digits from LSB to MSB in each iteration
@@ -103,24 +70,10 @@ pub fn modular_pow(base: &BigInt, e: &BigInt, modulus: &BigInt) -> BigInt {
     while exp > zero {
         // Extract the LSB from the exp.
         if &exp & &one == one {
-<<<<<<< HEAD
-<<<<<<< HEAD
             a = (a * &s) % modulus;
         }
 
         s = (&s * &s) % modulus;
-=======
-            a = (a * &s) % m;
-        }
-
-        s = (&s * &s) % m;
->>>>>>> 780bc8c (miller-rabin)
-=======
-            a = (a * &s) % modulus;
-        }
-
-        s = (&s * &s) % modulus;
->>>>>>> a95f397 (miller-rabin)
 
         // Division by 2 to get the next digit
         exp = exp / &two;
@@ -129,11 +82,6 @@ pub fn modular_pow(base: &BigInt, e: &BigInt, modulus: &BigInt) -> BigInt {
     a
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 055b1cf (carmichael - flt and korselt)
 ///
 /// Generate a random integer in a given range
 ///
@@ -159,28 +107,11 @@ pub fn coprime_nums_less_than_n(n: &BigInt) -> Vec<BigInt> {
     coprimes
 }
 
-<<<<<<< HEAD
-=======
->>>>>>> 780bc8c (miller-rabin)
-=======
-pub fn generate_random_int_in_range(a: &BigInt, b: &BigInt) -> BigInt {
-    let mut rng = rand::thread_rng();
-    // return a random BigInt between a and b
-    rng.gen_range(a.clone()..b.clone())
-}
-
->>>>>>> 38a2ddd (gcd test for #primality)
-=======
->>>>>>> 055b1cf (carmichael - flt and korselt)
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5407e32 (prime factors - tabular print)
     fn test_gcd_euclid_1() {
         let a = BigInt::from(100u64);
         let result = a.gcd_euclid(&BigInt::from(76u64));
@@ -192,11 +123,6 @@ mod tests {
     }
 
     #[test]
-<<<<<<< HEAD
-=======
->>>>>>> 780bc8c (miller-rabin)
-=======
->>>>>>> 5407e32 (prime factors - tabular print)
     fn test_modular_pow() {
         let result = modular_pow(
             &BigInt::from(2u64),
