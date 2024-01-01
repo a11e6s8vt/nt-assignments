@@ -1,6 +1,7 @@
 use num_bigint::BigInt;
 use num_iter::range;
 use num_traits::{One, Zero};
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use crate::{
     prime_factors::PrimeFactors,
@@ -183,15 +184,23 @@ pub fn primitive_roots_count_modulo_n(n: &BigInt) -> BigInt {
 /// 6. pick the smallest d | N s.t a^d = 1. It's the order of a in Z/nZ
 ///
 ///
-pub fn multiplicative_order(a: &BigInt, n: &BigInt) -> BigInt {
+pub fn multiplicative_order(a: &BigInt, n: &BigInt) -> Option<BigInt> {
     if n.gcd_euclid(a) != BigInt::one() {
         // return zero as the numbers are not coprime
-        return BigInt::zero();
+        return None;
     }
 
+    let mut primes = vec![BigInt::from(2u64)];
     let phi_n = euler_totient_phi_counting_coprimes(n);
-
-    BigInt::from(1u64)
+    let divisors_phi_n = divisors_of_n(&phi_n);
+    let mut order = BigInt::zero();
+    let all_possible_orders_a = divisors_phi_n
+        .par_iter()
+        .filter(|x| modular_pow(a, x, n) == BigInt::one())
+        .map(|x| x.clone())
+        .collect::<Vec<BigInt>>();
+    // let p_factors = n.prime_factors(&mut primes);
+    all_possible_orders_a.into_iter().min()
 }
 
 #[cfg(test)]
@@ -288,5 +297,21 @@ mod tests {
         assert_eq!(result, BigInt::from(2u64));
         let result = primitive_roots_count_modulo_n(&BigInt::from(40u64));
         assert_eq!(result, BigInt::from(0u64));
+    }
+
+    #[test]
+    fn test_multiplicative_order() {
+        assert_eq!(
+            BigInt::from(50u64),
+            multiplicative_order(&BigInt::from(45u64), &BigInt::from(101u64)).unwrap()
+        );
+    }
+
+    #[test]
+    fn test_multiplicative_order_none() {
+        assert_eq!(
+            None,
+            multiplicative_order(&BigInt::from(45u64), &BigInt::from(100u64))
+        );
     }
 }

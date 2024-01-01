@@ -1,12 +1,14 @@
 use crate::{
     display::{format_miller_rabin_steps_print, MillerRabinTable},
+    groups_modulo_n::coprime_nums_less_than_n,
+    groups_modulo_n::multiplicative_order,
     prime_factors::PrimeFactors,
-    utils::{coprime_nums_less_than_n, generate_random_int_in_range, modular_pow, Gcd},
+    utils::{abs_log, generate_random_int_in_range, modular_pow, Gcd},
 };
 use fmtastic::Superscript;
 use num_bigint::BigInt;
-use num_iter::range_inclusive;
-use num_traits::{One, Zero};
+use num_iter::{range, range_inclusive};
+use num_traits::{One, Pow, Zero};
 use rayon::prelude::*;
 
 use tabled::settings::style::{HorizontalLine, On, Style};
@@ -299,7 +301,7 @@ pub fn carmichael_nums_korselt(n: &BigInt) -> bool {
 ///
 /// AKS Primality test
 ///
-pub fn aks(n: &BigInt) {
+pub fn aks(n: &BigInt) -> bool {
     fn is_perfect_k_th_power(n: &BigInt) -> bool {
         let upper_bound = n.sqrt();
         for k in range_inclusive(BigInt::from(2u64), upper_bound) {
@@ -317,18 +319,57 @@ pub fn aks(n: &BigInt) {
         false
     }
 
+    ///
+    /// Find smallest r such that the order of n mod r > ln(n)^2.
+    ///
     fn findr(n: &BigInt) -> BigInt {
-        let mut r = BigInt::from(2u64);
-        let mut k = r.clone();
+        let (zero, one) = (BigInt::zero(), BigInt::one());
+        let mut r = BigInt::from(1u64);
 
-        while n % &k == BigInt::zero() {
-            k = next_prime(&k);
-            println!("{}", &k);
+        let s: f64 = abs_log(n).unwrap().pow(2);
+        let s = BigInt::from(s.floor() as u64);
+        println!("s = {}", &s);
+        let mut nex_r = true;
+
+        while nex_r {
+            r += 1;
+            nex_r = false;
+            let mut k = BigInt::zero();
+            while &k <= &s && nex_r == false {
+                k += 1;
+                if modular_pow(n, &k, &r) == zero || modular_pow(n, &k, &r) == one {
+                    nex_r = true;
+                }
+            }
         }
+
+        println!("{}", &r);
         r
     }
 
-    is_perfect_k_th_power(n);
+    // Step 1
+    if is_perfect_k_th_power(n) {
+        return false;
+    }
+
+    let (zero, one) = (BigInt::zero(), BigInt::one());
+
+    // Step 2
+    let r = findr(n);
+
+    // Step 3
+    for a in range(BigInt::from(2u64), std::cmp::min(r.clone(), n.clone())) {
+        if &a.gcd_euclid(n) > &one {
+            return false;
+        }
+    }
+
+    // Step 4
+    if n <= &r {
+        return true;
+    }
+
+    true
 }
 
 #[cfg(test)]
