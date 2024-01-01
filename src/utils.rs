@@ -2,7 +2,9 @@ use std::marker::PhantomPinned;
 
 use num_bigint::{BigInt, BigUint};
 use num_iter::{range, range_inclusive};
+use num_traits::ToPrimitive;
 use num_traits::{One, Zero};
+use rand::seq::index;
 use rand::Rng;
 
 use crate::prime_factors::PrimeFactors;
@@ -114,6 +116,55 @@ pub fn abs_log(x: &BigInt) -> Result<f64, String> {
     }
     let ln_256: f64 = (256.0).ln();
     Ok(n.ln() + ln_256 * ((x.len() - 1) as f64))
+}
+
+///
+/// Use fast modular exponentiation for polynomials to raise them to a big power.
+///
+pub fn fastpoly(base: &Vec<BigInt>, power: &BigInt, r: &BigInt) -> Vec<BigInt> {
+    let mut base = base.clone();
+    let mut x = Vec::<BigInt>::new();
+    let a = &base[0].clone();
+
+    for i in 0..base.len() {
+        x.push(BigInt::zero());
+    }
+    x[0] = BigInt::one();
+    let n = power.clone();
+    let mut power = power.clone();
+
+    while &power > &BigInt::zero() {
+        if &power % &BigInt::from(2u64) == BigInt::one() {
+            x = polynomial_mul(&x, &base, &n, &r);
+        }
+        base = polynomial_mul(&base, &base, &n, &r);
+        power = power / BigInt::from(2u64);
+    }
+    x[0] = &x[0] - a;
+    let index = &n % r;
+    let index = index.to_usize().unwrap_or(usize::MAX);
+    x[index] = &x[index] - BigInt::one();
+    x
+}
+
+///Function used by fastPoly to multiply two polynomials together.
+pub fn polynomial_mul(a: &Vec<BigInt>, b: &Vec<BigInt>, n: &BigInt, r: &BigInt) -> Vec<BigInt> {
+    let mut x = Vec::<BigInt>::new();
+    for i in 0..a.len() + b.len() - 1 {
+        x.push(BigInt::zero());
+    }
+    for i in 0..a.len() {
+        for j in 0..b.len() {
+            // usize::MAX is not ideal here. I couldn't find a way to index the vec
+            let index = (i + j) % r.to_usize().unwrap_or(usize::MAX);
+            x[index] += a[i].clone() * b[j].clone();
+            x[index] = &x[index] % n.clone();
+        }
+    }
+    for _ in range(r.clone(), BigInt::from(x.len())) {
+        x.pop();
+    }
+    return x;
 }
 
 #[cfg(test)]

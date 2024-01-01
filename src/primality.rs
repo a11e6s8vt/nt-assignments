@@ -1,13 +1,13 @@
 use crate::{
     display::{format_miller_rabin_steps_print, MillerRabinTable},
     groups_modulo_n::coprime_nums_less_than_n,
-    groups_modulo_n::multiplicative_order,
+    groups_modulo_n::{euler_totient_phi_counting_coprimes, multiplicative_order},
     prime_factors::PrimeFactors,
-    utils::{abs_log, generate_random_int_in_range, modular_pow, Gcd},
+    utils::{abs_log, fastpoly, generate_random_int_in_range, modular_pow, Gcd},
 };
 use fmtastic::Superscript;
 use num_bigint::BigInt;
-use num_iter::{range, range_inclusive};
+use num_iter::{range, range_inclusive, Range};
 use num_traits::{One, Pow, Zero};
 use rayon::prelude::*;
 
@@ -76,7 +76,7 @@ pub fn is_prime_trial_division_parallel(n: &BigInt) -> bool {
 /// assert_eq!(next_prime(BigInt::from(2u64)), BigInt::from(2u64));
 /// assert_eq!(next_prime(BigInt::from(4u64)), BigInt::from(5u64));
 /// ```
-pub fn next_prime(mut n: &BigInt) -> BigInt {
+pub fn next_prime(n: &BigInt) -> BigInt {
     let (zero, two) = (BigInt::zero(), BigInt::from(2u64));
     if n <= &two {
         return two;
@@ -312,7 +312,6 @@ pub fn aks(n: &BigInt) -> bool {
                 j += 1;
             }
             if m == BigInt::one() && j > BigInt::one() {
-                println!("{} is perfect k th power", &n);
                 return true;
             }
         }
@@ -328,7 +327,6 @@ pub fn aks(n: &BigInt) -> bool {
 
         let s: f64 = abs_log(n).unwrap().pow(2);
         let s = BigInt::from(s.floor() as u64);
-        println!("s = {}", &s);
         let mut nex_r = true;
 
         while nex_r {
@@ -343,7 +341,6 @@ pub fn aks(n: &BigInt) -> bool {
             }
         }
 
-        println!("{}", &r);
         r
     }
 
@@ -367,6 +364,17 @@ pub fn aks(n: &BigInt) -> bool {
     // Step 4
     if n <= &r {
         return true;
+    }
+
+    let phi_r = euler_totient_phi_counting_coprimes(&r);
+    let log_r = abs_log(n).unwrap();
+    let upper_bound = phi_r.sqrt() * log_r as u64;
+    let mut x = Vec::<BigInt>::new();
+    for a in range(BigInt::one(), upper_bound) {
+        x = fastpoly(&vec![a, BigInt::one()], &n, &r);
+        if x.par_iter().any(|b| b != &BigInt::zero()) {
+            return false;
+        }
     }
 
     true

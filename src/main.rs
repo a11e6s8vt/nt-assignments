@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate polynomen;
+
 mod cli_ops;
 mod display;
 mod groups_modulo_n;
@@ -5,6 +8,8 @@ mod presets;
 mod primality;
 mod prime_factors;
 mod utils;
+
+use std::arch::x86_64;
 
 use clap::Parser;
 use cli_ops::{CarmichaelNumsCommands, Cli, Operations, PFactorsCommands, PrimalityCommands};
@@ -16,6 +21,7 @@ use presets::{
     list_prime_factors_in_range, test_primality_miller_rabin,
 };
 use primality::{aks, carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use crate::presets::NumCategory;
 
@@ -94,7 +100,14 @@ fn main() {
             }
         }
         Operations::AKS(s) => {
-            aks(&s.start);
+            let mut composites =
+                list_prime_factors_in_range(&s.start, &s.end, NumCategory::Composites).1;
+            let aks_test_res = composites
+                .par_iter()
+                .map(|(num, p_factors)| (num, aks(num)))
+                .map(|(num, is_prime)| (num.clone(), is_prime))
+                .collect::<Vec<(BigInt, bool)>>();
+            println!("{:?}", aks_test_res);
         }
     }
 }
