@@ -1,5 +1,5 @@
 use num_bigint::BigInt;
-use num_iter::range_inclusive;
+use num_iter::{range, range_inclusive};
 use num_traits::{One, Zero};
 use rand::Rng;
 
@@ -98,7 +98,7 @@ pub fn generate_random_int_in_range(a: &BigInt, b: &BigInt) -> BigInt {
 ///
 pub fn coprime_nums_less_than_n(n: &BigInt) -> Vec<BigInt> {
     let mut coprimes: Vec<BigInt> = Vec::new();
-    let r = range_inclusive(BigInt::from(2u64), n.clone());
+    let r = range(BigInt::from(1u64), n.clone());
 
     for num in r {
         if n.gcd_euclid(&num) == BigInt::one() {
@@ -144,7 +144,6 @@ pub fn divisors_of_n(n: &BigInt) -> Vec<BigInt> {
 ///
 pub fn euler_totient_phi_v1(n: &BigInt) -> BigInt {
     let coprimes = coprime_nums_less_than_n(n);
-    println!("{:?}", coprimes);
     BigInt::from(coprimes.len())
 }
 
@@ -306,14 +305,19 @@ mod tests {
         let result = coprime_nums_less_than_n(&BigInt::from(10u64));
         assert_eq!(
             result,
-            vec![BigInt::from(3u64), BigInt::from(7u64), BigInt::from(9u64)]
+            vec![
+                BigInt::from(1u64),
+                BigInt::from(3u64),
+                BigInt::from(7u64),
+                BigInt::from(9u64)
+            ]
         );
     }
 
     #[test]
     fn test_get_integers_coprime_n_2() {
         let result = coprime_nums_less_than_n(&BigInt::from(17u64));
-        let s = range(BigInt::from(2u64), BigInt::from(17u64))
+        let s = range(BigInt::from(1u64), BigInt::from(17u64))
             .map(|x| x.clone())
             .collect::<Vec<BigInt>>();
         assert_eq!(result, s);
