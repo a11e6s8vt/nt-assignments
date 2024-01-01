@@ -1,18 +1,17 @@
 use crate::{
-    cli_ops::{PFactorsArgs, PFactorsCommands},
     display::{
         format_prime_factors_print, miller_rabin_output_print, GcdTestTable, NumFactorTable,
     },
     primality::{
-        carmichael_nums_flt, gcd_test, is_prime_trial_division, is_prime_trial_division_parallel,
+        gcd_test, is_prime_trial_division, is_prime_trial_division_parallel,
         miller_rabin_test,
     },
     prime_factors::PrimeFactors,
 };
-use fmtastic::{Subscript, Superscript};
+use fmtastic::{Superscript};
 use num_bigint::BigInt;
-use num_iter::{range, range_inclusive};
-use num_traits::{Num, One, Zero};
+use num_iter::{range_inclusive};
+
 use rand::seq::SliceRandom;
 use rayon::iter::{
     IndexedParallelIterator, IntoParallelIterator, IntoParallelRefIterator, ParallelBridge,
@@ -21,10 +20,7 @@ use rayon::iter::{
 
 use tabled::{
     settings::{
-        object::Rows,
-        style::{BorderSpanCorrection, HorizontalLine, On, Style},
-        themes::Colorization,
-        Color, Merge,
+        style::{BorderSpanCorrection, HorizontalLine, On, Style}, Merge,
     },
     Table,
 };
@@ -209,7 +205,7 @@ pub fn gcd_test_range(start: &BigInt, end: &BigInt) {
     println!("\n{table}\n");
 }
 
-pub fn test_primality_miller_rabin(n: &BigInt, n_trials: u32) -> bool {
+pub fn test_primality_miller_rabin(n: &BigInt, _n_trials: u32) -> bool {
     for base in range_inclusive(BigInt::from(2u64), n - 1) {
         let output = miller_rabin_test(&n, &base);
         miller_rabin_output_print(&output.1);

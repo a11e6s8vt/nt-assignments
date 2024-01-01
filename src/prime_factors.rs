@@ -3,12 +3,12 @@ use std::collections::{HashMap, HashSet};
 use crate::primality::miller_rabin_primality;
 use dpc_pariter::IteratorExt;
 use num_bigint::BigInt;
-use num_iter::{range, range_inclusive, Range, RangeInclusive};
+use num_iter::{range_inclusive};
 use num_traits::identities::One;
 use num_traits::Zero;
-use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
-use rayon::iter::{IntoParallelRefIterator, ParallelExtend};
-use rayon::vec;
+use rayon::iter::{ParallelIterator};
+use rayon::iter::{IntoParallelRefIterator};
+
 
 pub trait PrimeFactors {
     fn prime_factors(&self, primes: &mut Vec<BigInt>) -> Vec<(BigInt, usize)>;
@@ -17,7 +17,7 @@ pub trait PrimeFactors {
 
 impl PrimeFactors for BigInt {
     fn prime_factors(&self, primes: &mut Vec<BigInt>) -> Vec<(Self, usize)> {
-        let mut n = self.clone();
+        let n = self.clone();
         // Check if n is prime
         if miller_rabin_primality(&self) {
             return vec![(self.clone(), 1)];
@@ -47,7 +47,7 @@ impl PrimeFactors for BigInt {
             let mut seen = HashSet::new();
             primes.retain(|c| seen.insert(c.clone()));
         }
-        let mut res: HashMap<BigInt, usize> = HashMap::new();
+        let _res: HashMap<BigInt, usize> = HashMap::new();
 
         // 'outer: while n > BigInt::one() {
         //     for p in primes.iter() {

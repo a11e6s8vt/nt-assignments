@@ -1,14 +1,11 @@
-use clap::builder::Str;
-use fmtastic::{Subscript, Superscript};
+
+use fmtastic::{Superscript};
 use num_bigint::BigInt;
-use num_traits::Zero;
-use table_to_html::{Alignment, Entity, HtmlTable, Padding};
+
+use table_to_html::{Alignment, Entity, HtmlTable};
 use tabled::{
     settings::{
-        object::Rows,
-        style::{BorderSpanCorrection, HorizontalLine, On, Style},
-        themes::Colorization,
-        Color, Merge,
+        style::{BorderSpanCorrection, HorizontalLine, On, Style}, Merge,
     },
     Table, Tabled,
 };
@@ -159,7 +156,7 @@ pub fn format_miller_rabin_steps_print(
 }
 
 pub fn miller_rabin_output_print(table_data: &Vec<MillerRabinTable>) {
-    let table = Table::new(table_data)
+    let _table = Table::new(table_data)
         .with(Merge::vertical())
         .with(Style::modern())
         .with(BorderSpanCorrection)

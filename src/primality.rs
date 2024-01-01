@@ -10,14 +10,9 @@ use num_traits::{One, Zero};
 use rayon::prelude::*;
 
 use tabled::{
-    builder::Builder,
     settings::{
-        object::Rows,
-        style::{BorderSpanCorrection, HorizontalLine, On, Style},
-        themes::Colorization,
-        Color, Merge, Modify, Panel, Width,
+        style::{HorizontalLine, On, Style},
     },
-    Table,
 };
 
 const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
@@ -28,7 +23,7 @@ const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
 /// is_prime calculates if a number is prime by verifying numbers upto √n.
 ///
 pub fn is_prime_trial_division(n: &BigInt) -> bool {
-    let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
+    let (zero, one, _two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
     let three = BigInt::from(3u64);
     // returns true if the number is 2 or 3
     if n <= &three {
@@ -50,7 +45,7 @@ pub fn is_prime_trial_division(n: &BigInt) -> bool {
 }
 
 pub fn is_prime_trial_division_parallel(n: &BigInt) -> bool {
-    let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
+    let (zero, one, _two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
     let three = BigInt::from(3u64);
 
     // returns true if the number is 2 or 3
@@ -64,7 +59,7 @@ pub fn is_prime_trial_division_parallel(n: &BigInt) -> bool {
 
     let upper_bound = n.sqrt() + 1; // +1 to get the ceiling value
 
-    if let Some(divisor) = range_inclusive(BigInt::from(5u64), upper_bound)
+    if let Some(_divisor) = range_inclusive(BigInt::from(5u64), upper_bound)
         .par_bridge()
         .into_par_iter()
         .find_first(|divisor| n % divisor == zero)
@@ -80,7 +75,7 @@ pub fn is_prime_trial_division_parallel(n: &BigInt) -> bool {
 /// It accepts an integer and returns a boolean value
 /// 1. Express n - 1 as 2ᶠm
 pub fn miller_rabin_primality(n: &BigInt) -> bool {
-    let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
+    let (zero, one, _two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
     let three = BigInt::from(3u64);
     if n <= &one || n == &BigInt::from(4u64) {
         return false;
@@ -110,7 +105,7 @@ pub fn miller_rabin_primality(n: &BigInt) -> bool {
 /// Miller-Rabin Test - Step 2
 ///
 fn miller_test(d: &BigInt, n: &BigInt) -> bool {
-    let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
+    let (_zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
     let mut d = d.clone();
     // Randomly generate a base: a such that 1 < a < n - 1
     let a: BigInt = generate_random_int_in_range(&two, &(n - 1));
@@ -152,8 +147,8 @@ fn miller_test(d: &BigInt, n: &BigInt) -> bool {
 ///
 pub fn miller_rabin_test(n: &BigInt, base: &BigInt) -> (bool, Vec<MillerRabinTable>) {
     let mut table_data: Vec<MillerRabinTable> = Vec::new();
-    let mut message = String::new();
-    let mut is_prime = false;
+    let _message = String::new();
+    let _is_prime = false;
     let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
     let n_minus_one: BigInt = n - 1;
     let mut m = n_minus_one.clone();
@@ -285,7 +280,7 @@ pub fn carmichael_nums_korselt(n: &BigInt) -> bool {
 ///
 /// AKS Primality test
 ///
-pub fn aks(n: &BigInt) {
+pub fn aks(_n: &BigInt) {
     fn is_perfect_k_th_power(n: &BigInt) -> bool {
         let upper_bound = n.sqrt();
         for k in range_inclusive(BigInt::from(2u64), upper_bound) {
