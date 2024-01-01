@@ -15,7 +15,7 @@ use presets::{
     find_primes_in_range_trial_division_parallel, gcd_test_range, list_carmichael_nums,
     list_prime_factors_in_range, test_primality_miller_rabin,
 };
-use primality::{carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
+use primality::{aks, carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
 use rand::distributions::uniform::UniformSampler;
 use terminal_size::{terminal_size, Height as TerminalHeight, Width as TerminalWidth};
 
@@ -94,6 +94,9 @@ fn main() {
             for (num, p_factors) in sample_data.iter() {
                 test_primality_miller_rabin(num, 5);
             }
+        }
+        Operations::AKS(s) => {
+            aks(&s.start);
         }
     }
 }

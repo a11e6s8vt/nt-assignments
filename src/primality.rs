@@ -282,6 +282,28 @@ pub fn carmichael_nums_korselt(n: &BigInt) -> bool {
     squarefree & p_m_o_divides_n_m_o
 }
 
+///
+/// AKS Primality test
+///
+pub fn aks(n: &BigInt) {
+    fn is_perfect_k_th_power(n: &BigInt) -> bool {
+        let upper_bound = n.sqrt();
+        for k in range_inclusive(BigInt::from(2u64), upper_bound) {
+            let mut m = n.clone();
+            let mut j = BigInt::zero();
+            while &m % &k == BigInt::zero() && m > BigInt::one() {
+                m /= &k;
+                j += 1;
+            }
+            if m == BigInt::one() && j > BigInt::one() {
+                println!("{} is perfect k th power", &n);
+                return true;
+            }
+        }
+        false
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

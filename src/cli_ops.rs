@@ -46,6 +46,10 @@ pub enum Operations {
     /// Ass1 - Question3
     #[command(arg_required_else_help = true)]
     Question3(NumRangeArgs),
+
+    /// Ass1 - Question3
+    #[command(arg_required_else_help = true)]
+    AKS(NumRangeArgs),
 }
 
 #[derive(Debug, Args)]
