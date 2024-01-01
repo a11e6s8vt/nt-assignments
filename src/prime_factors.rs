@@ -3,12 +3,11 @@ use std::collections::{HashMap, HashSet};
 use crate::primality::miller_rabin_primality;
 use dpc_pariter::IteratorExt;
 use num_bigint::BigInt;
-use num_iter::{range_inclusive};
+use num_iter::range_inclusive;
 use num_traits::identities::One;
 use num_traits::Zero;
-use rayon::iter::{ParallelIterator};
-use rayon::iter::{IntoParallelRefIterator};
-
+use rayon::iter::IntoParallelRefIterator;
+use rayon::iter::ParallelIterator;
 
 pub trait PrimeFactors {
     fn prime_factors(&self, primes: &mut Vec<BigInt>) -> Vec<(BigInt, usize)>;
