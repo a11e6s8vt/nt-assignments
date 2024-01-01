@@ -1,13 +1,13 @@
 mod cli_ops;
 mod display;
+mod groups_modulo_n;
 mod presets;
 mod primality;
 mod prime_factors;
 mod utils;
 
-use clap::{Parser};
+use clap::Parser;
 use cli_ops::{CarmichaelNumsCommands, Cli, Operations, PFactorsCommands, PrimalityCommands};
-
 
 use num_bigint::BigInt;
 use num_traits::Zero;
@@ -16,8 +16,6 @@ use presets::{
     list_prime_factors_in_range, test_primality_miller_rabin,
 };
 use primality::{aks, carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
-
-
 
 use crate::presets::NumCategory;
 

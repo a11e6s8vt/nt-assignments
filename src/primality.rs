@@ -66,6 +66,29 @@ pub fn is_prime_trial_division_parallel(n: &BigInt) -> bool {
     }
 }
 
+/// Finds the next prime number >= n.  
+/// Time complexity: *expected* O(sqrt(n))
+/// # Examples
+/// ```
+/// use next_prime::next_prime;
+/// assert_eq!(next_prime(BigInt::from(2u64)), BigInt::from(2u64));
+/// assert_eq!(next_prime(BigInt::from(4u64)), BigInt::from(5u64));
+/// ```
+pub fn next_prime(mut n: &BigInt) -> BigInt {
+    let (zero, two) = (BigInt::zero(), BigInt::from(2u64));
+    if n <= &two {
+        return two;
+    }
+    let mut m = n.clone();
+    if &m % &two == zero {
+        m += 1;
+    }
+    while !is_prime_trial_division_parallel(&m) {
+        m += 2;
+    }
+    m
+}
+
 /// https://www.youtube.com/watch?v=SSpcBIM9Gb8
 /// Miller-Rabin Test Step-1
 /// It accepts an integer and returns a boolean value
@@ -276,7 +299,7 @@ pub fn carmichael_nums_korselt(n: &BigInt) -> bool {
 ///
 /// AKS Primality test
 ///
-pub fn aks(_n: &BigInt) {
+pub fn aks(n: &BigInt) {
     fn is_perfect_k_th_power(n: &BigInt) -> bool {
         let upper_bound = n.sqrt();
         for k in range_inclusive(BigInt::from(2u64), upper_bound) {
@@ -293,6 +316,19 @@ pub fn aks(_n: &BigInt) {
         }
         false
     }
+
+    fn findr(n: &BigInt) -> BigInt {
+        let mut r = BigInt::from(2u64);
+        let mut k = r.clone();
+
+        while n % &k == BigInt::zero() {
+            k = next_prime(&k);
+            println!("{}", &k);
+        }
+        r
+    }
+
+    is_perfect_k_th_power(n);
 }
 
 #[cfg(test)]
@@ -352,53 +388,34 @@ mod tests {
         assert_eq!(result, true);
     }
 
-    // #[test]
-    // fn test_prime_factors() {
-    //     let result = prime_factors(100);
-    //     assert_eq!(result, vec![(2, 2), (5, 2)]);
-    // }
+    #[test]
+    fn edge_case_two() {
+        assert_eq!(next_prime(&BigInt::from(2u64)), BigInt::from(2u64));
+    }
 
-    // #[test]
-    // fn test_divisors_of_n() {
-    //     let result = divisors_of_n(160);
-    //     let d: Vec<u64> = vec![1, 2, 4, 5, 8, 10, 16, 20, 32, 40, 80, 160];
-    //     assert_eq!(result, d);
-    // }
+    #[test]
+    fn finds_small_primes() {
+        let primes = vec![
+            BigInt::from(5u64),
+            BigInt::from(7u64),
+            BigInt::from(11u64),
+            BigInt::from(13u64),
+            BigInt::from(17u64),
+            BigInt::from(19u64),
+            BigInt::from(23u64),
+            BigInt::from(29u64),
+        ];
+        assert_eq!(
+            primes,
+            primes
+                .iter()
+                .map(|x| next_prime(&(x - BigInt::one())))
+                .collect::<Vec<BigInt>>()
+        );
+    }
 
-    // #[test]
-    // fn test_euler_totient_phi_v1() {
-    //     let result = euler_totient_phi_v1(378);
-    //     assert_eq!(result, 108);
-
-    //     let result = euler_totient_phi_v1(601);
-    //     assert_eq!(result, 600);
-    // }
-
-    // #[test]
-    // fn test_euler_totient() {
-    //     let result = euler_totient_phi(378);
-    //     assert_eq!(result, 108);
-    // }
-
-    // #[test]
-    // fn test_primitive_roots_trial_n_error() {
-    //     let result = primitive_roots_trial_n_error(25);
-    //     assert_eq!(result, vec![2, 3, 8, 12, 13, 17, 22, 23])
-    // }
-
-    // #[test]
-    // fn test_primitive_roots_count_modulo_n() {
-    //     let result = primitive_roots_count_modulo_n(1250);
-    //     assert_eq!(result, 200);
-    //     let result = primitive_roots_count_modulo_n(59);
-    //     assert_eq!(result, 28);
-    //     let result = primitive_roots_count_modulo_n(20);
-    //     assert_eq!(result, 0);
-    //     let result = primitive_roots_count_modulo_n(30);
-    //     assert_eq!(result, 0);
-    //     let result = primitive_roots_count_modulo_n(10);
-    //     assert_eq!(result, 2);
-    //     let result = primitive_roots_count_modulo_n(40);
-    //     assert_eq!(result, 0);
-    // }
+    #[test]
+    fn returns_argument_when_it_is_already_prime() {
+        assert_eq!(next_prime(&BigInt::from(101)), BigInt::from(101));
+    }
 }
