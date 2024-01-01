@@ -9,11 +9,7 @@ use num_iter::range_inclusive;
 use num_traits::{One, Zero};
 use rayon::prelude::*;
 
-use tabled::{
-    settings::{
-        style::{HorizontalLine, On, Style},
-    },
-};
+use tabled::settings::style::{HorizontalLine, On, Style};
 
 const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
     .line_horizontal(HorizontalLine::inherit(Style::modern()))
