@@ -169,19 +169,6 @@ pub fn primitive_roots_count_modulo_n(n: &BigInt) -> BigInt {
 }
 
 ///
-/// Given a positive integer n and an integer a coprime to n, the multiplicative order of
-/// a modulo n is the smallest positive integer k such that aᵏ ≡ 1 (mod n)
-/// 1. sieve [1,...,n] and compute φ([1,...,n]) in one pass
-/// 2. using the sieve, factorize n = prod(p_ia_i)
-/// 3. use the computed values of phi to compute λ(n), where λ is the Caramichael function.
-/// It's not multiplicative, but almost (lcm instead of product). Don't stupidly iterate lcm(a,b,c)=lcm(a,lcm(b,c)) !
-/// Use the sieve again to find the prime decomposition of each λ(p_ia_i)∈{u_i,u_i/2} where u_i = φ(p_ia_i),
-/// in parallel if you want. Then you can compute the lcm by keeping the maximums of the exponents
-/// for each present prime p_i.
-/// 4. let's now call N = λ(n). The order of a mod n is a divisor of N. Using the sieve again, factorize N
-/// 5. now you can enumerate all the divisors of N (in increasing order). Don't forget that d | N => N/d | N
-/// so you don't need to search past sqrt(N)
-/// 6. pick the smallest d | N s.t a^d = 1. It's the order of a in Z/nZ
 ///
 ///
 pub fn multiplicative_order(a: &BigInt, n: &BigInt) -> Option<BigInt> {

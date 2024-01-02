@@ -57,6 +57,8 @@ pub fn find_primes_in_range_trial_division_parallel(
     }
     primes.sort();
     composites.sort();
+    // println!("{:?}", &primes);
+    // println!("{:?}", &composites);
     matrix_print(&primes, "Prime Numbers:".to_string(), &primes.len() / 5);
     matrix_print(
         &composites,

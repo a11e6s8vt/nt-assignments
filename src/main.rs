@@ -33,7 +33,7 @@ fn main() {
             find_primes_in_range_trial_division_parallel(start, end);
         }
         Operations::PrimeFactors { num: _ } => {}
-        Operations::PrimesFactorsRange(s) => match s.command {
+        Operations::PrimeFactorsRange(s) => match s.command {
             PFactorsCommands::All(pargs) => {
                 let start = pargs.start;
                 let end = pargs.end;

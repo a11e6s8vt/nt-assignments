@@ -42,6 +42,18 @@ pub fn is_prime_trial_division(n: &BigInt) -> bool {
     true
 }
 
+/// Returns a boolean representing if the given number is prime or not
+///
+/// # Arguments
+///
+/// * `n` - A BigInt
+///
+/// # Examples
+///
+/// ```
+/// use crate::primality::is_prime_trial_division_parallel;
+/// let is_prime = is_prime_trial_division_parallel(BigInt::from(100u64));
+/// ```
 pub fn is_prime_trial_division_parallel(n: &BigInt) -> bool {
     let (zero, one, _two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
     let three = BigInt::from(3u64);

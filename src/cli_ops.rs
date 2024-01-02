@@ -33,7 +33,7 @@ pub enum Operations {
 
     /// Find the prime factorisation of a range of numbers
     #[command(arg_required_else_help = true)]
-    PrimesFactorsRange(PFactorsArgs),
+    PrimeFactorsRange(PFactorsArgs),
 
     /// Primality checking
     #[command(arg_required_else_help = true)]
