@@ -57,8 +57,12 @@ pub fn find_primes_in_range_trial_division_parallel(
     }
     primes.sort();
     composites.sort();
-    matrix_print(&primes, "Prime Numbers:".to_string());
-    matrix_print(&composites, "Composite Numbers:".to_string());
+    matrix_print(&primes, "Prime Numbers:".to_string(), &primes.len() / 5);
+    matrix_print(
+        &composites,
+        "Composite Numbers:".to_string(),
+        &composites.len() / 14,
+    );
     (primes, composites)
 }
 

@@ -191,8 +191,7 @@ impl Matrix {
     }
 }
 
-pub fn matrix_print(table_data: &Vec<BigInt>, title: String) {
-    let split_index = table_data.len() / 16;
+pub fn matrix_print(table_data: &Vec<BigInt>, title: String, split_index: usize) {
     let table_data = table_data
         .iter()
         .map(|x| Matrix::new(x.to_string()))
