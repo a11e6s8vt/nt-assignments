@@ -14,6 +14,7 @@ use std::arch::x86_64;
 use clap::Parser;
 use cli_ops::{CarmichaelNumsCommands, Cli, Operations, PFactorsCommands, PrimalityCommands};
 
+use display::{matrix_print, Matrix};
 use num_bigint::BigInt;
 use num_traits::Zero;
 use presets::{
@@ -29,8 +30,31 @@ fn main() {
     let args = Cli::parse();
 
     match args.command {
-        Operations::ListPrimes { start, end } => {
-            find_primes_in_range_trial_division_parallel(start, end);
+        Operations::ListPrimes(s) => {
+            let (primes, composites) = find_primes_in_range_trial_division_parallel(s.start, s.end);
+
+            let table_data = &primes
+                .iter()
+                .map(|x| Matrix::new(x.to_string()))
+                .collect::<Vec<Matrix>>();
+            matrix_print(
+                table_data.clone(),
+                "Prime Numbers:".to_string(),
+                &primes.len() / 5,
+            );
+        }
+        Operations::ListComposites(s) => {
+            let (primes, composites) = find_primes_in_range_trial_division_parallel(s.start, s.end);
+
+            let table_data = &composites
+                .iter()
+                .map(|x| Matrix::new(x.to_string()))
+                .collect::<Vec<Matrix>>();
+            matrix_print(
+                table_data.clone(),
+                "Prime Numbers:".to_string(),
+                &primes.len() / 14,
+            );
         }
         Operations::PrimeFactors { num: _ } => {}
         Operations::PrimeFactorsRange(s) => match s.command {
@@ -39,7 +63,12 @@ fn main() {
                 let end = pargs.end;
 
                 let num_pfactors = list_prime_factors_in_range(&start, &end, NumCategory::All);
-                println!("\n{}\n", num_pfactors.0);
+
+                matrix_print(
+                    &num_pfactors.0,
+                    "Prime Factorisation - All Numbers In The Range:".to_string(),
+                    &num_pfactors.0.len() / 4,
+                );
             }
             PFactorsCommands::Composites(pargs) => {
                 let start = pargs.start;
@@ -47,7 +76,12 @@ fn main() {
 
                 let num_pfactors =
                     list_prime_factors_in_range(&start, &end, NumCategory::Composites);
-                println!("\n{}\n", num_pfactors.0);
+                matrix_print(
+                    &num_pfactors.0,
+                    "Prime Factorisation - Only Composites In The Range:".to_string(),
+                    &num_pfactors.0.len() / 4,
+                );
+                // println!("\n{}\n", num_pfactors.0);
             }
             PFactorsCommands::CompositesPQ(pargs) => {
                 let start = pargs.start;
@@ -55,7 +89,12 @@ fn main() {
 
                 let num_pfactors =
                     list_prime_factors_in_range(&start, &end, NumCategory::CompositesPQ);
-                println!("\n{}\n", num_pfactors.0);
+                matrix_print(
+                    &num_pfactors.0,
+                    "Prime Factorisation - Composites of the form N = P.Q:".to_string(),
+                    &num_pfactors.0.len() / 4,
+                );
+                // println!("\n{}\n", num_pfactors.0);
             }
         },
         Operations::Primality(s) => match s.command {

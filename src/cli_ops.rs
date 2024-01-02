@@ -17,13 +17,11 @@ pub struct Cli {
 pub enum Operations {
     /// Search for the prime numbers in a range
     #[command(arg_required_else_help = true)]
-    ListPrimes {
-        #[arg(short = 's', long = "start", value_name = "START NUMBER")]
-        start: BigInt,
-
-        #[arg(short = 'e', long = "end", value_name = "END NUMBER")]
-        end: BigInt,
-    },
+    ListPrimes(NumRangeArgs),
+    
+    /// Search for the composite numbers in a range
+    #[command(arg_required_else_help = true)]
+    ListComposites(NumRangeArgs),
     /// Find the prime factorisation of a number
     #[command(arg_required_else_help = true)]
     PrimeFactors {

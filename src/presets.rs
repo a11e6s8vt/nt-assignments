@@ -1,6 +1,6 @@
 use crate::{
     display::{
-        format_prime_factors_print, matrix_print, miller_rabin_output_print, GcdTestTable,
+        format_prime_factors_print, matrix_print, miller_rabin_output_print, GcdTestTable, Matrix,
         NumFactorTable,
     },
     primality::{
@@ -19,7 +19,9 @@ use rayon::iter::{
 };
 
 use tabled::{
+    col,
     settings::{
+        split::Split,
         style::{BorderSpanCorrection, HorizontalLine, On, Style},
         Merge,
     },
@@ -59,12 +61,6 @@ pub fn find_primes_in_range_trial_division_parallel(
     composites.sort();
     // println!("{:?}", &primes);
     // println!("{:?}", &composites);
-    matrix_print(&primes, "Prime Numbers:".to_string(), &primes.len() / 5);
-    matrix_print(
-        &composites,
-        "Composite Numbers:".to_string(),
-        &composites.len() / 14,
-    );
     (primes, composites)
 }
 
@@ -95,7 +91,7 @@ pub fn list_prime_factors_in_range(
     start: &BigInt,
     end: &BigInt,
     opts: NumCategory,
-) -> (String, Vec<(BigInt, Vec<(BigInt, usize)>)>) {
+) -> (Vec<NumFactorTable>, Vec<(BigInt, Vec<(BigInt, usize)>)>) {
     let mut table_data: Vec<NumFactorTable> = Vec::new();
     let mut primes = vec![BigInt::from(2u64)];
     let mut nums_pfactors: Vec<(BigInt, Vec<(BigInt, usize)>)> = Vec::new();
@@ -139,11 +135,23 @@ pub fn list_prime_factors_in_range(
         }
     }
 
-    let mut table1 = Table::new(table_data);
-    table1.with(STYLE_2);
+    // let mut table1 = Table::new(table_data);
+    // table1.with(STYLE_2);
+    //let table_1 = table.clone().with(Split::column(2)).clone();
+    // let table_5 = table1
+    //     .clone()
+    //     .with(Split::row(split_index).concat())
+    //     .to_string();
 
-    let output1 = table1.to_string();
-    (output1, nums_pfactors)
+    // let mut table = col![
+    //     row![col![table_5].with(Style::blank()).with(Padding::zero())]
+    //         .with(Panel::header(title))
+    //         .with(Style::blank())
+    //         .with(Padding::zero()),
+    // ];
+    //table.with(Style::blank());
+    // let output1 = table1.to_string();
+    (table_data, nums_pfactors)
 }
 
 ///

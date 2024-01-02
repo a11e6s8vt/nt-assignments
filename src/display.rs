@@ -50,6 +50,13 @@ impl NumFactorTable {
         }
     }
 }
+
+impl std::fmt::Display for NumFactorTable {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self)
+    }
+}
+
 // make the below function generic
 pub fn format_prime_factors_print(
     num: &BigInt,
@@ -191,11 +198,17 @@ impl Matrix {
     }
 }
 
-pub fn matrix_print(table_data: &Vec<BigInt>, title: String, split_index: usize) {
-    let table_data = table_data
-        .iter()
-        .map(|x| Matrix::new(x.to_string()))
-        .collect::<Vec<Matrix>>();
+impl std::fmt::Display for Matrix {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self)
+    }
+}
+
+pub fn matrix_print<T: std::fmt::Display + Tabled>(
+    table_data: &Vec<T>,
+    title: String,
+    split_index: usize,
+) {
     let mut table = Table::new(table_data.into_iter());
     table.with(Style::modern());
 
