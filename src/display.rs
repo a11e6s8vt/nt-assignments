@@ -1,5 +1,6 @@
 use fmtastic::Superscript;
 use num_bigint::BigInt;
+use serde::{Deserialize, Serialize};
 
 use num_traits::ToPrimitive;
 use std::iter;
@@ -35,7 +36,7 @@ impl GcdTestTable {
     }
 }
 
-#[derive(Tabled)]
+#[derive(Tabled, Serialize, Deserialize)]
 #[tabled(rename_all = "PascalCase")]
 pub struct NumFactorTable {
     number: String,

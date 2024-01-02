@@ -1,6 +1,3 @@
-#[macro_use]
-extern crate polynomen;
-
 mod cli_ops;
 mod display;
 mod groups_modulo_n;
@@ -9,10 +6,9 @@ mod primality;
 mod prime_factors;
 mod utils;
 
-use std::arch::x86_64;
-
 use clap::Parser;
 use cli_ops::{CarmichaelNumsCommands, Cli, Operations, PFactorsCommands, PrimalityCommands};
+use serde_json::Result;
 
 use display::{matrix_print, Matrix};
 use num_bigint::BigInt;
@@ -81,6 +77,8 @@ fn main() {
                     "Prime Factorisation - Only Composites In The Range:".to_string(),
                     &num_pfactors.0.len() / 4,
                 );
+                let json = serde_json::to_string(&num_pfactors.0).unwrap();
+                println!("{}", json);
                 // println!("\n{}\n", num_pfactors.0);
             }
             PFactorsCommands::CompositesPQ(pargs) => {
@@ -94,6 +92,8 @@ fn main() {
                     "Prime Factorisation - Composites of the form N = P.Q:".to_string(),
                     &num_pfactors.0.len() / 4,
                 );
+                let json = serde_json::to_string(&num_pfactors.0).unwrap();
+                println!("{}", json);
                 // println!("\n{}\n", num_pfactors.0);
             }
         },

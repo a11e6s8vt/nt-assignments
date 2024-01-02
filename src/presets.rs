@@ -87,6 +87,19 @@ pub fn find_primes_in_range_trial_division(
     (primes, composites)
 }
 
+///
+/// Returns a tuple with a formatted string for output and a Vector which contains a tuple of
+/// Number and its prime factors
+///
+/// # Arguments
+/// * `start` - BigInt
+/// * `end` - BigInt
+/// * `NumCategory` - Whether we want the prime factorisation of All numbers or composites or composits of the form P.Q
+/// # Example
+/// ```
+/// use crate::presets::list_prime_factors_in_range;
+/// list_prime_factors_in_range(&start, &end, NumCategory::All);
+/// ```
 pub fn list_prime_factors_in_range(
     start: &BigInt,
     end: &BigInt,
@@ -135,22 +148,6 @@ pub fn list_prime_factors_in_range(
         }
     }
 
-    // let mut table1 = Table::new(table_data);
-    // table1.with(STYLE_2);
-    //let table_1 = table.clone().with(Split::column(2)).clone();
-    // let table_5 = table1
-    //     .clone()
-    //     .with(Split::row(split_index).concat())
-    //     .to_string();
-
-    // let mut table = col![
-    //     row![col![table_5].with(Style::blank()).with(Padding::zero())]
-    //         .with(Panel::header(title))
-    //         .with(Style::blank())
-    //         .with(Padding::zero()),
-    // ];
-    //table.with(Style::blank());
-    // let output1 = table1.to_string();
     (table_data, nums_pfactors)
 }
 

@@ -18,7 +18,8 @@ table_to_html = "0.4.0"
 terminal_size = "0.3.0"
 dpc-pariter = "0.5.1"
 owo-colors = "4.0.0"
-polynomen = "1.1.0"
+serde = { version = "1.0.194", features = ["derive"] }
+serde_json = "1.0.110"
 
 [dependencies.num-iter]
 version = "0.1.35"

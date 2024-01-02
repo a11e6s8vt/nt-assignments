@@ -92,6 +92,12 @@ pub struct NumRangeArgs {
     pub end: BigInt,
 }
 
+#[derive(Debug, Clone)]
+pub enum OutputFormat {
+    Table,
+    Json,
+}
+
 #[derive(Debug, Args)]
 #[command(args_conflicts_with_subcommands = true)]
 #[command(flatten_help = true)]

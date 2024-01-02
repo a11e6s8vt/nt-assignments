@@ -11,7 +11,7 @@ use rayon::iter::ParallelIterator;
 
 pub trait PrimeFactors {
     fn prime_factors(&self, primes: &mut Vec<BigInt>) -> Vec<(BigInt, usize)>;
-    fn is_prime_factors_form_pq(&self) -> (bool, Vec<(BigInt, usize)>);
+    //fn is_prime_factors_form_pq(&self) -> (bool, Vec<(BigInt, usize)>);
 }
 
 impl PrimeFactors for BigInt {
@@ -30,13 +30,6 @@ impl PrimeFactors for BigInt {
 
             let r = range_inclusive(start_no.clone(), end_no);
 
-            // let mut primes: Vec<BigInt> = Vec::new();
-
-            // for m in r {
-            //     if miller_rabin_primality(&m) {
-            //         primes.push(m);
-            //     }
-            // }
             let new_primes: Vec<BigInt> = r
                 .into_iter()
                 .map(|x| x)
@@ -47,23 +40,6 @@ impl PrimeFactors for BigInt {
             primes.retain(|c| seen.insert(c.clone()));
         }
         let _res: HashMap<BigInt, usize> = HashMap::new();
-
-        // 'outer: while n > BigInt::one() {
-        //     for p in primes.iter() {
-        //         println!("p = {}", p);
-        //         if &n % p == BigInt::zero() {
-        //             res.entry(p.clone()).and_modify(|c| *c += 1).or_insert(1);
-        //             n = n / p;
-        //             if miller_rabin_primality(&n) {
-        //                 res.entry(n).and_modify(|c| *c += 1).or_insert(1);
-        //                 break 'outer;
-        //             }
-        //             break;
-        //         } else {
-        //             continue;
-        //         }
-        //     }
-        // }
 
         // The all_divisors vec will contain all the divisors of num with repetition.
         // The product of the elements of all_divisors will equal the "num"
@@ -100,25 +76,6 @@ impl PrimeFactors for BigInt {
         res.sort_by_key(|k| k.0.clone());
         res
     }
-
-    fn is_prime_factors_form_pq(&self) -> (bool, Vec<(BigInt, usize)>) {
-        let mut primes = vec![BigInt::from(2u64)];
-        let p_factors = self.prime_factors(&mut primes);
-        if p_factors.len() != 2 {
-            return (false, vec![]);
-        }
-
-        let first = p_factors.first().unwrap();
-        let second = p_factors.get(1).unwrap();
-
-        match first.1 {
-            1 => match second.1 {
-                1 => (true, p_factors),
-                _ => (false, vec![]),
-            },
-            _ => (false, vec![]),
-        }
-    }
 }
 
 #[cfg(test)]
@@ -135,25 +92,4 @@ mod tests {
             vec![(BigInt::from(2u64), 2), (BigInt::from(5u64), 2)]
         );
     }
-
-    // #[test]
-    // fn test_is_form_pq_prime_factors() {
-    // let result = prime_factors(100);
-    // assert_eq!(result, vec![(2, 2), (5, 2)]);
-    // }
-    // #[test]
-    // fn test_primes_less_than_n() {
-    //     let test_sample = vec![
-    //         BigInt::from(2u64),
-    //         BigInt::from(3u64),
-    //         BigInt::from(5u64),
-    //         BigInt::from(7u64),
-    //         BigInt::from(11u64),
-    //         BigInt::from(13u64),
-    //         BigInt::from(17u64),
-    //         BigInt::from(19u64),
-    //     ];
-
-    //     assert_eq!(test_sample, primes_less_than_n(&BigInt::from(20u64)));
-    // }
 }
