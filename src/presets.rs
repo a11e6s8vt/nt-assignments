@@ -151,21 +151,34 @@ pub fn list_prime_factors_in_range(
     (table_data, nums_pfactors)
 }
 
+/// Returns a list of Carmichael Numbers (Absolute Pseudoprimes) in a range using FLT or Korselt's criterion
 ///
-/// List of Carmichael Numbers in a range using FLT
+/// # Arguments
+/// * start: BigInt
+/// * end: BigInt
+/// * f: a function pointer to either primality::carmichael_nums_korselt or primality::carmichael_nums_flt
+/// # Examples
+/// ```
+/// use crate::presets::list_carmichael_nums;
+/// let carmichael_nums = list_carmichael_nums(&start, &end, carmichael_nums_flt);
+/// ```
 ///
 pub fn list_carmichael_nums(
     start: &BigInt,
     end: &BigInt,
     f: fn(&BigInt) -> bool,
 ) -> (String, Vec<(BigInt, Vec<(BigInt, usize)>)>) {
+    // Get all the composite numbers in the range
     let composites = list_prime_factors_in_range(start, end, NumCategory::Composites).1;
+
+    // Searching for Carmichael numbers in parallel
     let carmichael_nums = composites
         .par_iter()
         .filter(|x| f(&x.0) == true)
         .map(|x| x.clone())
         .collect::<Vec<(BigInt, Vec<(BigInt, usize)>)>>();
 
+    // Format the data for printing
     let mut table_data: Vec<NumFactorTable> = Vec::new();
     for item in carmichael_nums.iter() {
         let mut form: String = String::new();

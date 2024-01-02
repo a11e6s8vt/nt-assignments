@@ -258,6 +258,18 @@ pub fn miller_rabin_test(n: &BigInt, base: &BigInt) -> (bool, Vec<MillerRabinTab
     return (false, table_data);
 }
 
+/// Returns a Vec of randomly selected `a` value and `gcd`
+///
+/// # Arguments
+/// * n - BigInt - Number for which we are checking primality
+/// * num_trials - u8 - How many trials we do
+///
+/// # Examples
+/// ```
+/// use crate::primality::gcd_test
+/// let result: Vec<(BigInt, BigInt)> = gcd_test(&BigInt::from(2881u64), 4);
+/// ```
+///
 pub fn gcd_test(n: &BigInt, num_trials: u8) -> Vec<(BigInt, BigInt)> {
     let mut r = Vec::<BigInt>::new();
     for _ in 0..num_trials {
@@ -278,7 +290,10 @@ pub fn gcd_test(n: &BigInt, num_trials: u8) -> Vec<(BigInt, BigInt)> {
 ///
 pub fn carmichael_nums_flt(n: &BigInt) -> bool {
     let n_minus_one = n - 1;
+    // Get all the coprime numbers less than `n`
     let coprimes_n = coprime_nums_less_than_n(n);
+
+    // Search for Fermat Witnesses. A Fermat Witness will yeild a⁽ⁿ⁻¹⁾≢ 1(mod n)
     let fermat_witnesses = coprimes_n
         .par_iter()
         .filter(|x| modular_pow(&x, &n_minus_one, n) != BigInt::one())
