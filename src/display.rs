@@ -1,11 +1,16 @@
-
-use fmtastic::{Superscript};
+use fmtastic::Superscript;
 use num_bigint::BigInt;
 
+use num_traits::ToPrimitive;
+use std::iter;
 use table_to_html::{Alignment, Entity, HtmlTable};
 use tabled::{
+    col, row,
     settings::{
-        style::{BorderSpanCorrection, HorizontalLine, On, Style}, Merge,
+        panel::Header,
+        split::Split,
+        style::{BorderSpanCorrection, HorizontalLine, On, Style},
+        Merge, Padding, Panel,
     },
     Table, Tabled,
 };
@@ -172,4 +177,42 @@ pub fn miller_rabin_output_print(table_data: &Vec<MillerRabinTable>) {
     html_table.set_alignment(Entity::Row(1), Alignment::center());
     html_table.set_border(3);
     println!("{html_table}");
+}
+
+#[derive(Tabled)]
+#[tabled(rename_all = "PascalCase")]
+pub struct Matrix {
+    number: String,
+}
+
+impl Matrix {
+    pub fn new(number: String) -> Self {
+        Self { number }
+    }
+}
+
+pub fn matrix_print(table_data: &Vec<BigInt>, title: String) {
+    let split_index = table_data.len() / 16;
+    let table_data = table_data
+        .iter()
+        .map(|x| Matrix::new(x.to_string()))
+        .collect::<Vec<Matrix>>();
+    let mut table = Table::new(table_data.into_iter());
+    table.with(Style::modern());
+
+    //let table_1 = table.clone().with(Split::column(2)).clone();
+    let table_5 = table
+        .clone()
+        .with(Split::row(split_index).concat())
+        .to_string();
+
+    let mut table = col![
+        row![col![table_5].with(Style::blank()).with(Padding::zero())]
+            .with(Panel::header(title))
+            .with(Style::blank())
+            .with(Padding::zero()),
+    ];
+    table.with(Style::blank());
+
+    println!("\n{table}\n");
 }

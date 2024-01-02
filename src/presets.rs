@@ -1,16 +1,16 @@
 use crate::{
     display::{
-        format_prime_factors_print, miller_rabin_output_print, GcdTestTable, NumFactorTable,
+        format_prime_factors_print, matrix_print, miller_rabin_output_print, GcdTestTable,
+        NumFactorTable,
     },
     primality::{
-        gcd_test, is_prime_trial_division, is_prime_trial_division_parallel,
-        miller_rabin_test,
+        gcd_test, is_prime_trial_division, is_prime_trial_division_parallel, miller_rabin_test,
     },
     prime_factors::PrimeFactors,
 };
-use fmtastic::{Superscript};
+use fmtastic::Superscript;
 use num_bigint::BigInt;
-use num_iter::{range_inclusive};
+use num_iter::range_inclusive;
 
 use rand::seq::SliceRandom;
 use rayon::iter::{
@@ -20,7 +20,8 @@ use rayon::iter::{
 
 use tabled::{
     settings::{
-        style::{BorderSpanCorrection, HorizontalLine, On, Style}, Merge,
+        style::{BorderSpanCorrection, HorizontalLine, On, Style},
+        Merge,
     },
     Table,
 };
@@ -56,6 +57,8 @@ pub fn find_primes_in_range_trial_division_parallel(
     }
     primes.sort();
     composites.sort();
+    matrix_print(&primes, "Prime Numbers:".to_string());
+    matrix_print(&composites, "Composite Numbers:".to_string());
     (primes, composites)
 }
 
