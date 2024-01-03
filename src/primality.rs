@@ -195,7 +195,7 @@ pub fn miller_rabin_test(n: &BigInt, base: &BigInt) -> (bool, Vec<MillerRabinTab
     let n_minus_one_form = format!("{} = {}.2{}", n_minus_one, m, Superscript(s),);
 
     // Randomly generate a base "a" such that 1 < a < n - 1
-    let a: BigInt = generate_random_int_in_range(&two, &(n - 1));
+    // let a: BigInt = generate_random_int_in_range(&two, &(n - 1));
     // let a = BigInt::from(1003u64);
 
     // Calculate x ≡ aᵐ(mod n)
@@ -223,10 +223,10 @@ pub fn miller_rabin_test(n: &BigInt, base: &BigInt) -> (bool, Vec<MillerRabinTab
     }
 
     let mut k = 1;
-    while k <= s {
-        // loop for searching square-roots for 1 (mod n) other than ±1 (mod n)
+    while k <= s - 1 {
+        // searching square-roots for 1 (mod n) other than ±1 (mod n)
         let e = &m * BigInt::from(2u64).pow(k);
-        x = modular_pow(&a, &e, n);
+        x = modular_pow(base, &e, n);
 
         format_miller_rabin_steps_print(
             n.clone(),
@@ -309,12 +309,17 @@ pub fn carmichael_nums_flt(n: &BigInt) -> bool {
 /// n: a composite number
 ///
 pub fn carmichael_nums_korselt(n: &BigInt) -> bool {
+    // initialisation to search prime factors
     let mut primes = vec![BigInt::from(2u64)];
+    // prime factorisation of `n`
     let p_factors = n.prime_factors(&mut primes);
+    // checking if the number is squarefree
     let squarefree = p_factors.iter().fold(true, |squarefree: bool, factor| {
         squarefree & (factor.1 == 1)
     });
+
     let mut p_m_o_divides_n_m_o = true;
+    // if the number is squarefree, then check if `p minus one` divides `n minus one`
     if squarefree {
         let n_minus_one = n - 1;
         for (p, _) in p_factors.iter() {
@@ -322,6 +327,7 @@ pub fn carmichael_nums_korselt(n: &BigInt) -> bool {
         }
     }
 
+    // if both are true, return true
     squarefree & p_m_o_divides_n_m_o
 }
 

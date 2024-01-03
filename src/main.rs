@@ -20,36 +20,32 @@ use presets::{
 use primality::{aks, carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
-use crate::presets::NumCategory;
+use crate::{presets::NumCategory, utils::modular_pow};
 
 fn main() {
     let args = Cli::parse();
 
     match args.command {
         Operations::ListPrimes(s) => {
-            let (primes, composites) = find_primes_in_range_trial_division_parallel(s.start, s.end);
+            let (primes, _) = find_primes_in_range_trial_division_parallel(s.start, s.end);
 
             let table_data = &primes
                 .iter()
                 .map(|x| Matrix::new(x.to_string()))
                 .collect::<Vec<Matrix>>();
-            matrix_print(
-                table_data.clone(),
-                "Prime Numbers:".to_string(),
-                &primes.len() / 5,
-            );
+            matrix_print(table_data, "Prime Numbers:".to_string(), &primes.len() / 5);
         }
         Operations::ListComposites(s) => {
-            let (primes, composites) = find_primes_in_range_trial_division_parallel(s.start, s.end);
+            let (_, composites) = find_primes_in_range_trial_division_parallel(s.start, s.end);
 
             let table_data = &composites
                 .iter()
                 .map(|x| Matrix::new(x.to_string()))
                 .collect::<Vec<Matrix>>();
             matrix_print(
-                table_data.clone(),
+                table_data,
                 "Prime Numbers:".to_string(),
-                &primes.len() / 14,
+                &composites.len() / 14,
             );
         }
         Operations::PrimeFactors { num: _ } => {}
@@ -77,8 +73,8 @@ fn main() {
                     "Prime Factorisation - Only Composites In The Range:".to_string(),
                     &num_pfactors.0.len() / 4,
                 );
-                let json = serde_json::to_string(&num_pfactors.0).unwrap();
-                println!("{}", json);
+                //let json = serde_json::to_string(&num_pfactors.0).unwrap();
+                //println!("{}", json);
                 // println!("\n{}\n", num_pfactors.0);
             }
             PFactorsCommands::CompositesPQ(pargs) => {
@@ -92,8 +88,8 @@ fn main() {
                     "Prime Factorisation - Composites of the form N = P.Q:".to_string(),
                     &num_pfactors.0.len() / 4,
                 );
-                let json = serde_json::to_string(&num_pfactors.0).unwrap();
-                println!("{}", json);
+                //let json = serde_json::to_string(&num_pfactors.0).unwrap();
+                //println!("{}", json);
                 // println!("\n{}\n", num_pfactors.0);
             }
         },
@@ -132,21 +128,34 @@ fn main() {
                 list_prime_factors_in_range(&s.start, &s.end, NumCategory::Composites).1;
             // composite numbers with only two factors
             composites.retain(|(num, p_factors)| p_factors.len() == 2 && num % 2 != BigInt::zero());
-            let sample_data = &composites[0..5];
+            //println!("{:?}", composites.len());
+            // let sample_data = &composites[1..2];
 
-            for (num, _p_factors) in sample_data.iter() {
-                test_primality_miller_rabin(num, 5);
+            // for (num, _p_factors) in sample_data.iter() {
+            //     test_primality_miller_rabin(num, 1);
+            // }
+            println!("{:?}", &composites);
+            println!("{:?}", &composites.len());
+            for (num, _p_factors) in composites.iter() {
+                test_primality_miller_rabin(num, 1);
             }
         }
         Operations::AKS(s) => {
-            let mut composites =
+            let composites =
                 list_prime_factors_in_range(&s.start, &s.end, NumCategory::Composites).1;
             let aks_test_res = composites
                 .par_iter()
-                .map(|(num, p_factors)| (num, aks(num)))
+                .map(|(num, _)| (num, aks(num)))
                 .map(|(num, is_prime)| (num.clone(), is_prime))
                 .collect::<Vec<(BigInt, bool)>>();
             println!("{:?}", aks_test_res);
+        }
+        Operations::ModularPower {
+            base,
+            exponent,
+            modulus,
+        } => {
+            println!("{}", modular_pow(&base, &exponent, &modulus));
         }
     }
 }

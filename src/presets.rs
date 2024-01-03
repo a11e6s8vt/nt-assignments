@@ -1,7 +1,7 @@
 use crate::{
     display::{
         format_prime_factors_print, matrix_print, miller_rabin_output_print, GcdTestTable, Matrix,
-        NumFactorTable,
+        MillerRabinTable, NumFactorTable,
     },
     primality::{
         gcd_test, is_prime_trial_division, is_prime_trial_division_parallel, miller_rabin_test,
@@ -10,13 +10,18 @@ use crate::{
 };
 use fmtastic::Superscript;
 use num_bigint::BigInt;
-use num_iter::range_inclusive;
+use num_iter::{range, range_inclusive};
 
+use homedir::get_my_home;
 use rand::seq::SliceRandom;
 use rayon::iter::{
     IndexedParallelIterator, IntoParallelIterator, IntoParallelRefIterator, ParallelBridge,
     ParallelIterator,
 };
+
+use std::fs::{self, File};
+use std::io::{BufRead, BufReader};
+use std::io::{ErrorKind, Write};
 
 use tabled::{
     col,
@@ -233,14 +238,39 @@ pub fn gcd_test_range(start: &BigInt, end: &BigInt) {
 }
 
 pub fn test_primality_miller_rabin(n: &BigInt, _n_trials: u32) -> bool {
-    for base in range_inclusive(BigInt::from(2u64), n - 1) {
+    let mut json_out: Vec<Vec<MillerRabinTable>> = Vec::new();
+    for base in range(BigInt::from(2u64), n - 1) {
         let output = miller_rabin_test(&n, &base);
-        miller_rabin_output_print(&output.1);
+        json_out.push(output.1);
+        // miller_rabin_output_print(&output.1);
         // if output.0 == false {
         //     return false;
         // }
     }
-
+    let my_home = get_my_home()
+        .unwrap()
+        .unwrap()
+        .to_str()
+        .unwrap()
+        .to_string();
+    let mut fname = String::new();
+    fname.push_str(&my_home);
+    fname.push_str("/miller-rabin");
+    println!("Path = {}", &fname);
+    if !fs::metadata(&fname).is_ok() {
+        fs::create_dir(&fname).unwrap();
+    }
+    // std::path::Path::new(&fname);
+    fname.push_str("/");
+    fname.push_str(&n.to_string());
+    fname.push_str(".json");
+    match File::create(&fname) {
+        Ok(file) => {
+            println!("Created file: {}", &fname);
+            serde_json::to_writer_pretty(file, &json_out).unwrap();
+        }
+        Err(e) => panic!("Problem creating the file: {:?}", e),
+    }
     true
 }
 
