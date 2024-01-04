@@ -155,27 +155,34 @@ fn main() {
                     json_out.insert(num.to_string(), mr_json);
                 }
             }
-            if cfg!(windows) {
-                println!("this is windows");
-            } else if cfg!(unix) {
-                println!("this is unix alike");
-            }
+
             let my_home = get_my_home()
                 .unwrap()
                 .unwrap()
                 .to_str()
                 .unwrap()
                 .to_string();
+            let mut output_dir = String::new();
             let mut fname = String::new();
-            fname.push_str(&my_home);
-            fname.push_str("/ass1-question3");
-            println!("Path = {}", &fname);
+
+            if cfg!(windows) {
+                output_dir.push_str(&my_home);
+                output_dir.push_str("\\ass1-question3");
+                println!("Path = {}", &output_dir);
+                fname.push_str(&output_dir);
+                fname.push_str("\\");
+                fname.push_str("question3.json");
+            } else if cfg!(unix) {
+                output_dir.push_str(&my_home);
+                output_dir.push_str("/ass1-question3");
+                println!("Path = {}", &output_dir);
+                fname.push_str(&output_dir);
+                fname.push_str("/");
+                fname.push_str("question3.json");
+            }
             if !fs::metadata(&fname).is_ok() {
                 fs::create_dir(&fname).unwrap();
             }
-            // std::path::Path::new(&fname);
-            fname.push_str("/");
-            fname.push_str("question3.json");
             match File::create(&fname) {
                 Ok(file) => {
                     println!("Output has been written to the file: {}", &fname);
