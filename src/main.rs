@@ -180,8 +180,9 @@ fn main() {
                 fname.push_str("/");
                 fname.push_str("question3.json");
             }
+            println!("output dir: {}", &output_dir);
             if !fs::metadata(&output_dir).is_ok() {
-                fs::create_dir(&output_dir).unwrap();
+                let _ = fs::create_dir(&output_dir);
             }
             match File::create(&fname) {
                 Ok(file) => {
