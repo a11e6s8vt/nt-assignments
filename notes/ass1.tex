@@ -145,7 +145,7 @@
 	\maketitle
 	\section{Notes} \label{sec:Intro}
  	I have used a combination of Maple and Rust Code to arrive at the solutions. The code snippets presented in this document are in Rust. I developed the code using the u64 primitive datatype in Rust and later changed that to \href{https://docs.rs/num-bigint/0.4.4/num_bigint/}{BigInt} with the hope that I could use very large Integers such as more than 500bits long, but it became a challenge. Many times computer terminated the execution with Out Of Memory errors.
-	\section{Answers} \label{sec:Forces}
+	\section{Answers} \label{sec:Answers}
 	
 	\begin{enumerate}[1.]
 		\item Lower Range = 2800, Upper Range = 3100.
@@ -1120,7 +1120,7 @@
 		
 		\bigbreak
 		\item Write a single procedure that implements the AKS test using the code that we have seen;
-		I couldn't translate the Maple code into Rust exactly as it was. I have adapted some Python code \cite{online_ref_1} I saw on the internet for 'r' value calculation and polynomial multiplication.
+		I couldn't translate the Maple code into Rust exactly as it was. I have adapted some Python code \cite{online_ref_1} I saw on the GitHub for 'r' value calculation and polynomial multiplication.
 		
 		\begin{lstlisting}[
 			style={mystyle},
@@ -1129,9 +1129,25 @@
 			]
 			
 			///
+			/// AKS Steps
+			///
+			pub enum AksSteps {
+				Step1,
+				Step2,
+				Step3,
+				Step4,
+				Step5,
+				Success,
+			}
+			///
 			/// AKS Primality test
 			///
-			pub fn aks(n: &BigInt) -> bool {
+			/// Returns boolean indicating prime or not and if the step at which it failed
+			///
+			/// # Arguments
+			/// * n: BigInt
+			///
+			pub fn aks(n: &BigInt) -> (bool, AksSteps) {
 				fn is_perfect_k_th_power(n: &BigInt) -> bool {
 					let upper_bound = n.sqrt();
 					for k in range_inclusive(BigInt::from(2u64), upper_bound) {
@@ -1176,7 +1192,7 @@
 				
 				// Step 1
 				if is_perfect_k_th_power(n) {
-					return false;
+					return (false, AksSteps::Step1);
 				}
 				
 				let (zero, one) = (BigInt::zero(), BigInt::one());
@@ -1187,15 +1203,16 @@
 				// Step 3
 				for a in range(BigInt::from(2u64), std::cmp::min(r.clone(), n.clone())) {
 					if &a.gcd_euclid(n) > &one {
-						return false;
+						return (false, AksSteps::Step3);
 					}
 				}
 				
 				// Step 4
-				if n <= &r {
-					return true;
+				if !(n <= &r) {
+					return (false, AksSteps::Step4);
 				}
 				
+				// Step 5
 				let phi_r = euler_totient_phi_counting_coprimes(&r);
 				let log_r = abs_log(n).unwrap();
 				let upper_bound = phi_r.sqrt() * log_r as u64;
@@ -1203,18 +1220,63 @@
 				for a in range(BigInt::one(), upper_bound) {
 					x = fastpoly(&vec![a, BigInt::one()], &n, &r);
 					if x.par_iter().any(|b| b != &BigInt::zero()) {
-						return false;
+						return (false, AksSteps::Step5);
 					}
 				}
 				
-				true
+				(true, AksSteps::Success)
 			}
+			
 		\end{lstlisting}
 		\bigbreak
 		\item Take the elements of the set B in turn and decide how many fail the test at each of steps 1, 2, 3, 4, 5.
 		\begin{flushleft}
-			\textbf{\textit{Answer:}} The below code snippet calculates the $r$ value used in AKS:
+			\textbf{\textit{Answer:}} Below json snippet shows which numbers failed at what step:
 			
+			\begin{lstlisting}[
+				language=json,
+				firstnumber=1,
+				caption={Miller-Rabin failues for numbers between 50 to 100},
+				label={miller-rabin-50-100}
+				]
+				{
+					"Step 1": [
+					    2916,3025
+					 ],
+					"Step 3": [ 
+						2800,2802,2804,2805,2806,2807,2808,2810, 2811,
+						2812,2813,2814,2815,2816,2817,2818,2820,2821,
+						2822,2823,2824,2825,2826,2827,2828,2829,2830,
+						2831,2832,2834,2835,2836,2838,2839,2840,2841,
+						2842,2844,2845,2846,2847,2848,2849,2850,2852,
+						2853,2854,2855,2856,2858,2859,2860,2862,2863,
+						2864,2865,2866,2867,2868,2869,2870,2871,2872,
+						2873,2874,2875,2876,2877,2878,2880,2881,2882,
+						2883,2884,2885,2886,2888,2889,2890,2891,2892,
+						2893,2894,2895,2896,2898,2899,2900,2901,2902,
+						2904,2905,2906,2907,2908,2910,2911,2912,2913,
+						2914,2915,2918,2919,2920,2921,2922,2923,2924,
+						2925,2926,2928,2929,2930,2931,2932,2933,2934,
+						2935,2936,2937,2938,2940,2941,2942,2943,2944,
+						2945,2946,2947,2948,2949,2950,2951,2952,2954,
+						2955,2956,2958,2959,2960,2961,2962,2964,2965,
+						2966,2967,2968,2970,2972,2973,2974,2975,2976,
+						2977,2978,2979,2980,2981,2982,2983,2984,2985,
+						2986,2987,2988,2989,2990,2991,2992,2993,2994,
+						2995,2996,2997,2998,3000,3002,3003,3004,3005,
+						3006,3007,3008,3009,3010,3012,3013,3014,3015,
+						3016,3017,3018,3020,3021,3022,3024,3026,3027,
+						3028,3029,3030,3031,3032,3033,3034,3035,3036,
+						3038,3039,3040,3042,3043,3044,3045,3046,3047,
+						3048,3050,3051,3052,3053,3054,3055,3056,3057,
+						3058,3059,3060,3062,3063,3064,3065,3066,3068,
+						3069,3070,3071,3072,3073,3074,3075,3076,3077,
+						3078,3080,3081,3082,3084,3085,3086,3087,3088,
+						3090,3091,3092,3093,3094,3095,3096,3097,3098,
+						3099,3100
+				   	]
+				}
+			\end{lstlisting}
 		\end{flushleft}
 		\end{enumerate}
 	\end{enumerate}
