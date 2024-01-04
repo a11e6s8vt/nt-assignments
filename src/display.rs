@@ -74,6 +74,27 @@ pub fn format_prime_factors_print(
     table_data.push(NumFactorTable::new(num.to_string(), form))
 }
 
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct MillerRabinJson {
+    n_minus_one_form: String,
+    prime_factorisation: String,
+    nonwitnesses: Vec<String>,
+}
+
+impl MillerRabinJson {
+    pub fn new(
+        n_minus_one_form: String,
+        prime_factorisation: String,
+        nonwitnesses: Vec<String>,
+    ) -> Self {
+        Self {
+            n_minus_one_form,
+            prime_factorisation,
+            nonwitnesses,
+        }
+    }
+}
+
 #[derive(Clone, Debug, Tabled, Serialize, Deserialize)]
 pub struct MillerRabinTable {
     n: String,
@@ -122,6 +143,10 @@ impl MillerRabinTable {
     }
     pub fn get_message(&self) -> String {
         self.message.clone()
+    }
+
+    pub fn get_n_minus_one_form(&self) -> String {
+        self.n_minus_one_form.clone()
     }
 }
 

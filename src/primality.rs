@@ -178,9 +178,8 @@ fn miller_test(d: &BigInt, n: &BigInt) -> bool {
 ///
 /// Miller-Rabin Test
 ///
-pub fn miller_rabin_test(n: &BigInt, base: &BigInt) -> (bool, Vec<MillerRabinTable>) {
+pub fn miller_rabin_test(n: &BigInt, base: Option<&BigInt>) -> (bool, Vec<MillerRabinTable>) {
     let mut table_data: Vec<MillerRabinTable> = Vec::new();
-    let _message = String::new();
     let _is_prime = false;
     let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
     let n_minus_one: BigInt = n - 1;
@@ -194,18 +193,23 @@ pub fn miller_rabin_test(n: &BigInt, base: &BigInt) -> (bool, Vec<MillerRabinTab
 
     let n_minus_one_form = format!("{} = {}.2{}", n_minus_one, m, Superscript(s),);
 
-    // Randomly generate a base "a" such that 1 < a < n - 1
-    // let a: BigInt = generate_random_int_in_range(&two, &(n - 1));
+    let mut a = BigInt::one();
+    // If `base` is not passed, then randomly generate a base "a" such that 1 < a < n - 1
+    if let Some(base) = base {
+        a = base.clone();
+    } else {
+        a = generate_random_int_in_range(&two, &(n - 1));
+    }
     // let a = BigInt::from(1003u64);
 
     // Calculate x ≡ aᵐ(mod n)
-    let mut x = modular_pow(base, &m, n);
+    let mut x = modular_pow(&a, &m, n);
 
     format_miller_rabin_steps_print(
         n.clone(),
         &n_minus_one_form,
         s,
-        base.clone(),
+        a.clone(),
         0,
         m.clone(),
         x.clone(),
@@ -226,13 +230,13 @@ pub fn miller_rabin_test(n: &BigInt, base: &BigInt) -> (bool, Vec<MillerRabinTab
     while k <= s - 1 {
         // searching square-roots for 1 (mod n) other than ±1 (mod n)
         let e = &m * BigInt::from(2u64).pow(k);
-        x = modular_pow(base, &e, n);
+        x = modular_pow(&a, &e, n);
 
         format_miller_rabin_steps_print(
             n.clone(),
             &n_minus_one_form,
             s,
-            base.clone(),
+            a.clone(),
             k,
             e.clone(),
             x.clone(),

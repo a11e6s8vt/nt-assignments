@@ -1,7 +1,7 @@
 use crate::{
     display::{
         format_prime_factors_print, matrix_print, miller_rabin_output_print, GcdTestTable, Matrix,
-        MillerRabinTable, NumFactorTable,
+        MillerRabinJson, MillerRabinTable, NumFactorTable,
     },
     primality::{
         gcd_test, is_prime_trial_division, is_prime_trial_division_parallel, miller_rabin_test,
@@ -19,9 +19,12 @@ use rayon::iter::{
     ParallelIterator,
 };
 
-use std::fs::{self, File};
 use std::io::{BufRead, BufReader};
 use std::io::{ErrorKind, Write};
+use std::{
+    collections::HashMap,
+    fs::{self, File},
+};
 
 use tabled::{
     col,
@@ -237,51 +240,21 @@ pub fn gcd_test_range(start: &BigInt, end: &BigInt) {
     println!("\n{table}\n");
 }
 
-pub fn test_primality_miller_rabin(n: &BigInt, _n_trials: u32) -> bool {
-    let mut json_out: Vec<Vec<MillerRabinTable>> = Vec::new();
+pub fn test_primality_miller_rabin(n: &BigInt) -> (String, Vec<String>) {
+    let mut non_witnesses: Vec<String> = Vec::new();
+    let mut n_minus_one_form = String::new();
     for base in range(BigInt::from(2u64), n - 1) {
-        let output = miller_rabin_test(&n, &base);
-        let mut v = Vec::<MillerRabinTable>::new();
+        let output = miller_rabin_test(&n, Some(&base));
         for item in output.1.iter() {
             if item.get_message().contains("Prime") {
-                v.push(item.clone());
-                // miller_rabin_output_print(&output.1);
-                // if output.0 == false {
-                //     return false;
-                // }
+                non_witnesses.push(base.to_string());
+                if n_minus_one_form.len() == 0 {
+                    n_minus_one_form.push_str(&item.get_n_minus_one_form());
+                }
             }
         }
-        if !v.is_empty() {
-            json_out.push(v);
-        }
     }
-    if !json_out.is_empty() {
-        let my_home = get_my_home()
-            .unwrap()
-            .unwrap()
-            .to_str()
-            .unwrap()
-            .to_string();
-        let mut fname = String::new();
-        fname.push_str(&my_home);
-        fname.push_str("/miller-rabin");
-        println!("Path = {}", &fname);
-        if !fs::metadata(&fname).is_ok() {
-            fs::create_dir(&fname).unwrap();
-        }
-        // std::path::Path::new(&fname);
-        fname.push_str("/");
-        fname.push_str(&n.to_string());
-        fname.push_str(".json");
-        match File::create(&fname) {
-            Ok(file) => {
-                println!("Created file: {}", &fname);
-                serde_json::to_writer_pretty(file, &json_out).unwrap();
-            }
-            Err(e) => panic!("Problem creating the file: {:?}", e),
-        }
-    }
-    true
+    (n_minus_one_form, non_witnesses)
 }
 
 #[cfg(test)]
