@@ -6,8 +6,15 @@ mod primality;
 mod prime_factors;
 mod utils;
 
+use std::{
+    collections::{BTreeMap, HashMap},
+    fs::{self, File},
+};
+
 use clap::Parser;
 use cli_ops::{CarmichaelNumsCommands, Cli, Operations, PFactorsCommands, PrimalityCommands};
+use fmtastic::Superscript;
+use homedir::get_my_home;
 use serde_json::Result;
 
 use display::{matrix_print, Matrix};
@@ -20,36 +27,32 @@ use presets::{
 use primality::{aks, carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
-use crate::presets::NumCategory;
+use crate::{display::MillerRabinJson, presets::NumCategory, utils::modular_pow};
 
 fn main() {
     let args = Cli::parse();
 
     match args.command {
         Operations::ListPrimes(s) => {
-            let (primes, composites) = find_primes_in_range_trial_division_parallel(s.start, s.end);
+            let (primes, _) = find_primes_in_range_trial_division_parallel(s.start, s.end);
 
             let table_data = &primes
                 .iter()
                 .map(|x| Matrix::new(x.to_string()))
                 .collect::<Vec<Matrix>>();
-            matrix_print(
-                table_data.clone(),
-                "Prime Numbers:".to_string(),
-                &primes.len() / 5,
-            );
+            matrix_print(table_data, "Prime Numbers:".to_string(), &primes.len() / 5);
         }
         Operations::ListComposites(s) => {
-            let (primes, composites) = find_primes_in_range_trial_division_parallel(s.start, s.end);
+            let (_, composites) = find_primes_in_range_trial_division_parallel(s.start, s.end);
 
             let table_data = &composites
                 .iter()
                 .map(|x| Matrix::new(x.to_string()))
                 .collect::<Vec<Matrix>>();
             matrix_print(
-                table_data.clone(),
+                table_data,
                 "Prime Numbers:".to_string(),
-                &primes.len() / 14,
+                &composites.len() / 14,
             );
         }
         Operations::PrimeFactors { num: _ } => {}
@@ -77,8 +80,8 @@ fn main() {
                     "Prime Factorisation - Only Composites In The Range:".to_string(),
                     &num_pfactors.0.len() / 4,
                 );
-                let json = serde_json::to_string(&num_pfactors.0).unwrap();
-                println!("{}", json);
+                //let json = serde_json::to_string(&num_pfactors.0).unwrap();
+                //println!("{}", json);
                 // println!("\n{}\n", num_pfactors.0);
             }
             PFactorsCommands::CompositesPQ(pargs) => {
@@ -92,8 +95,8 @@ fn main() {
                     "Prime Factorisation - Composites of the form N = P.Q:".to_string(),
                     &num_pfactors.0.len() / 4,
                 );
-                let json = serde_json::to_string(&num_pfactors.0).unwrap();
-                println!("{}", json);
+                //let json = serde_json::to_string(&num_pfactors.0).unwrap();
+                //println!("{}", json);
                 // println!("\n{}\n", num_pfactors.0);
             }
         },
@@ -130,23 +133,69 @@ fn main() {
         Operations::Question3(s) => {
             let mut composites =
                 list_prime_factors_in_range(&s.start, &s.end, NumCategory::Composites).1;
-            // composite numbers with only two factors
+            // filter only odd composite numbers with only two factors
             composites.retain(|(num, p_factors)| p_factors.len() == 2 && num % 2 != BigInt::zero());
-            let sample_data = &composites[0..5];
+            // take the first five elements for the test
+            // let sample_data = &composites[0..5];
 
-            for (num, _p_factors) in sample_data.iter() {
-                test_primality_miller_rabin(num, 5);
+            let mut json_out: BTreeMap<String, MillerRabinJson> = BTreeMap::new();
+            for (num, p_factors) in composites.iter() {
+                println!("Processing the number: {}", num);
+                // call miller-rabin test
+                let (n_minus_one_form, non_witnesses) = test_primality_miller_rabin(num);
+                // Convert prime factors to String format
+                let mut form = String::new();
+                for (factor, exp) in p_factors {
+                    form.push_str(&format!("{}{} x ", factor, Superscript(exp.clone())));
+                }
+                let mut form = form.trim_end().to_string();
+                form.pop();
+                if !non_witnesses.is_empty() {
+                    let mr_json = MillerRabinJson::new(n_minus_one_form, form, non_witnesses);
+                    json_out.insert(num.to_string(), mr_json);
+                }
+            }
+
+            let my_home = get_my_home()
+                .unwrap()
+                .unwrap()
+                .to_str()
+                .unwrap()
+                .to_string();
+            let mut fname = String::new();
+            fname.push_str(&my_home);
+            fname.push_str("/ass1-question3");
+            println!("Path = {}", &fname);
+            if !fs::metadata(&fname).is_ok() {
+                fs::create_dir(&fname).unwrap();
+            }
+            // std::path::Path::new(&fname);
+            fname.push_str("/");
+            fname.push_str("question3.json");
+            match File::create(&fname) {
+                Ok(file) => {
+                    println!("Output has been written to the file: {}", &fname);
+                    serde_json::to_writer_pretty(file, &json_out).unwrap();
+                }
+                Err(e) => panic!("Problem creating the file: {:?}", e),
             }
         }
         Operations::AKS(s) => {
-            let mut composites =
+            let composites =
                 list_prime_factors_in_range(&s.start, &s.end, NumCategory::Composites).1;
             let aks_test_res = composites
                 .par_iter()
-                .map(|(num, p_factors)| (num, aks(num)))
+                .map(|(num, _)| (num, aks(num)))
                 .map(|(num, is_prime)| (num.clone(), is_prime))
                 .collect::<Vec<(BigInt, bool)>>();
             println!("{:?}", aks_test_res);
+        }
+        Operations::ModularPower {
+            base,
+            exponent,
+            modulus,
+        } => {
+            println!("{}", modular_pow(&base, &exponent, &modulus));
         }
     }
 }

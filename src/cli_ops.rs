@@ -48,6 +48,18 @@ pub enum Operations {
     /// Ass1 - Question3
     #[command(arg_required_else_help = true)]
     AKS(NumRangeArgs),
+
+    #[command(arg_required_else_help = true)]
+    ModularPower {
+        #[arg(short = 'b', long = "base", value_name = "BASE NUMBER")]
+        base: BigInt,
+
+        #[arg(short = 'e', long = "exponent", value_name = "Exponent Value")]
+        exponent: BigInt,
+
+        #[arg(short = 'm', long = "modulus", value_name = "Modulus Value")]
+        modulus: BigInt,
+    },
 }
 
 #[derive(Debug, Args)]

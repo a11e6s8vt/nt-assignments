@@ -1,3 +1,4 @@
+use clap::builder::Str;
 use fmtastic::Superscript;
 use num_bigint::BigInt;
 use serde::{Deserialize, Serialize};
@@ -73,19 +74,40 @@ pub fn format_prime_factors_print(
     table_data.push(NumFactorTable::new(num.to_string(), form))
 }
 
-#[derive(Debug, Tabled)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct MillerRabinJson {
+    n_minus_one_form: String,
+    prime_factorisation: String,
+    nonwitnesses: Vec<String>,
+}
+
+impl MillerRabinJson {
+    pub fn new(
+        n_minus_one_form: String,
+        prime_factorisation: String,
+        nonwitnesses: Vec<String>,
+    ) -> Self {
+        Self {
+            n_minus_one_form,
+            prime_factorisation,
+            nonwitnesses,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Tabled, Serialize, Deserialize)]
 pub struct MillerRabinTable {
-    n: BigInt,
+    n: String,
     #[tabled(rename = "n - 1 = m.2ˢ")]
     n_minus_one_form: String,
-    s: u32,
+    s: String,
     #[tabled(rename = "a")]
-    a: BigInt,
-    k: u32,
+    a: String,
+    k: String,
     #[tabled(rename = "e = m.2ᵏ")]
-    e: BigInt,
+    e: String,
     #[tabled(rename = "x = aᵉ")]
-    a_raised_e: BigInt,
+    a_raised_e: String,
     #[tabled(rename = "x ≡ 1 (mod n)")]
     x_congruent_1_mod_n: bool,
     #[tabled(rename = "x ≡ -1 (mod n)")]
@@ -95,13 +117,13 @@ pub struct MillerRabinTable {
 
 impl MillerRabinTable {
     pub fn new(
-        n: BigInt,
+        n: String,
         n_minus_one_form: String,
-        s: u32,
-        a: BigInt,
-        k: u32,
-        e: BigInt,
-        a_raised_e: BigInt,
+        s: String,
+        a: String,
+        k: String,
+        e: String,
+        a_raised_e: String,
         x_congruent_1_mod_n: bool,
         x_congruent_minus_1_mod_n: bool,
         message: String,
@@ -118,6 +140,13 @@ impl MillerRabinTable {
             x_congruent_minus_1_mod_n,
             message,
         }
+    }
+    pub fn get_message(&self) -> String {
+        self.message.clone()
+    }
+
+    pub fn get_n_minus_one_form(&self) -> String {
+        self.n_minus_one_form.clone()
     }
 }
 
@@ -155,13 +184,13 @@ pub fn format_miller_rabin_steps_print(
     }
 
     table_data.push(MillerRabinTable::new(
-        n,
+        n.to_string(),
         n_minus_one_form.clone(),
-        s,
-        a,
-        k,
-        e,
-        a_raised_e,
+        s.to_string(),
+        a.to_string(),
+        k.to_string(),
+        e.to_string(),
+        a_raised_e.to_string(),
         x_congruent_1_mod_n,
         x_congruent_minus_1_mod_n,
         message,
@@ -175,16 +204,18 @@ pub fn miller_rabin_output_print(table_data: &Vec<MillerRabinTable>) {
         .with(BorderSpanCorrection)
         .to_string();
 
+    // let json = serde_json::to_string(table_data).unwrap();
+    // println!("{}", json);
     // let mut table1 = Table::new(table_data);
     // table1.with(STYLE_2);
 
     // let output1 = table1.to_string();
     // println!("\n{}\n", table);
-    let mut html_table =
-        HtmlTable::with_header(Vec::<Vec<String>>::from(Table::builder(table_data)));
-    html_table.set_alignment(Entity::Row(1), Alignment::center());
-    html_table.set_border(3);
-    println!("{html_table}");
+    // let mut html_table =
+    //     HtmlTable::with_header(Vec::<Vec<String>>::from(Table::builder(table_data)));
+    // html_table.set_alignment(Entity::Row(1), Alignment::center());
+    // html_table.set_border(3);
+    // println!("{html_table}");
 }
 
 #[derive(Tabled)]

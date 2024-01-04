@@ -1,7 +1,7 @@
 use crate::{
     display::{
         format_prime_factors_print, matrix_print, miller_rabin_output_print, GcdTestTable, Matrix,
-        NumFactorTable,
+        MillerRabinJson, MillerRabinTable, NumFactorTable,
     },
     primality::{
         gcd_test, is_prime_trial_division, is_prime_trial_division_parallel, miller_rabin_test,
@@ -10,12 +10,20 @@ use crate::{
 };
 use fmtastic::Superscript;
 use num_bigint::BigInt;
-use num_iter::range_inclusive;
+use num_iter::{range, range_inclusive};
 
+use homedir::get_my_home;
 use rand::seq::SliceRandom;
 use rayon::iter::{
     IndexedParallelIterator, IntoParallelIterator, IntoParallelRefIterator, ParallelBridge,
     ParallelIterator,
+};
+
+use std::io::{BufRead, BufReader};
+use std::io::{ErrorKind, Write};
+use std::{
+    collections::HashMap,
+    fs::{self, File},
 };
 
 use tabled::{
@@ -232,16 +240,21 @@ pub fn gcd_test_range(start: &BigInt, end: &BigInt) {
     println!("\n{table}\n");
 }
 
-pub fn test_primality_miller_rabin(n: &BigInt, _n_trials: u32) -> bool {
-    for base in range_inclusive(BigInt::from(2u64), n - 1) {
-        let output = miller_rabin_test(&n, &base);
-        miller_rabin_output_print(&output.1);
-        // if output.0 == false {
-        //     return false;
-        // }
+pub fn test_primality_miller_rabin(n: &BigInt) -> (String, Vec<String>) {
+    let mut non_witnesses: Vec<String> = Vec::new();
+    let mut n_minus_one_form = String::new();
+    for base in range(BigInt::from(2u64), n - 1) {
+        let output = miller_rabin_test(&n, Some(&base));
+        for item in output.1.iter() {
+            if item.get_message().contains("Prime") {
+                non_witnesses.push(base.to_string());
+                if n_minus_one_form.len() == 0 {
+                    n_minus_one_form.push_str(&item.get_n_minus_one_form());
+                }
+            }
+        }
     }
-
-    true
+    (n_minus_one_form, non_witnesses)
 }
 
 #[cfg(test)]
