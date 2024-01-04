@@ -26,6 +26,7 @@ use presets::{
 };
 use primality::{aks, carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use utils::findr;
 
 use crate::{display::MillerRabinJson, presets::NumCategory, utils::modular_pow};
 
@@ -134,7 +135,8 @@ fn main() {
             let mut composites =
                 list_prime_factors_in_range(&s.start, &s.end, NumCategory::Composites).1;
             // filter only odd composite numbers with only two factors
-            composites.retain(|(num, p_factors)| p_factors.len() == 2 && num % 2 != BigInt::zero());
+            // composites.retain(|(num, p_factors)| p_factors.len() == 2 && num % 2 != BigInt::zero());
+            composites.retain(|(num, p_factors)| num % 2 != BigInt::zero());
             // take the first five elements for the test
             // let sample_data = &composites[0..5];
             println!(
@@ -211,6 +213,10 @@ fn main() {
             modulus,
         } => {
             println!("{}", modular_pow(&base, &exponent, &modulus));
+        }
+        Operations::FindrAKS { num } => {
+            let r = findr(&num);
+            println!("AKS 'r' value for {} is = {}", num, r);
         }
     }
 }

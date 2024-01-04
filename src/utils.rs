@@ -2,8 +2,8 @@ use std::marker::PhantomPinned;
 
 use num_bigint::{BigInt, BigUint};
 use num_iter::{range, range_inclusive};
-use num_traits::ToPrimitive;
 use num_traits::{One, Zero};
+use num_traits::{Pow, ToPrimitive};
 use rand::seq::index;
 use rand::Rng;
 
@@ -165,6 +165,32 @@ pub fn polynomial_mul(a: &Vec<BigInt>, b: &Vec<BigInt>, n: &BigInt, r: &BigInt) 
         x.pop();
     }
     return x;
+}
+
+///
+/// Find smallest r such that the order of n mod r > ln(n)^2.
+///
+pub fn findr(n: &BigInt) -> BigInt {
+    let (zero, one) = (BigInt::zero(), BigInt::one());
+    let mut r = BigInt::from(1u64);
+
+    let s: f64 = abs_log(n).unwrap().pow(2);
+    let s = BigInt::from(s.floor() as u64);
+    let mut nex_r = true;
+
+    while nex_r {
+        r += 1;
+        nex_r = false;
+        let mut k = BigInt::zero();
+        while &k <= &s && nex_r == false {
+            k += 1;
+            if modular_pow(n, &k, &r) == zero || modular_pow(n, &k, &r) == one {
+                nex_r = true;
+            }
+        }
+    }
+
+    r
 }
 
 #[cfg(test)]

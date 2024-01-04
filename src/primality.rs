@@ -176,7 +176,12 @@ fn miller_test(d: &BigInt, n: &BigInt) -> bool {
 }
 
 ///
-/// Miller-Rabin Test
+/// Miller-Rabin Test - Returns whether a number is prime or not
+///
+/// # Arguments
+/// * n: BigInt
+/// * base: Optional - if base is not passed, `a` is randomly generated in the range
+///         2 <= a <= n-2
 ///
 pub fn miller_rabin_test(n: &BigInt, base: Option<&BigInt>) -> (bool, Vec<MillerRabinTable>) {
     let mut table_data: Vec<MillerRabinTable> = Vec::new();
@@ -193,7 +198,7 @@ pub fn miller_rabin_test(n: &BigInt, base: Option<&BigInt>) -> (bool, Vec<Miller
 
     let n_minus_one_form = format!("{} = {}.2{}", n_minus_one, m, Superscript(s),);
 
-    let mut a = BigInt::one();
+    let a: BigInt;
     // If `base` is not passed, then randomly generate a base "a" such that 1 < a < n - 1
     if let Some(base) = base {
         a = base.clone();

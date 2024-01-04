@@ -49,6 +49,13 @@ pub enum Operations {
     #[command(arg_required_else_help = true)]
     AKS(NumRangeArgs),
 
+    // 'R' value calculation for AKS
+    #[command(arg_required_else_help = true)]
+    FindrAKS {
+        #[arg(short = 'n', long = "num", value_name = "NUMBER")]
+        num: BigInt,
+    },
+
     #[command(arg_required_else_help = true)]
     ModularPower {
         #[arg(short = 'b', long = "base", value_name = "BASE NUMBER")]
