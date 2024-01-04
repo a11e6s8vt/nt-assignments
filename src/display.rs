@@ -74,7 +74,7 @@ pub fn format_prime_factors_print(
     table_data.push(NumFactorTable::new(num.to_string(), form))
 }
 
-#[derive(Debug, Tabled, Serialize, Deserialize)]
+#[derive(Clone, Debug, Tabled, Serialize, Deserialize)]
 pub struct MillerRabinTable {
     n: String,
     #[tabled(rename = "n - 1 = m.2ˢ")]
@@ -119,6 +119,9 @@ impl MillerRabinTable {
             x_congruent_minus_1_mod_n,
             message,
         }
+    }
+    pub fn get_message(&self) -> String {
+        self.message.clone()
     }
 }
 

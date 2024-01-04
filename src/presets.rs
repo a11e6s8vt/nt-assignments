@@ -241,35 +241,45 @@ pub fn test_primality_miller_rabin(n: &BigInt, _n_trials: u32) -> bool {
     let mut json_out: Vec<Vec<MillerRabinTable>> = Vec::new();
     for base in range(BigInt::from(2u64), n - 1) {
         let output = miller_rabin_test(&n, &base);
-        json_out.push(output.1);
-        // miller_rabin_output_print(&output.1);
-        // if output.0 == false {
-        //     return false;
-        // }
-    }
-    let my_home = get_my_home()
-        .unwrap()
-        .unwrap()
-        .to_str()
-        .unwrap()
-        .to_string();
-    let mut fname = String::new();
-    fname.push_str(&my_home);
-    fname.push_str("/miller-rabin");
-    println!("Path = {}", &fname);
-    if !fs::metadata(&fname).is_ok() {
-        fs::create_dir(&fname).unwrap();
-    }
-    // std::path::Path::new(&fname);
-    fname.push_str("/");
-    fname.push_str(&n.to_string());
-    fname.push_str(".json");
-    match File::create(&fname) {
-        Ok(file) => {
-            println!("Created file: {}", &fname);
-            serde_json::to_writer_pretty(file, &json_out).unwrap();
+        let mut v = Vec::<MillerRabinTable>::new();
+        for item in output.1.iter() {
+            if item.get_message().contains("Prime") {
+                v.push(item.clone());
+                // miller_rabin_output_print(&output.1);
+                // if output.0 == false {
+                //     return false;
+                // }
+            }
         }
-        Err(e) => panic!("Problem creating the file: {:?}", e),
+        if !v.is_empty() {
+            json_out.push(v);
+        }
+    }
+    if !json_out.is_empty() {
+        let my_home = get_my_home()
+            .unwrap()
+            .unwrap()
+            .to_str()
+            .unwrap()
+            .to_string();
+        let mut fname = String::new();
+        fname.push_str(&my_home);
+        fname.push_str("/miller-rabin");
+        println!("Path = {}", &fname);
+        if !fs::metadata(&fname).is_ok() {
+            fs::create_dir(&fname).unwrap();
+        }
+        // std::path::Path::new(&fname);
+        fname.push_str("/");
+        fname.push_str(&n.to_string());
+        fname.push_str(".json");
+        match File::create(&fname) {
+            Ok(file) => {
+                println!("Created file: {}", &fname);
+                serde_json::to_writer_pretty(file, &json_out).unwrap();
+            }
+            Err(e) => panic!("Problem creating the file: {:?}", e),
+        }
     }
     true
 }
