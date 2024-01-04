@@ -155,7 +155,11 @@ fn main() {
                     json_out.insert(num.to_string(), mr_json);
                 }
             }
-
+            if cfg!(windows) {
+                println!("this is windows");
+            } else if cfg!(unix) {
+                println!("this is unix alike");
+            }
             let my_home = get_my_home()
                 .unwrap()
                 .unwrap()
