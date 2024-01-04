@@ -1,0 +1,44 @@
+{
+  "65": {
+    "n_minus_one_form": "64 = 1.2⁶",
+    "prime_factorisation": "5¹ x 13¹ ",
+    "nonwitnesses": [
+      "8",
+      "18",
+      "47",
+      "57"
+    ]
+  },
+  "85": {
+    "n_minus_one_form": "84 = 21.2²",
+    "prime_factorisation": "5¹ x 17¹ ",
+    "nonwitnesses": [
+      "13",
+      "38",
+      "47",
+      "72"
+    ]
+  },
+  "91": {
+    "n_minus_one_form": "90 = 45.2¹",
+    "prime_factorisation": "7¹ x 13¹ ",
+    "nonwitnesses": [
+      "9",
+      "10",
+      "12",
+      "16",
+      "17",
+      "22",
+      "29",
+      "38",
+      "53",
+      "62",
+      "69",
+      "74",
+      "75",
+      "79",
+      "81",
+      "82"
+    ]
+  }
+}

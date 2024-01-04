@@ -137,7 +137,10 @@ fn main() {
             composites.retain(|(num, p_factors)| p_factors.len() == 2 && num % 2 != BigInt::zero());
             // take the first five elements for the test
             // let sample_data = &composites[0..5];
-
+            println!(
+                "Total Number of Odd Composites with two factors {}",
+                &composites.len()
+            );
             let mut json_out: BTreeMap<String, MillerRabinJson> = BTreeMap::new();
             for (num, p_factors) in composites.iter() {
                 println!("Processing the number: {}", num);
