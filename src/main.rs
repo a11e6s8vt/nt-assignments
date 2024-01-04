@@ -28,7 +28,12 @@ use primality::{aks, carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use utils::findr;
 
-use crate::{display::MillerRabinJson, presets::NumCategory, utils::modular_pow};
+use crate::{
+    display::MillerRabinJson,
+    presets::NumCategory,
+    primality::{is_prime_trial_division_parallel, AksSteps},
+    utils::modular_pow,
+};
 
 fn main() {
     let args = Cli::parse();
@@ -198,14 +203,80 @@ fn main() {
             }
         }
         Operations::AKS(s) => {
+            let mut result: HashMap<String, Vec<String>> = HashMap::new();
             let composites =
                 list_prime_factors_in_range(&s.start, &s.end, NumCategory::Composites).1;
             let aks_test_res = composites
                 .par_iter()
                 .map(|(num, _)| (num, aks(num)))
-                .map(|(num, is_prime)| (num.clone(), is_prime))
-                .collect::<Vec<(BigInt, bool)>>();
-            println!("{:?}", aks_test_res);
+                .map(|(num, (is_prime, step))| (num.clone(), is_prime, step))
+                .collect::<Vec<(BigInt, bool, AksSteps)>>();
+            for (num, is_prime, step) in aks_test_res.iter() {
+                match step {
+                    AksSteps::Step1 => {
+                        if !is_prime {
+                            if result.get("step1").is_some() {
+                                let s = result.get_mut("step1").unwrap();
+                                s.push(num.to_string());
+                            } else {
+                                result.insert("step1".to_string(), vec![num.to_string()]);
+                            }
+                        }
+                    }
+                    AksSteps::Step2 => {
+                        if !is_prime {
+                            if result.get("step2").is_some() {
+                                let s = result.get_mut("step2").unwrap();
+                                s.push(num.to_string());
+                            } else {
+                                result.insert("step2".to_string(), vec![num.to_string()]);
+                            }
+                        }
+                    }
+                    AksSteps::Step3 => {
+                        if !is_prime {
+                            if result.get("step3").is_some() {
+                                let s = result.get_mut("step3").unwrap();
+                                s.push(num.to_string());
+                            } else {
+                                result.insert("step3".to_string(), vec![num.to_string()]);
+                            }
+                        }
+                    }
+                    AksSteps::Step4 => {
+                        if !is_prime {
+                            if result.get("step4").is_some() {
+                                let s = result.get_mut("step4").unwrap();
+                                s.push(num.to_string());
+                            } else {
+                                result.insert("step4".to_string(), vec![num.to_string()]);
+                            }
+                        }
+                    }
+                    AksSteps::Step5 => {
+                        if !is_prime {
+                            if result.get("step5").is_some() {
+                                let s = result.get_mut("step5").unwrap();
+                                s.push(num.to_string());
+                            } else {
+                                result.insert("step5".to_string(), vec![num.to_string()]);
+                            }
+                        }
+                    }
+                    AksSteps::Success => {
+                        if *is_prime {
+                            if result.get("success").is_some() {
+                                let s = result.get_mut("success").unwrap();
+                                s.push(num.to_string());
+                            } else {
+                                result.insert("success".to_string(), vec![num.to_string()]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            println!("{}", serde_json::to_string_pretty(&result).unwrap());
         }
         Operations::ModularPower {
             base,

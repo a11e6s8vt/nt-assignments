@@ -341,9 +341,25 @@ pub fn carmichael_nums_korselt(n: &BigInt) -> bool {
 }
 
 ///
+/// AKS Steps
+///
+pub enum AksSteps {
+    Step1,
+    Step2,
+    Step3,
+    Step4,
+    Step5,
+    Success,
+}
+///
 /// AKS Primality test
 ///
-pub fn aks(n: &BigInt) -> bool {
+/// Returns boolean indicating prime or not and if the step at which it failed
+///
+/// # Arguments
+/// * n: BigInt
+///
+pub fn aks(n: &BigInt) -> (bool, AksSteps) {
     fn is_perfect_k_th_power(n: &BigInt) -> bool {
         let upper_bound = n.sqrt();
         for k in range_inclusive(BigInt::from(2u64), upper_bound) {
@@ -388,7 +404,7 @@ pub fn aks(n: &BigInt) -> bool {
 
     // Step 1
     if is_perfect_k_th_power(n) {
-        return false;
+        return (false, AksSteps::Step1);
     }
 
     let (zero, one) = (BigInt::zero(), BigInt::one());
@@ -399,15 +415,16 @@ pub fn aks(n: &BigInt) -> bool {
     // Step 3
     for a in range(BigInt::from(2u64), std::cmp::min(r.clone(), n.clone())) {
         if &a.gcd_euclid(n) > &one {
-            return false;
+            return (false, AksSteps::Step3);
         }
     }
 
     // Step 4
-    if n <= &r {
-        return true;
+    if !(n <= &r) {
+        return (false, AksSteps::Step4);
     }
 
+    // Step 5
     let phi_r = euler_totient_phi_counting_coprimes(&r);
     let log_r = abs_log(n).unwrap();
     let upper_bound = phi_r.sqrt() * log_r as u64;
@@ -415,11 +432,11 @@ pub fn aks(n: &BigInt) -> bool {
     for a in range(BigInt::one(), upper_bound) {
         x = fastpoly(&vec![a, BigInt::one()], &n, &r);
         if x.par_iter().any(|b| b != &BigInt::zero()) {
-            return false;
+            return (false, AksSteps::Step5);
         }
     }
 
-    true
+    (true, AksSteps::Success)
 }
 
 #[cfg(test)]
