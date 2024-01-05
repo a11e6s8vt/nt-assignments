@@ -22,6 +22,8 @@ impl PrimeFactors for BigInt {
             return vec![(self.clone(), 1)];
         }
 
+        // We will need to check until sqrt(n). If the `primes`
+        // do not contain elements upto sqrt(n), fill it first
         let start_no = primes.last().unwrap();
         let square_root = self.sqrt();
         if square_root - start_no > BigInt::from(2u64) {
@@ -39,6 +41,7 @@ impl PrimeFactors for BigInt {
             let mut seen = HashSet::new();
             primes.retain(|c| seen.insert(c.clone()));
         }
+
         let _res: HashMap<BigInt, usize> = HashMap::new();
 
         // The all_divisors vec will contain all the divisors of num with repetition.
@@ -58,6 +61,7 @@ impl PrimeFactors for BigInt {
                     .iter()
                     .fold(BigInt::one(), |acc: BigInt, a| acc * a);
             let q = &n / &product;
+            // if q is a prime, q is the last factor, else we need to factor q.
             if miller_rabin_primality(&q) {
                 all_divisors.push(q);
                 break;

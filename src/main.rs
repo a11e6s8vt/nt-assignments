@@ -18,7 +18,9 @@ use cli_ops::{
     PrimitiveRootsCommands,
 };
 use fmtastic::Superscript;
-use groups_modulo_n::{euler_totient_phi, primitive_roots_trial_n_error};
+use groups_modulo_n::{
+    euler_totient_phi, is_integer_of_form_pk_2pk, primitive_roots_trial_n_error,
+};
 use homedir::get_my_home;
 use num_iter::range_inclusive;
 use serde_json::Result;
@@ -355,6 +357,29 @@ fn main() {
                     result.push(item);
                 }
                 println!("{}", serde_json::to_string_pretty(&result).unwrap())
+            }
+            PrimitiveRootsCommands::Ass2Question2c(r) => {
+                let start = r.start;
+                let end = r.end;
+
+                let mut result: Vec<HashMap<String, String>> = Vec::new();
+                for n in range_inclusive(start, end) {
+                    let p_factors = is_integer_of_form_pk_2pk(&n);
+                    if !p_factors.is_empty() {
+                        let mut form: String = String::new();
+                        for (factor, exp) in p_factors {
+                            form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
+                        }
+                        let mut form = form.trim_end().to_string();
+                        form.pop();
+                        result.push(HashMap::from([
+                            ("Number".to_string(), n.to_string()),
+                            ("Form".to_string(), form),
+                        ]));
+                    }
+                }
+
+                println!("{}", serde_json::to_string_pretty(&result).unwrap());
             }
         },
     }

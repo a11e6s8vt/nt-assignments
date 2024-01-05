@@ -2,6 +2,7 @@ use core::num;
 
 use num_bigint::BigInt;
 use num_iter::range;
+use num_iter::range_inclusive;
 use num_traits::{One, Zero};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
@@ -188,6 +189,50 @@ pub fn primitive_roots_count_modulo_n(n: &BigInt) -> BigInt {
     phi_phi_n
 }
 
+/// It checks the existence of primitive roots modulo n
+/// and returns the number of primitive roots
+pub fn is_integer_of_form_pk_2pk(n: &BigInt) -> Vec<(BigInt, usize)> {
+    let (zero, two) = (BigInt::zero(), BigInt::from(2u64));
+    let mut primes = vec![BigInt::from(2u64)];
+    let p_factors = n.prime_factors(&mut primes);
+    if p_factors.len() < 1 || p_factors.len() > 2 {
+        return vec![];
+    }
+
+    // p_factors is a sorted vector
+    // check the criteria on on a clone of p_factors
+    let mut p_factors_clone = p_factors.clone();
+    match p_factors_clone.len() {
+        // If the prime factors have a length of 1,
+        // then it must be of the form p^k. Hence, if
+        // p = 2, fail
+        1 => {
+            if let Some(first) = p_factors_clone.pop() {
+                if &first.0 == &two {
+                    return vec![];
+                }
+            }
+        }
+        // If the prime factors have a length of 2,
+        // then the first factor is 2^1 and the second factor is p^k
+        2 => {
+            let first = p_factors_clone.remove(0);
+            if &first.0 == &two {
+                // since the p_factors vec is prepared in sorted form and without
+                // duplicates, we only need to check the first
+                if first.1 > 1 {
+                    return vec![];
+                }
+            } else {
+                return vec![];
+            }
+        }
+        _ => return vec![],
+    }
+
+    p_factors
+}
+
 ///
 ///
 ///
@@ -320,5 +365,20 @@ mod tests {
             None,
             multiplicative_order(&BigInt::from(45u64), &BigInt::from(100u64))
         );
+    }
+
+    #[test]
+    fn test_is_integer_of_form_pk_2pk() {
+        let result = is_integer_of_form_pk_2pk(&BigInt::from(25u64));
+        assert_eq!(result, vec![(BigInt::from(5u64), 2usize)]);
+
+        let result = is_integer_of_form_pk_2pk(&BigInt::from(20u64));
+        assert_eq!(result, vec![]);
+
+        let result = is_integer_of_form_pk_2pk(&BigInt::from(147u64));
+        assert_eq!(result, vec![]);
+
+        let result = is_integer_of_form_pk_2pk(&BigInt::from(49u64));
+        assert_eq!(result, vec![(BigInt::from(7u64), 2usize)]);
     }
 }
