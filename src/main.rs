@@ -9,17 +9,23 @@ mod utils;
 use std::{
     collections::{BTreeMap, HashMap},
     fs::{self, File},
+    primitive,
 };
 
-use clap::Parser;
-use cli_ops::{CarmichaelNumsCommands, Cli, Operations, PFactorsCommands, PrimalityCommands};
+use clap::{builder::Str, Parser};
+use cli_ops::{
+    CarmichaelNumsCommands, Cli, Operations, PFactorsCommands, PrimalityCommands,
+    PrimitiveRootsCommands,
+};
 use fmtastic::Superscript;
+use groups_modulo_n::{euler_totient_phi, primitive_roots_trial_n_error};
 use homedir::get_my_home;
+use num_iter::range_inclusive;
 use serde_json::Result;
 
 use display::{matrix_print, Matrix};
 use num_bigint::BigInt;
-use num_traits::Zero;
+use num_traits::{One, Zero};
 use presets::{
     find_primes_in_range_trial_division_parallel, gcd_test_range, list_carmichael_nums,
     list_prime_factors_in_range, test_primality_miller_rabin,
@@ -32,6 +38,7 @@ use crate::{
     display::MillerRabinJson,
     presets::NumCategory,
     primality::{is_prime_trial_division_parallel, AksSteps},
+    prime_factors::PrimeFactors,
     utils::modular_pow,
 };
 
@@ -289,5 +296,66 @@ fn main() {
             let r = findr(&num);
             println!("AKS 'r' value for {} is = {}", num, r);
         }
+        Operations::PrimitiveRoots(s) => match s.command {
+            PrimitiveRootsCommands::SearchNumsWithPrimitiveRoots(r) => {
+                let start = r.start;
+                let end = r.end;
+                let mut primes = vec![BigInt::from(2u64)];
+
+                let mut nums_with_prim_roots: Vec<String> = Vec::new();
+                let mut nums_without_no_prim_roots: Vec<String> = Vec::new();
+
+                for i in range_inclusive(start, end) {
+                    let prim_roots_i = groups_modulo_n::primitive_roots_trial_n_error(&i);
+                    if prim_roots_i.len() > 0 {
+                        nums_with_prim_roots.push(i.to_string());
+                    } else {
+                        nums_without_no_prim_roots.push(i.to_string());
+                    }
+                }
+
+                println!(
+                    "{}",
+                    serde_json::to_string(&HashMap::from([(
+                        "Numbers With Primitve Roots".to_string(),
+                        &nums_with_prim_roots
+                    )]))
+                    .unwrap()
+                );
+
+                println!("");
+                println!(
+                    "{}",
+                    serde_json::to_string(&HashMap::from([(
+                        "Numbers Without Primitive Roots".to_string(),
+                        &nums_without_no_prim_roots
+                    )]))
+                    .unwrap()
+                );
+            }
+            PrimitiveRootsCommands::ListPrimitiveRoots { n } => {
+                let primitive_roots = primitive_roots_trial_n_error(&n);
+            }
+            PrimitiveRootsCommands::Ass2Question2b(r) => {
+                let start = r.start;
+                let end = r.end;
+
+                let mut result: Vec<HashMap<String, String>> = Vec::new();
+                let (primes_in_range, _) = find_primes_in_range_trial_division_parallel(start, end);
+                for p in primes_in_range.iter() {
+                    let primitive_roots = primitive_roots_trial_n_error(p);
+                    let phi_phi_n = euler_totient_phi(&(p - BigInt::one()));
+                    let mut item: HashMap<String, String> = HashMap::new();
+                    item.insert("Prime".to_string(), p.to_string());
+                    item.insert("Euler_Totient(p-1)".to_string(), phi_phi_n.to_string());
+                    item.insert(
+                        "Prim Roots Count - Trial and Error".to_string(),
+                        primitive_roots.len().to_string(),
+                    );
+                    result.push(item);
+                }
+                println!("{}", serde_json::to_string_pretty(&result).unwrap())
+            }
+        },
     }
 }

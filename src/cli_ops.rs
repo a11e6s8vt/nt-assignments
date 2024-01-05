@@ -67,6 +67,7 @@ pub enum Operations {
         #[arg(short = 'm', long = "modulus", value_name = "Modulus Value")]
         modulus: BigInt,
     },
+    PrimitiveRoots(PrimitiveRootsArgs),
 }
 
 #[derive(Debug, Args)]
@@ -149,4 +150,26 @@ pub struct PrimalityRangeArgs {
 
     #[arg(short = 'e', long = "end", value_name = "END NUMBER for the range")]
     pub end: Option<BigInt>,
+}
+
+#[derive(Debug, Args)]
+#[command(args_conflicts_with_subcommands = true)]
+#[command(flatten_help = true)]
+pub struct PrimitiveRootsArgs {
+    #[command(subcommand)]
+    pub command: PrimitiveRootsCommands,
+}
+
+#[derive(Debug, Subcommand)]
+pub enum PrimitiveRootsCommands {
+    /// Search for numbers with primitive roots in a range
+    SearchNumsWithPrimitiveRoots(NumRangeArgs),
+    /// List the primitive roots of a number
+    #[command(arg_required_else_help = true)]
+    ListPrimitiveRoots {
+        /// Integer
+        n: BigInt,
+    },
+    /// Assignment 2 - Question 2(b)
+    Ass2Question2b(NumRangeArgs)
 }
