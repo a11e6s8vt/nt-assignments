@@ -1,0 +1,192 @@
+% Assignment1 - Ajeesh T. Vijayan
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{enumerate}
+\usepackage{amsmath, amssymb}
+\usepackage{array, makecell}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[left=2.5cm,right=1.5cm,top=2cm,bottom=1.5cm]{geometry}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{listings, lstautogobble}
+\usepackage{listings-rust}
+\usepackage[verbatim]{lstfiracode}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{adjustbox}
+
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+	mathescape=true,
+	language=Rust,
+	backgroundcolor=\color{backcolour},
+	style=FiraCodeStyle,   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\small,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=3pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+\lstdefinestyle{DOS}
+{
+	backgroundcolor=\color{black},
+	basicstyle=\scriptsize\color{white}\ttfamily
+}
+
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+
+\lstdefinelanguage{json}{
+	mathescape=true,
+	basicstyle=\normalfont\ttfamily,
+	numbers=left,
+	numberstyle=\scriptsize,
+	stepnumber=1,
+	numbersep=8pt,
+	showstringspaces=false,
+	breaklines=true,
+	frame=lines,
+	backgroundcolor=\color{background},
+	literate=
+	*{0}{{{\color{numb}0}}}{1}
+	{1}{{{\color{numb}1}}}{1}
+	{2}{{{\color{numb}2}}}{1}
+	{3}{{{\color{numb}3}}}{1}
+	{4}{{{\color{numb}4}}}{1}
+	{5}{{{\color{numb}5}}}{1}
+	{6}{{{\color{numb}6}}}{1}
+	{7}{{{\color{numb}7}}}{1}
+	{8}{{{\color{numb}8}}}{1}
+	{9}{{{\color{numb}9}}}{1}
+	{:}{{{\color{punct}{:}}}}{1}
+	{,}{{{\color{punct}{,}}}}{1}
+	{\{}{{{\color{delim}{\{}}}}{1}
+	{\}}{{{\color{delim}{\}}}}}{1}
+	{[}{{{\color{delim}{[}}}}{1}
+	{]}{{{\color{delim}{]}}}}{1},
+}
+
+\makeatletter
+\newcommand{\github}[1]{%
+	\href{#1}{\faGithubSquare}%
+}
+\makeatother
+
+\captionsetup[table]{position=bottom}   %% or below
+
+\pagestyle{fancy}
+\lhead{Ajeesh T. Vijayan}
+\rhead{Student No: 22077273}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\title{MA7010 – Number Theory for Cryptography - Assignment 2}
+\author{Ajeesh Thattukunnel Vijayan}
+\date{January 11\textsuperscript{th} 2024}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\mathchardef\mathcomma=\mathcode`,
+\newcommand{\roverline}[1]{\mathpalette\doroverline{#1}}
+\newcommand{\doroverline}[2]{\overline{#1#2}}
+
+\begin{document}
+	
+	\maketitle
+	\section{Answers} \label{sec:Forces}
+	
+	\begin{enumerate}[1.]
+		\item $\text{Lower Range} = 600, \text{Upper Range} = 750$. Consider all the numbers n in your range. Divide the set into two subsets:
+		A - the subset consisting of all n where there is at least one primitive root modulo n; B – the subset consisting of all n where no primitive roots exist modulo n
+		\bigskip
+		
+		\item 
+		\begin{enumerate}[a.]
+			\item Explain why we can always find a primitive root modulo p when p is a prime.
+			\item Express the number of primitive roots that exist modulo p using the Euler Totient function and show that your answer correctly predicts the number of primitive roots for all primes in your given range.
+			\item For the same range as Question 1 use the command ifactors in Maple to find the set C whose elements consist of numbers of the form $p^k(p > 2, k \ge 1)$ or $2p^k(p > 2, k \ge 1)$
+			\item Hence form a conjecture about when primitive roots do and don’t exist
+		\end{enumerate}
+			
+
+		\item Suppose n has the form n = pq where p and q are different primes both > 2. \\
+	
+		\begin{enumerate}[(a)]
+			\item What is $\phi(n)$ in terms of $p$ and $q$?
+			\item Suppose $a$ is relatively prime to $pq$.  Explain why 
+			\begin{enumerate}[i.]
+				\item $a^{p-1} \equiv 1\mod p$
+				\item $a^{q-1} \equiv 1\mod q$
+				\item $m = lcm(p-1, q-1)$ is less than $(p-1)(q-1)$
+				\item $a^m \equiv 1 \mod (p-1)(q-1)$
+			\end{enumerate}
+			\item Hence explain why numbers of the form n have no primitive roots. \href{https://math.stackexchange.com/questions/162157/for-q-p-odd-primes-such-that-p-neq-q-there-is-not-primitive-root-modulo}{check it out}
+			\item Show that all numbers of the form $n = pq$ (p and q both odd primes) in your range are included in set B.
+		\end{enumerate}
+		\item Use the BabyStepsGiantSteps algorithm to find discrete logarithms x of b mod n for the primitive root a for each of the two examples assigned to you in the table below. Verify that your answer is correct by calculating $a^x \mod m$ by hand using the method of modular exponentiation.
+		\item Use the Pohlig Helmann algorithm to find in the cyclic group of order n with the generating element a for both the examples assigned to you below. Verify your answer in Maple.
+		\item Use the Pollard Rho method to verify your answer to the first example you were allocated in Question 4. 
+		
+		\begin{table}[H]
+			\begin{adjustbox}{scale=0.9,center}
+				\begin{tabular}{ |p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{4cm}| }
+					\hline
+					Name & b & n & a & Method \\
+					\hline
+					Ajeesh & $47$   & 71   & $21$   & BabyStepGiantStep \\
+					Ajeesh & $24$   & 53   & $26$   & BabyStepGiantStep  \\
+					Ajeesh & $x^{41}$ & 343  & $x^{11}$ & Pohlig Hellmen \\
+					Ajeesh & $x^{157}$& 3267 & $x^{13}$ & Pohlig Hellmen  \\
+					\hline
+				\end{tabular}
+			\end{adjustbox}
+			\caption{List of composite numbers of the form P.Q}
+			\label{table:composite-pq}
+		\end{table}
+		
+	\end{enumerate}
+	
+	\begin{thebibliography}{unsrt}
+		
+		\bibitem{Modular_Mathematics}
+		C R Jordan \& D A Jordan \emph{MODULAR MATHEMATICS Groups }.
+		
+		\bibitem{gt_solutions}
+		Dr. Ben Fairbairn \emph{GROUP THEORY Solutions to Exercises}.
+		
+		\bibitem{online_ref_1}
+		\emph{https://github.com/Ssophoclis/AKS-algorithm/blob/master/AKS.py}
+		
+	\end{thebibliography}
+	
+\end{document}
