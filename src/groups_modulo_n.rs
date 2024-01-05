@@ -1,3 +1,5 @@
+use core::num;
+
 use num_bigint::BigInt;
 use num_iter::range;
 use num_traits::{One, Zero};
@@ -76,15 +78,33 @@ pub fn euler_totient_phi(n: &BigInt) -> BigInt {
 }
 
 ///
-/// To find all primitive roots modulo n, we follow these steps:
+/// Returns a vec of primitive roots for the integer
+///
+/// # Arguments
+/// * n: BigInt
+///
+/// Steps:
+/// This function uses trial and error to find primitive roots associated to an Integer
+///
+/// 1. Find all coprime numbers less than `n`
+/// 2. ϕ(n) = total number of coprimes
+/// 3. Find all the divisors of ϕ(n). Order of an element in the Modulo n group
+///    will be equal to any of the divisor values.
+/// 4. Find the order of each of the coprimes to n one by one (skip 1 from the list of
+///    coprimes as 1 is a trivial root) (`use utils::modular_pow)
+/// 5. if order of a coprime integer equals ϕ(n), that coprime is a primitive root
+///
+/// The above steps are executed aginst all coprimes to n and returns an integer vector with
+/// primitive roots
 ///
 pub fn primitive_roots_trial_n_error(n: &BigInt) -> Vec<BigInt> {
     let mut primitive_roots: Vec<BigInt> = Vec::new();
     let mut has_primitive_roots: bool = false;
-    let phi_n = euler_totient_phi(n);
+
+    let nums_coprime_n: Vec<BigInt> = coprime_nums_less_than_n(n);
+    let phi_n = BigInt::from(nums_coprime_n.len());
     //
     let divisors_phi_n = divisors_of_n(&phi_n);
-    let nums_coprime_n: Vec<BigInt> = coprime_nums_less_than_n(n);
 
     for a in nums_coprime_n {
         let mut has_order_phi: bool = true;
@@ -128,7 +148,7 @@ pub fn primitive_roots_trial_n_error(n: &BigInt) -> Vec<BigInt> {
 }
 
 /// It checks the existence of primitive roots modulo n
-/// an returns the number of primitive roots
+/// and returns the number of primitive roots
 pub fn primitive_roots_count_modulo_n(n: &BigInt) -> BigInt {
     let (zero, two) = (BigInt::zero(), BigInt::from(2u64));
     let mut primes = vec![BigInt::from(2u64)];
