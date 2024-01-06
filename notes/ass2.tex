@@ -99,6 +99,10 @@
 }
 \makeatother
 
+\makeatletter
+\newcommand{\tpmod}[1]{{\@displayfalse\pmod{#1}}}
+\makeatother
+
 \newtheorem{theorem}{Theorem}
 
 \captionsetup[table]{position=bottom}   %% or below
@@ -136,8 +140,8 @@
 			\begin{lstlisting}[
 				language=json,
 				firstnumber=1,
-				caption={Miller-Rabin failues for numbers between 50 to 100},
-				label={miller-rabin-50-100}
+				caption={List of Numbers With and Without Primitive Roots},
+				label={lst:nums-primitive-roots}
 				]
 				{
 					"Numbers With Primitve Roots (A)": [ 
@@ -427,15 +431,102 @@
 	
 		\begin{enumerate}[(a)]
 			\item What is $\phi(n)$ in terms of $p$ and $q$?
+			\begin{flushleft}
+				\textbf{\textit{Answer:}} $\phi(n) = \phi(p.q) = \phi(p).\phi(q) = (p-1).(q-1)$
+			\end{flushleft}
 			\item Suppose $a$ is relatively prime to $pq$.  Explain why 
 			\begin{enumerate}[i.]
 				\item $a^{p-1} \equiv 1\mod p$
+				\begin{flushleft}
+					\textbf{\textit{Answer:}} Given $p$ and $q$ are distinct primes. Since $(a, pq) = 1$, $a$ is relatively prime to both $p$ and $q$. Hence by Fermat's Little Theorem, $a^{p-1} \equiv 1 mod p$.
+				\end{flushleft}
 				\item $a^{q-1} \equiv 1\mod q$
-				\item $m = lcm(p-1, q-1)$ is less than $(p-1)(q-1)$
+				\begin{flushleft}
+					\textbf{\textit{Answer:}} Given $p$ and $q$ are distinct primes. Since $(a, pq) = 1$, $a$ is relatively prime to both $p$ and $q$. Hence by Fermat's Little Theorem, $a^{q-1} \equiv 1 mod q$.
+				\end{flushleft}
+				\item \label{item:Q3biii} $m = lcm(p-1, q-1)$ is less than $(p-1)(q-1)$ 
+				\begin{flushleft}
+					\textbf{\textit{Answer:}} Since both $p$ and $q$ are odd primes, $p-1$ and $q-1$ are even. Let $p - 1 = 2j$ and $q - 1 = 2k$. Then $(p-1, q-1) = (2j, 2k) = 2(j, k)$. We can see that there will be a factor of $2$ at a minimum when number are even. LCM is given by $lcm(p - 1, q - 1) = \frac{(p-1)(q-1)}{gcd(p-1, q-1)}$, which means $m = lcm(p-1, q-1)$ equals $(p-1)(q-1)$ only when $gcd(p-1, q-1) = 1$. But here we have $gcd > 1$ and hence $m = lcm(p-1, q-1) < (p-1)(q-1)$
+				\end{flushleft}
 				\item $a^m \equiv 1 \mod (p-1)(q-1)$
+				\begin{flushleft}
+					\textbf{\textit{Answer:}}
+				\end{flushleft}
 			\end{enumerate}
-			\item Hence explain why numbers of the form n have no primitive roots. \href{https://math.stackexchange.com/questions/162157/for-q-p-odd-primes-such-that-p-neq-q-there-is-not-primitive-root-modulo}{check it out}
+			\item Hence explain why numbers of the form n have no primitive roots.
+			\begin{flushleft}
+				\textbf{\textit{Answer:}} Suppose $n = p.q$, where $p$ and $q$ are primes has primitive roots. This means there exists $a \in (\mathbb{Z}/pq\mathbb{Z})^\times$ such that $ord_{pq}(a)$ will be $m = \phi(n) = \phi(p.q) = (p - 1).(q - 1)$. Also $gcd(a, pq) = 1$.
+				\bigbreak
+				
+				Also, 
+				\begin{align}
+					& a^m \equiv 1\tpmod{pq} \\
+					& \Longleftrightarrow a^m \equiv 1\tpmod p, a^m \equiv 1\tpmod q (\text{By Chinese Remainder Theorem})\\ 
+					& \Longleftrightarrow m \equiv 0\tpmod{p-1}, m \equiv 0\tpmod{q-1}\\
+					&(\text{Because by Fermat\'s Little Theorem, $a^{p-1} \equiv 1 \tpmod{p}$ and $a^{q-1} \equiv 1\tpmod{q}$})\nonumber\\
+					& \Longleftrightarrow (p-1)|m, (q-1)|m \\
+					& \Longleftrightarrow lcm(p-1, q-1)|m
+				\end{align}
+				This means that $ord_p(a) = lcm(p-1, q-1) < (p-1)(q-1)$ as we have seen in \ref{item:Q3biii} and it's a contradiction from our initial assumption that  $n = p.q$ has primitive roots.
+			\end{flushleft}
+			
 			\item Show that all numbers of the form $n = pq$ (p and q both odd primes) in your range are included in set B.
+			\begin{flushleft}
+				\textbf{\textit{Answer:}}
+				\begin{lstlisting}[
+					language=json,
+					firstnumber=1,
+					caption={List of Numbers Without Primitive Roots},
+					label={lst:nums-without-primitive-roots}
+					]
+					{
+						"Numbers Without Primitive Roots (B)": [
+						"600","602","603","604","605","606","608","609",
+						"610","611","612","615","616","618","620","621",
+						"623","624","627","628","629","630","632","633",
+						"635","636","637","638","639","640","642","644",
+						"645","646","648","649","650","651","652","654",
+						"655","656","657","658","660","663","664","665",
+						"666","667","668","669","670","671","672","675",
+						"676","678","679","680","681","682","684","685",
+						"687","688","689","690","692","693","695","696",
+						"697","699","700","702","703","704","705","707",
+						"708","710","711","712","713","714","715","716",
+						"717","720","721","723","724","725","726","728",
+						"730","731","732","735","736","737","738","740",
+						"741","742","744","745","747","748","749","750"
+						]
+					}
+				\end{lstlisting}
+				
+				\medbreak
+				And the below table shows the list of numbers of th form $p.q$ in the range $600 \le n \le 750$, which is a subset of the set $B$ above \ref{lst:nums-without-primitive-roots}.
+				\begin{table}[H]
+					\centering
+					\begin{tabular}{|l|l|l|l|}
+						\hline
+						Number & Form & Number & Form\\ \hline
+						611 & $13^1\times47^1$ & 687 & $3^1\times229^1$ \\ \hline
+						623 & $7^1\times89^1$ & 689 & $13^1\times53^1$ \\ \hline
+						629 & $17^1\times37^1$ & 695 & $5^1\times139^1$ \\ \hline
+						633 & $3^1\times211^1$ & 697 & $17^1\times41^1$ \\ \hline
+						635 & $5^1\times127^1$ & 699 & $3^1\times233^1$ \\ \hline
+						649 & $11^1\times59^1$ & 703 & $19^1\times37^1$ \\ \hline
+						655 & $5^1\times131^1$ & 707 & $7^1\times101^1$ \\ \hline
+						667 & $23^1\times29^1$ & 713 & $23^1\times31^1$ \\ \hline
+						669 & $3^1\times223^1$ & 717 & $3^1\times239^1$ \\ \hline
+						671 & $11^1\times61^1$ & 721 & $7^1\times103^1$ \\ \hline
+						679 & $7^1\times97^1$ & 723 & $3^1\times241^1$ \\ \hline
+						681 & $3^1\times227^1$ & 731 & $17^1\times43^1$ \\ \hline
+						685 & $5^1\times137^1$ & 737 & $11^1\times67^1$ \\ \hline
+						-   & -                & 745 & $5^1\times149^1$ \\ \hline
+						-   & -                & 749 & $7^1\times107^1$ \\ \hline
+					\end{tabular}
+					\caption{Numbers of the form $p.q$}
+					\label{table:number-p.q-without-primitive-roots}
+				\end{table}
+			\end{flushleft}
+			
 		\end{enumerate}
 		\item Use the BabyStepsGiantSteps algorithm to find discrete logarithms x of b mod n for the primitive root a for each of the two examples assigned to you in the table below. Verify that your answer is correct by calculating $a^x \mod m$ by hand using the method of modular exponentiation.
 		\item Use the Pohlig Helmann algorithm to find in the cyclic group of order n with the generating element a for both the examples assigned to you below. Verify your answer in Maple.
