@@ -37,7 +37,7 @@ impl GcdTestTable {
     }
 }
 
-#[derive(Tabled, Serialize, Deserialize)]
+#[derive(Debug, Tabled, Serialize, Deserialize)]
 #[tabled(rename_all = "PascalCase")]
 pub struct NumFactorTable {
     number: String,

@@ -38,7 +38,7 @@ use utils::findr;
 
 use crate::{
     display::MillerRabinJson,
-    presets::NumCategory,
+    presets::{search_nums_with_primitive_roots, NumCategory},
     primality::{is_prime_trial_division_parallel, AksSteps},
     prime_factors::PrimeFactors,
     utils::modular_pow,
@@ -302,19 +302,9 @@ fn main() {
             PrimitiveRootsCommands::SearchNumsWithPrimitiveRoots(r) => {
                 let start = r.start;
                 let end = r.end;
-                let mut primes = vec![BigInt::from(2u64)];
 
-                let mut nums_with_prim_roots: Vec<String> = Vec::new();
-                let mut nums_without_no_prim_roots: Vec<String> = Vec::new();
-
-                for i in range_inclusive(start, end) {
-                    let prim_roots_i = groups_modulo_n::primitive_roots_trial_n_error(&i);
-                    if prim_roots_i.len() > 0 {
-                        nums_with_prim_roots.push(i.to_string());
-                    } else {
-                        nums_without_no_prim_roots.push(i.to_string());
-                    }
-                }
+                let (nums_with_prim_roots, nums_without_no_prim_roots) =
+                    search_nums_with_primitive_roots(start, end);
 
                 println!(
                     "{}",
@@ -380,6 +370,33 @@ fn main() {
                 }
 
                 println!("{}", serde_json::to_string_pretty(&result).unwrap());
+            }
+            PrimitiveRootsCommands::Ass2Question3d(s) => {
+                let start = s.start;
+                let end = s.end;
+
+                let (_, nums_without_no_prim_roots) =
+                    search_nums_with_primitive_roots(start.clone(), end.clone());
+
+                let num_pfactors =
+                    list_prime_factors_in_range(&start, &end, NumCategory::CompositesPQ);
+
+                let mut num_map: HashMap<String, Vec<(String, String)>> = HashMap::new();
+                for (num, factor) in num_pfactors.1 {
+                    if let Ok(_) = nums_without_no_prim_roots.binary_search(&num.to_string()) {
+                        let v: Vec<(String, String)> = factor
+                            .iter()
+                            .map(|(i, j)| (i.to_string(), j.to_string()))
+                            .collect::<Vec<(String, String)>>();
+                        num_map.insert(num.to_string(), v);
+                    }
+                }
+
+                println!(
+                    "{}",
+                    serde_json::to_string_pretty(&nums_without_no_prim_roots).unwrap()
+                );
+                println!("{}", serde_json::to_string_pretty(&num_map).unwrap());
             }
         },
     }

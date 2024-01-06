@@ -174,5 +174,8 @@ pub enum PrimitiveRootsCommands {
     Ass2Question2b(NumRangeArgs),
     
     /// Assignment 2 - Question 2(c)
-    Ass2Question2c(NumRangeArgs)
+    Ass2Question2c(NumRangeArgs),
+
+    /// Assignment 2 - Question 3(d)
+    Ass2Question3d(NumRangeArgs)
 }

@@ -3,6 +3,7 @@ use crate::{
         format_prime_factors_print, matrix_print, miller_rabin_output_print, GcdTestTable, Matrix,
         MillerRabinJson, MillerRabinTable, NumFactorTable,
     },
+    groups_modulo_n,
     primality::{
         gcd_test, is_prime_trial_division, is_prime_trial_division_parallel, miller_rabin_test,
     },
@@ -255,6 +256,23 @@ pub fn test_primality_miller_rabin(n: &BigInt) -> (String, Vec<String>) {
         }
     }
     (n_minus_one_form, non_witnesses)
+}
+
+pub fn search_nums_with_primitive_roots(start: BigInt, end: BigInt) -> (Vec<String>, Vec<String>) {
+    let mut primes = vec![BigInt::from(2u64)];
+
+    let mut nums_with_prim_roots: Vec<String> = Vec::new();
+    let mut nums_without_no_prim_roots: Vec<String> = Vec::new();
+
+    for i in range_inclusive(start, end) {
+        let prim_roots_i = groups_modulo_n::primitive_roots_trial_n_error(&i);
+        if prim_roots_i.len() > 0 {
+            nums_with_prim_roots.push(i.to_string());
+        } else {
+            nums_without_no_prim_roots.push(i.to_string());
+        }
+    }
+    (nums_with_prim_roots, nums_without_no_prim_roots)
 }
 
 #[cfg(test)]
