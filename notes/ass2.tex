@@ -749,158 +749,395 @@
 					$x_3 = x_2 + p^2.d_2 = 26 + 49 \times 4 = 222$  
 				\end{enumerate}
 				$x = 222$ is the logarithm we wanted.
+				\bigbreak
+				Below is the Maple Verification result:
+				\begin{mdframed}
+					
+					\begin{Maple Normal}
+						{$ \displaystyle G ={\{x^{i}| 0\le i \le 342,x^{342}=1\}} $}
+					\end{Maple Normal}
+					\begin{Maple Normal}
+						{$ \displaystyle \gcd (11,343)=1,x^{11}\mathit{generates} \mathit{the} \mathit{Group} . $}
+					\end{Maple Normal}
+					\mapleinput
+					{$ \displaystyle p \coloneqq 7;e \coloneqq 3;g \coloneqq x^{11};h \coloneqq x^{41}; $}
+					
+					% \mapleresult
+					\begin{dmath*}
+						p \coloneqq 7
+					\end{dmath*}
+					\vspace{-\bigskipamount}
+					% \mapleresult
+					\begin{dmath*}
+						e \coloneqq 3
+					\end{dmath*}
+					\vspace{-\bigskipamount}
+					% \mapleresult
+					\begin{dmath*}
+						g \coloneqq x^{11}
+					\end{dmath*}
+					\vspace{-\bigskipamount}
+					% \mapleresult
+					\begin{dmath}\label{(1)}
+						h \coloneqq x^{41}
+					\end{dmath}
+					\begin{Maple Normal}
+						Step1:
+					\end{Maple Normal}
+					\mapleinput
+					{$ \displaystyle \mathit{x0} \coloneqq 0; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(2)}
+						\mathit{x0} \coloneqq 0
+					\end{dmath}
+					\mapleinput
+					{$ \displaystyle s \coloneqq x^{11\cdot 49\,\mod \,343};\,\mathit{h0} \coloneqq x^{41\cdot 49\,\mod \,343}; $}
+					
+					% \mapleresult
+					\begin{dmath*}
+						s \coloneqq x^{196}
+					\end{dmath*}
+					\vspace{-\bigskipamount}
+					% \mapleresult
+					\begin{dmath}\label{(3)}
+						\mathit{h0} \coloneqq x^{294}
+					\end{dmath}
+					\begin{Maple Normal}
+						{$ \displaystyle \mathit{Searching} \boldsymbol{\mathrm{for}}\mathit{d0} ;\mathit{d0} =5\mathit{satisfies} s^{\mathit{d0}}=\mathit{h0}  $}
+					\end{Maple Normal}
+					\mapleinput
+					{$ \displaystyle \mathit{d0} \coloneqq 5; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(4)}
+						\mathit{d0} \coloneqq 5
+					\end{dmath}
+					\mapleinput
+					{$ \displaystyle x^{196\cdot 5\,\mod \,343}; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(5)}
+						x^{294}
+					\end{dmath}
+					\mapleinput
+					{$ \displaystyle \mathit{x1} \coloneqq \mathit{x0} +p^{0}\cdot \mathit{d0} ; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(6)}
+						\mathit{x1} \coloneqq 5
+					\end{dmath}
+					\begin{Maple Normal}
+						Step 2:
+					\end{Maple Normal}
+					\mapleinput
+					{$ \displaystyle \mathit{h1} \coloneqq x^{\mathit{(-55+41)}\cdot 7\,\mod \,343}; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(7)}
+						\mathit{h1} \coloneqq x^{245}
+					\end{dmath}
+					\begin{Maple Normal}
+						{$ \displaystyle \mathit{Searching} \boldsymbol{\mathrm{for}}\mathit{d1} ;\mathit{d1} =3\mathit{satisfies} s^{\mathit{d1}}=\mathit{h1}  $}
+					\end{Maple Normal}
+					\mapleinput
+					{$ \displaystyle \mathit{d1} \coloneqq 3; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(8)}
+						\mathit{d1} \coloneqq 3
+					\end{dmath}
+					\mapleinput
+					{$ \displaystyle x^{196\cdot 3\,\mod \,343}; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(9)}
+						x^{245}
+					\end{dmath}
+					\mapleinput
+					{$ \displaystyle \mathit{x2} \coloneqq \mathit{x1} +p^{1}\cdot \mathit{d1} ; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(10)}
+						\mathit{x2} \coloneqq 26
+					\end{dmath}
+					\begin{Maple Normal}
+						Step 3:
+					\end{Maple Normal}
+					\mapleinput
+					{$ \displaystyle \mathit{h2} \coloneqq x^{-286+41\,\mod \,343}; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(11)}
+						\mathit{h2} \coloneqq x^{98}
+					\end{dmath}
+					\begin{Maple Normal}
+						{$ \displaystyle \mathit{Searching} \boldsymbol{\mathrm{for}}\mathit{d2} ;\mathit{d2} =4\mathit{satisfies} s^{\mathit{d2}}=\mathit{h2}  $}
+					\end{Maple Normal}
+					\mapleinput
+					{$ \displaystyle \mathit{d2} \coloneqq 4; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(12)}
+						\mathit{d2} \coloneqq 4
+					\end{dmath}
+					\mapleinput
+					{$ \displaystyle x^{196\cdot 4\,\mod \,343}; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(13)}
+						x^{98}
+					\end{dmath}
+					\mapleinput
+					{$ \displaystyle \mathit{x3} \coloneqq \mathit{x2} +p^{2}\cdot \mathit{d2} ; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(14)}
+						\mathit{x3} \coloneqq 222
+					\end{dmath}
+					\begin{Maple Normal}
+						{$ \displaystyle \mathit{x3} \mathit{is} \mathit{our} \mathit{logarithm}  $}
+					\end{Maple Normal}
+				\end{mdframed}
+				
+				\bigbreak
+				\item $a = x^{13}, b = x^{157}, n = 3267$ \bigbreak
+				\textbf{\textit{Answer:}} $n = 3267 = 3^3 \times 11^2 = 27 \times 121$\\
+				We will write G as $G = \{x^i | 0 \le i \le 3266, x^{342} = 1\}$. Also $x^{13}$ generates $G$ as $(13, 3267) = 1$.\\
+				
+				\begin{enumerate}[Step 1.]
+					\item 
+					\begin{align*}
+						& g1 = g^{121} = x^{13 \times 121 \tpmod{27}} = x^7 \\
+						& h1 = h^{121} = x^{157 \times 121 \tpmod{27}} = x^{16}\\					
+					\end{align*}
+					We will need to find the logarithm of $h1 = x^{16}$ in the cyclic group of order $27$ generated by $g1 = x^7$. With some trial and error, we get $log x^{16} = 10$, i.e., $x^{7 \time 10\tpmod{27}} = x^{16}$. Hence we get the below congruence:
+					
+					\begin{equation}\label{eqn:cng1}
+						x \equiv 10 \tpmod{27}
+					\end{equation}
+					\item 
+					\begin{align*}
+						g2 = g^{27} = x^{13 \times 27 \tpmod{121}} = x^{109} \\
+						h2 = h^{27} = x^{157 \times 27 \tpmod{121}} = x^{4} \\
+					\end{align*}
+					Let's find the logarithm of $h2 = x^4$ in the cyclic group of order $121$ generated by $g2 = x^{109}$. With some trial and error, we get $log x^4 = 40$, i.e., $x^{109 \times 40 \tpmod{121}} = 4$. We get the following congruence: 
+					\begin{equation}\label{eqn:cng2}
+						x \equiv 40 \tpmod{121}
+					\end{equation}
+					\item We will now need to solve the congruences \ref{eqn:cng1} and \ref{eqn:cng2}. We will employ Chinese Remainder Theorem for that. Suppose we have a system of congruences as below:
+					\begin{equation}
+						\begin{cases}
+							x & \equiv b_1 \tpmod{n_1}\\
+							x & \equiv b_2 \tpmod{n_2}\\
+							x & \equiv b_3 \tpmod{n_3}\\
+							  &. \\
+							  &. \\
+							  &. \\
+							x & \equiv b_k \tpmod{n_k}\\
+						\end{cases}       
+					\end{equation}
+					CRT states that the above congruence has a unique modulo $N = n_1.n_2.n_3...n_k$ solution if each $n_i$ are pairwise coprime and is given by:
+					\begin{align*}
+						x &= \sum_{i=1}^{k} b_ie_i(N/n_i) \\
+						&\text{where } e_i = (N/n_i)^{-1}\tpmod{n_i} \\
+					\end{align*}
+					Restating our equations below:
+					\begin{equation}
+						\begin{cases}
+							x & \equiv 10 \tpmod{27}\\
+							x & \equiv 40 \tpmod{121}\\
+						\end{cases}       
+					\end{equation}
+					\begin{align*}
+						&n_1 = 27, n_2 = 121\\
+						&N = n = 27 \time 121 = 3267 \\
+						&b_1 = 10, b_2 = 40 \\
+						&e_1 = 121^{-1} \tpmod{27} = 25\\
+						&e_2 = 27^{-1} \tpmod{121} = 9\\
+						&\therefore x = 10 \times 25 \times 121 + 40 \times 9 \times 27 = 766\tpmod{3267} 
+					\end{align*}
+				\end{enumerate}
+				$x = 766$ is the logarithm we wanted.
+				\bigbreak
+				Below is the Maple Verification result:
+				\begin{mdframed}
+					\begin{Maple Normal}
+						{$ \displaystyle \textit{find\_log} \coloneqq \boldsymbol{\mathrm{proc}}(n ,a ,m)
+							\\
+							\boldsymbol{\mathrm{description}}\text{``Find log of a''};
+							\\
+							\boldsymbol{\mathrm{for}}i \boldsymbol{\mathrm{from}}1\boldsymbol{\mathrm{to}}n 
+							\\
+							\boldsymbol{\mathrm{do}}
+							\\
+							\boldsymbol{\mathrm{if}}a \cdot i \boldsymbol{\mod}n =m 
+							\\
+							\boldsymbol{\mathrm{then}}
+							\\
+							\boldsymbol{\mathrm{return}}i ;
+							\\
+							\boldsymbol{\mathrm{fi}};
+							\\
+							\boldsymbol{\mathrm{end}}\boldsymbol{\mathrm{do}};
+							\\
+							\boldsymbol{\mathrm{end}}\boldsymbol{\mathrm{proc}}; $}
+					\end{Maple Normal}
+					
+					{$ \displaystyle  $}\begin{lstlisting}
+						> 
+					\end{lstlisting}
+					\begin{Maple Normal}
+						
+					\end{Maple Normal}
+					\mapleinput
+					{$ \displaystyle \mathit{ifactor} (3267) $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(1)}
+						\left(3\right)^{3} \left(11\right)^{2}
+					\end{dmath}
+					
+					{$ \displaystyle n \coloneqq 3^{3}\cdot 11^{2}; $}
+					{$ \displaystyle \, $}% \mapleresult
+					\begin{dmath}\label{(2)}
+						n \coloneqq 3267
+					\end{dmath}
+					\begin{Maple Normal}
+						g = x^13, h = x^157, n = 3267; <g> generatees the group of order 3267;
+						
+						
+						Steps 1:
+						
+						
+					\end{Maple Normal}
+					\mapleinput
+					{$ \displaystyle \mathit{g1} \coloneqq x^{13\cdot 11^{2}\mod \,27}; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(3)}
+						\mathit{g1} \coloneqq x^{7}
+					\end{dmath}
+					\mapleinput
+					{$ \displaystyle \mathit{h1} \coloneqq x^{157\cdot 11^{2}\mod \,27}; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(4)}
+						\mathit{h1} \coloneqq x^{16}
+					\end{dmath}
+					\begin{Maple Normal}
+						We need to find the log of h1 = x^16 in the cyclic group of order 27 generated by g1 = x^7. By trial and error, we get log(h1) = 10
+					\end{Maple Normal}
+					\begin{Maple Normal}
+						
+					\end{Maple Normal}
+					
+					{$ \displaystyle \textit{find\_log} (27,7,16); $}\begin{lstlisting}
+						> 
+					\end{lstlisting}
+					% \mapleresult
+					\begin{dmath}\label{(5)}
+						10
+					\end{dmath}
+					\begin{Maple Normal}
+						So our first congruence is x1 = 10 mod 27 --- (1)
+					\end{Maple Normal}
+					\begin{Maple Normal}
+						
+					\end{Maple Normal}
+					\begin{Maple Normal}
+						Step 2:
+					\end{Maple Normal}
+					\begin{Maple Normal}
+						
+					\end{Maple Normal}
+					\mapleinput
+					{$ \displaystyle \mathit{g2} \coloneqq x^{13\cdot 3^{3}\mod \,121}; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(6)}
+						\mathit{g2} \coloneqq x^{109}
+					\end{dmath}
+					\mapleinput
+					{$ \displaystyle \mathit{h2} \coloneqq x^{157\cdot 3^{3}\mod \,121}; $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(7)}
+						\mathit{h2} \coloneqq x^{4}
+					\end{dmath}
+					\begin{Maple Normal}
+						We need to find the log of h2 = x^4 in the cyclic group of order 121 generated by g2 = x^109; using the proc find\_log above, it is = 118
+					\end{Maple Normal}
+					\mapleinput
+					{$ \displaystyle \textit{find\_log} (121,109,4); $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(8)}
+						40
+					\end{dmath}
+					\begin{Maple Normal}
+						We get our second congruence as: x2 = 40 mod 121 --- (2)
+					\end{Maple Normal}
+					\begin{Maple Normal}
+						
+					\end{Maple Normal}
+					\begin{Maple Normal}
+						Hence  we need to find the unique solution to x = 10 mod 27, and x = 40 mod 121 using Chinese Remainder Theorem.
+					\end{Maple Normal}
+					\begin{Maple Normal}
+						
+					\end{Maple Normal}
+					\mapleinput
+					{$ \displaystyle \mathit{with} (\mathit{NumberTheory}); $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(9)}
+						\left[\mathit{AreCoprime} ,\mathit{CalkinWilfSequence} ,\mathit{CarmichaelLambda} ,
+						\\
+						\mathit{ChineseRemainder} ,\mathit{ContinuedFraction} ,
+						\\
+						\mathit{ContinuedFractionPolynomial} ,\mathit{CyclotomicPolynomial} ,
+						\\
+						\mathit{Divisors} ,\mathit{FactorNormEuclidean} ,\mathit{HomogeneousDiophantine} ,
+						\\
+						\mathit{ImaginaryUnit} ,\mathit{InhomogeneousDiophantine} ,\mathit{IntegralBasis} ,
+						\\
+						\mathit{InverseTotient} ,\mathit{IsCyclotomicPolynomial} ,\mathit{IsMersenne} ,
+						\\
+						\mathit{IsSquareFree} ,\mathit{IthFermat} ,\mathit{IthMersenne} ,\mathit{JacobiSymbol} ,
+						\\
+						\mathit{JordanTotient} ,\mathit{KroneckerSymbol} ,\mathit{Landau} ,\mathit{LargestNthPower} ,
+						\\
+						\mathit{LegendreSymbol} ,M\ddot{o}\mathit{bius} ,\mathit{ModExtendedGCD} ,\mathit{ModularLog} ,
+						\\
+						\mathit{ModularRoot} ,\mathit{ModularSquareRoot} ,\mathit{Moebius} ,
+						\\
+						\mathit{MultiplicativeOrder} ,M\ddot{o}\mathit{bius} ,\mathit{NearestLatticePoint} ,
+						\\
+						\mathit{NextSafePrime} ,\mathit{NumberOfIrreduciblePolynomials} ,
+						\\
+						\mathit{NumberOfPrimeFactors} ,\Omega ,\Phi ,\mathit{PrimeCounting} ,\mathit{PrimeFactors} ,
+						\\
+						\mathit{PrimitiveRoot} ,\mathit{PseudoPrimitiveRoot} ,\mathit{QuadraticResidue} ,
+						\\
+						\mathit{Radical} ,\mathit{RepeatingDecimal} ,\mathit{RootsOfUnity} ,
+						\\
+						\mathit{SimplestRational} ,\mathit{SumOfDivisors} ,\mathit{SumOfSquares} ,\mathit{ThueSolve} ,
+						\\
+						\mathit{Totient} ,\lambda ,\mu ,\phi ,\mathrm{pi},\sigma ,\tau ,\varphi \right]
+					\end{dmath}
+					\begin{Maple Normal}
+						
+					\end{Maple Normal}
+					\mapleinput
+					{$ \displaystyle \mathit{ChineseRemainder} ([10,40],[27,121]); $}
+					
+					% \mapleresult
+					\begin{dmath}\label{(10)}
+						766
+					\end{dmath}
+				\end{mdframed}
 			\end{enumerate}
-			
-			\bigbreak
-			Below is the Maple Verification result:
-			\begin{mdframed}
-
-			\begin{Maple Normal}
-				{$ \displaystyle G ={\{x^{i}| 0\le i \le 342,x^{342}=1\}} $}
-			\end{Maple Normal}
-			\begin{Maple Normal}
-				{$ \displaystyle \gcd (11,343)=1,x^{11}\mathit{generates} \mathit{the} \mathit{Group} . $}
-			\end{Maple Normal}
-			\mapleinput
-			{$ \displaystyle p \coloneqq 7;e \coloneqq 3;g \coloneqq x^{11};h \coloneqq x^{41}; $}
-			
-			% \mapleresult
-			\begin{dmath*}
-				p \coloneqq 7
-			\end{dmath*}
-			\vspace{-\bigskipamount}
-			% \mapleresult
-			\begin{dmath*}
-				e \coloneqq 3
-			\end{dmath*}
-			\vspace{-\bigskipamount}
-			% \mapleresult
-			\begin{dmath*}
-				g \coloneqq x^{11}
-			\end{dmath*}
-			\vspace{-\bigskipamount}
-			% \mapleresult
-			\begin{dmath}\label{(1)}
-				h \coloneqq x^{41}
-			\end{dmath}
-			\begin{Maple Normal}
-				Step1:
-			\end{Maple Normal}
-			\mapleinput
-			{$ \displaystyle \mathit{x0} \coloneqq 0; $}
-			
-			% \mapleresult
-			\begin{dmath}\label{(2)}
-				\mathit{x0} \coloneqq 0
-			\end{dmath}
-			\mapleinput
-			{$ \displaystyle s \coloneqq x^{11\cdot 49\,\mod \,343};\,\mathit{h0} \coloneqq x^{41\cdot 49\,\mod \,343}; $}
-			
-			% \mapleresult
-			\begin{dmath*}
-				s \coloneqq x^{196}
-			\end{dmath*}
-			\vspace{-\bigskipamount}
-			% \mapleresult
-			\begin{dmath}\label{(3)}
-				\mathit{h0} \coloneqq x^{294}
-			\end{dmath}
-			\begin{Maple Normal}
-				{$ \displaystyle \mathit{Searching} \boldsymbol{\mathrm{for}}\mathit{d0} ;\mathit{d0} =5\mathit{satisfies} s^{\mathit{d0}}=\mathit{h0}  $}
-			\end{Maple Normal}
-			\mapleinput
-			{$ \displaystyle \mathit{d0} \coloneqq 5; $}
-			
-			% \mapleresult
-			\begin{dmath}\label{(4)}
-				\mathit{d0} \coloneqq 5
-			\end{dmath}
-			\mapleinput
-			{$ \displaystyle x^{196\cdot 5\,\mod \,343}; $}
-			
-			% \mapleresult
-			\begin{dmath}\label{(5)}
-				x^{294}
-			\end{dmath}
-			\mapleinput
-			{$ \displaystyle \mathit{x1} \coloneqq \mathit{x0} +p^{0}\cdot \mathit{d0} ; $}
-			
-			% \mapleresult
-			\begin{dmath}\label{(6)}
-				\mathit{x1} \coloneqq 5
-			\end{dmath}
-			\begin{Maple Normal}
-				Step 2:
-			\end{Maple Normal}
-			\mapleinput
-			{$ \displaystyle \mathit{h1} \coloneqq x^{\mathit{(-55+41)}\cdot 7\,\mod \,343}; $}
-			
-			% \mapleresult
-			\begin{dmath}\label{(7)}
-				\mathit{h1} \coloneqq x^{245}
-			\end{dmath}
-			\begin{Maple Normal}
-				{$ \displaystyle \mathit{Searching} \boldsymbol{\mathrm{for}}\mathit{d1} ;\mathit{d1} =3\mathit{satisfies} s^{\mathit{d1}}=\mathit{h1}  $}
-			\end{Maple Normal}
-			\mapleinput
-			{$ \displaystyle \mathit{d1} \coloneqq 3; $}
-			
-			% \mapleresult
-			\begin{dmath}\label{(8)}
-				\mathit{d1} \coloneqq 3
-			\end{dmath}
-			\mapleinput
-			{$ \displaystyle x^{196\cdot 3\,\mod \,343}; $}
-			
-			% \mapleresult
-			\begin{dmath}\label{(9)}
-				x^{245}
-			\end{dmath}
-			\mapleinput
-			{$ \displaystyle \mathit{x2} \coloneqq \mathit{x1} +p^{1}\cdot \mathit{d1} ; $}
-			
-			% \mapleresult
-			\begin{dmath}\label{(10)}
-				\mathit{x2} \coloneqq 26
-			\end{dmath}
-			\begin{Maple Normal}
-				Step 3:
-			\end{Maple Normal}
-			\mapleinput
-			{$ \displaystyle \mathit{h2} \coloneqq x^{-286+41\,\mod \,343}; $}
-			
-			% \mapleresult
-			\begin{dmath}\label{(11)}
-				\mathit{h2} \coloneqq x^{98}
-			\end{dmath}
-			\begin{Maple Normal}
-				{$ \displaystyle \mathit{Searching} \boldsymbol{\mathrm{for}}\mathit{d2} ;\mathit{d2} =4\mathit{satisfies} s^{\mathit{d2}}=\mathit{h2}  $}
-			\end{Maple Normal}
-			\mapleinput
-			{$ \displaystyle \mathit{d2} \coloneqq 4; $}
-			
-			% \mapleresult
-			\begin{dmath}\label{(12)}
-				\mathit{d2} \coloneqq 4
-			\end{dmath}
-			\mapleinput
-			{$ \displaystyle x^{196\cdot 4\,\mod \,343}; $}
-			
-			% \mapleresult
-			\begin{dmath}\label{(13)}
-				x^{98}
-			\end{dmath}
-			\mapleinput
-			{$ \displaystyle \mathit{x3} \coloneqq \mathit{x2} +p^{2}\cdot \mathit{d2} ; $}
-			
-			% \mapleresult
-			\begin{dmath}\label{(14)}
-				\mathit{x3} \coloneqq 222
-			\end{dmath}
-			\begin{Maple Normal}
-				{$ \displaystyle \mathit{x3} \mathit{is} \mathit{our} \mathit{logarithm}  $}
-			\end{Maple Normal}
-			\end{mdframed}	
 		\end{flushleft}
 		\item Use the Pollard Rho method to verify your answer to the first example you were allocated in Question 4. 
 		
