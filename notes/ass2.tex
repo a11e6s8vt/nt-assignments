@@ -683,7 +683,32 @@
 		\end{flushleft}
 		\item Use the Pohlig Helmann algorithm to find in the cyclic group of order n with the generating element a for both the examples assigned to you below. Verify your answer in Maple.
 		\begin{flushleft}
-			\textbf{\textit{Answer:}} 
+			\begin{enumerate}
+				\item $a = x^{11}, b = x^{41}, n = 343$ \\ \bigbreak
+				\textbf{\textit{Answer:}} $n = 343 = 7^3$\\
+				We will write G as $G = \{x^i | 0 \le i \le 342, x^{342} = 1\}$. Also $x^{11}$ generates $G$ as $(11, 343) = 1$.\\
+				
+				So we set $p = 7, e = 3, g = x^{11}, h = x^{41}$
+				\begin{enumerate}[Step 1.]
+					\item Setting $x_0 = 0$ and let $n = p^e, p^{e-1} = p^2 = 49 $\\
+					When $k = 0$:\\
+					$s = g^{p^{e-1}} = g^{n/p} = (x^{11})^{49} = x^{539} = x^{196}$\\
+					$h_0 = (g^{-x_0} \times h)^{p^{e-1}} = h^{49} = (x^{41})^{49} = x^{294}$ \\
+					Since $p = 7$, test for $d_0 \in \{0, 1, 2, 3, 4, 5, 6\}$ satisfying $s^{d_0} = h_0$\\
+					$\therefore$, for $d_0 = 5$, we have $s^{d_0} = h_0$, so $d_0 = 5$\\
+					$x_1 = x_0 + p^0.d_0 = 0 + 1.5 = 5$
+					\item When $k = 1$ we have $x_1 = 5, p^{e-2} = p^1 = 7$\\
+					$h_1 = (g^{-x_1}\times h)^{p^{e-2}} = (g^{-5}\times h)^7 = (x^{-55} \times x^{41})^7 = x^{-98} = x^{245}$\\
+					Searching for $d_1 \in \{0, 1, 2, 3, 4, 5, 6\}$ satisfying $s^{d_1} = h_1$\\
+					$\therefore, r = 3$ satisfies the condition. So $d_1 = 3$\\
+					$x_2 = x_1 + p^1.d_1 = 5 + 7 \times 3 = 26$\\
+					\item When $k = 2$, we have $x_2 = 26, p^{e-3} = 1$\\
+					$h_2 = (g^{-x_2} \times h)p^{e-3} = (g^{-26} \times h)^1 = x^{-286} \times x^{41} = x^{-245} = x^{98}$\\
+					Searching for $d_2$, we get $d_2 = 4$\\
+					$x_3 = x_2 + p^2.d_2 = 26 + 49 \times 4 = 222$  
+				\end{enumerate}
+				$x = 222$ is the logarithm we wanted.
+			\end{enumerate}
 		\end{flushleft}
 		\item Use the Pollard Rho method to verify your answer to the first example you were allocated in Question 4. 
 		
