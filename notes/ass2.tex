@@ -20,7 +20,7 @@
 \usepackage{fontawesome5}
 \usepackage{adjustbox}
 \usepackage{tabularx, makecell, booktabs}%
-
+\usepackage{maple}
 
 %New colors defined below
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -709,6 +709,102 @@
 				\end{enumerate}
 				$x = 222$ is the logarithm we wanted.
 			\end{enumerate}
+			
+			\begin{verbatim}
+				
+          "G = {x^(i ) | 0 <= i <= 342, x^(342) = 1}"
+
+"gcd(11, 343) = 1, x^(11) generates the Group."
+
+NULL;
+p := 7;
+e := 3;
+g := x^11;
+h := x^41;
+p := 7
+
+e := 3
+
+11
+g := x  
+
+41
+h := x  
+
+
+Step1:
+
+x0 := 0;
+x0 := 0
+
+s := x^(11*49 mod 343);
+h0 := x^(41*49 mod 343);
+196
+s := x   
+
+294
+h0 := x   
+
+"Searching for d0; d0 = 5 satisfies s^(d0) = h0 "
+
+NULL;
+d0 := 5;
+d0 := 5
+
+x^(196*5 mod 343);
+294
+x   
+
+NULL;
+x1 := x0 + p^0*d0;
+x1 := 5
+
+Step 2:
+
+h1 := x^((7*(-55 + 41)) mod 343);
+245
+h1 := x   
+
+"Searching for d1; d1 = 3 satisfies s^(d1) = h1 "
+
+NULL;
+d1 := 3;
+d1 := 3
+
+x^(196*3 mod 343);
+245
+x   
+
+NULL;
+x2 := x1 + p^1*d1;
+x2 := 26
+
+Step 3:
+
+h2 := x^((-286 + 41) mod 343);
+98
+h2 := x  
+
+"Searching for d2; d2 = 4 satisfies s^(d2) = h2 "
+
+NULL;
+d2 := 4;
+d2 := 4
+
+x^(196*4 mod 343);
+98
+x  
+
+NULL;
+x3 := d2*p^2 + x2;
+x3 := 222
+
+"x3*is*our*logarithm"
+
+
+
+		\end{verbatim}
+				
 		\end{flushleft}
 		\item Use the Pollard Rho method to verify your answer to the first example you were allocated in Question 4. 
 		
