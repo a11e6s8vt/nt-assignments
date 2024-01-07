@@ -21,6 +21,20 @@
 \usepackage{adjustbox}
 \usepackage{tabularx, makecell, booktabs}%
 \usepackage{maple}
+\usepackage{breqn}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{maple}
+\usepackage[utf8]{inputenc}
+\usepackage[svgnames]{xcolor}
+\usepackage{breqn}
+\usepackage{verbatimbox,caption,float,lipsum}
+\usepackage{mdframed}
+\newfloat{Code}
+\captionsetup{Code}
 
 %New colors defined below
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -95,6 +109,14 @@
 	{]}{{{\color{delim}{]}}}}{1},
 }
 
+\lstnewenvironment{myverbatim}[1][]{%
+	\lstset{
+		basicstyle=\ttfamily,
+		frame=tb,
+		#1
+	}%
+}{}
+
 \makeatletter
 \newcommand{\github}[1]{%
 	\href{#1}{\faGithubSquare}%
@@ -129,12 +151,31 @@
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
-\mathchardef\mathcomma=\mathcode`,
 \newcommand{\roverline}[1]{\mathpalette\doroverline{#1}}
 \newcommand{\doroverline}[2]{\overline{#1#2}}
 
 \begin{document}
-	
+	\DefineParaStyle{Maple Bullet Item}
+	\DefineParaStyle{Maple Heading 1}
+	\DefineParaStyle{Maple Warning}
+	\DefineParaStyle{Maple Heading 4}
+	\DefineParaStyle{Maple Heading 2}
+	\DefineParaStyle{Maple Heading 3}
+	\DefineParaStyle{Maple Dash Item}
+	\DefineParaStyle{Maple Error}
+	\DefineParaStyle{Maple Title}
+	\DefineParaStyle{Maple Ordered List 1}
+	\DefineParaStyle{Maple Text Output}
+	\DefineParaStyle{Maple Ordered List 2}
+	\DefineParaStyle{Maple Ordered List 3}
+	\DefineParaStyle{Maple Normal}
+	\DefineParaStyle{Maple Ordered List 4}
+	\DefineParaStyle{Maple Ordered List 5}
+	\DefineCharStyle{Maple 2D Output}
+	\DefineCharStyle{Maple 2D Input}
+	\DefineCharStyle{Maple Maple Input}
+	\DefineCharStyle{Maple 2D Math}
+	\DefineCharStyle{Maple Hyperlink}
 	\maketitle
 	\section{Answers} \label{sec:Forces}
 	
@@ -710,101 +751,156 @@
 				$x = 222$ is the logarithm we wanted.
 			\end{enumerate}
 			
-			\begin{verbatim}
-				
-          "G = {x^(i ) | 0 <= i <= 342, x^(342) = 1}"
+			\bigbreak
+			Below is the Maple Verification result:
+			\begin{mdframed}
 
-"gcd(11, 343) = 1, x^(11) generates the Group."
-
-NULL;
-p := 7;
-e := 3;
-g := x^11;
-h := x^41;
-p := 7
-
-e := 3
-
-11
-g := x  
-
-41
-h := x  
-
-
-Step1:
-
-x0 := 0;
-x0 := 0
-
-s := x^(11*49 mod 343);
-h0 := x^(41*49 mod 343);
-196
-s := x   
-
-294
-h0 := x   
-
-"Searching for d0; d0 = 5 satisfies s^(d0) = h0 "
-
-NULL;
-d0 := 5;
-d0 := 5
-
-x^(196*5 mod 343);
-294
-x   
-
-NULL;
-x1 := x0 + p^0*d0;
-x1 := 5
-
-Step 2:
-
-h1 := x^((7*(-55 + 41)) mod 343);
-245
-h1 := x   
-
-"Searching for d1; d1 = 3 satisfies s^(d1) = h1 "
-
-NULL;
-d1 := 3;
-d1 := 3
-
-x^(196*3 mod 343);
-245
-x   
-
-NULL;
-x2 := x1 + p^1*d1;
-x2 := 26
-
-Step 3:
-
-h2 := x^((-286 + 41) mod 343);
-98
-h2 := x  
-
-"Searching for d2; d2 = 4 satisfies s^(d2) = h2 "
-
-NULL;
-d2 := 4;
-d2 := 4
-
-x^(196*4 mod 343);
-98
-x  
-
-NULL;
-x3 := d2*p^2 + x2;
-x3 := 222
-
-"x3*is*our*logarithm"
-
-
-
-		\end{verbatim}
-				
+			\begin{Maple Normal}
+				{$ \displaystyle G ={\{x^{i}| 0\le i \le 342,x^{342}=1\}} $}
+			\end{Maple Normal}
+			\begin{Maple Normal}
+				{$ \displaystyle \gcd (11,343)=1,x^{11}\mathit{generates} \mathit{the} \mathit{Group} . $}
+			\end{Maple Normal}
+			\mapleinput
+			{$ \displaystyle p \coloneqq 7;e \coloneqq 3;g \coloneqq x^{11};h \coloneqq x^{41}; $}
+			
+			% \mapleresult
+			\begin{dmath*}
+				p \coloneqq 7
+			\end{dmath*}
+			\vspace{-\bigskipamount}
+			% \mapleresult
+			\begin{dmath*}
+				e \coloneqq 3
+			\end{dmath*}
+			\vspace{-\bigskipamount}
+			% \mapleresult
+			\begin{dmath*}
+				g \coloneqq x^{11}
+			\end{dmath*}
+			\vspace{-\bigskipamount}
+			% \mapleresult
+			\begin{dmath}\label{(1)}
+				h \coloneqq x^{41}
+			\end{dmath}
+			\begin{Maple Normal}
+				Step1:
+			\end{Maple Normal}
+			\mapleinput
+			{$ \displaystyle \mathit{x0} \coloneqq 0; $}
+			
+			% \mapleresult
+			\begin{dmath}\label{(2)}
+				\mathit{x0} \coloneqq 0
+			\end{dmath}
+			\mapleinput
+			{$ \displaystyle s \coloneqq x^{11\cdot 49\,\mod \,343};\,\mathit{h0} \coloneqq x^{41\cdot 49\,\mod \,343}; $}
+			
+			% \mapleresult
+			\begin{dmath*}
+				s \coloneqq x^{196}
+			\end{dmath*}
+			\vspace{-\bigskipamount}
+			% \mapleresult
+			\begin{dmath}\label{(3)}
+				\mathit{h0} \coloneqq x^{294}
+			\end{dmath}
+			\begin{Maple Normal}
+				{$ \displaystyle \mathit{Searching} \boldsymbol{\mathrm{for}}\mathit{d0} ;\mathit{d0} =5\mathit{satisfies} s^{\mathit{d0}}=\mathit{h0}  $}
+			\end{Maple Normal}
+			\mapleinput
+			{$ \displaystyle \mathit{d0} \coloneqq 5; $}
+			
+			% \mapleresult
+			\begin{dmath}\label{(4)}
+				\mathit{d0} \coloneqq 5
+			\end{dmath}
+			\mapleinput
+			{$ \displaystyle x^{196\cdot 5\,\mod \,343}; $}
+			
+			% \mapleresult
+			\begin{dmath}\label{(5)}
+				x^{294}
+			\end{dmath}
+			\mapleinput
+			{$ \displaystyle \mathit{x1} \coloneqq \mathit{x0} +p^{0}\cdot \mathit{d0} ; $}
+			
+			% \mapleresult
+			\begin{dmath}\label{(6)}
+				\mathit{x1} \coloneqq 5
+			\end{dmath}
+			\begin{Maple Normal}
+				Step 2:
+			\end{Maple Normal}
+			\mapleinput
+			{$ \displaystyle \mathit{h1} \coloneqq x^{\mathit{(-55+41)}\cdot 7\,\mod \,343}; $}
+			
+			% \mapleresult
+			\begin{dmath}\label{(7)}
+				\mathit{h1} \coloneqq x^{245}
+			\end{dmath}
+			\begin{Maple Normal}
+				{$ \displaystyle \mathit{Searching} \boldsymbol{\mathrm{for}}\mathit{d1} ;\mathit{d1} =3\mathit{satisfies} s^{\mathit{d1}}=\mathit{h1}  $}
+			\end{Maple Normal}
+			\mapleinput
+			{$ \displaystyle \mathit{d1} \coloneqq 3; $}
+			
+			% \mapleresult
+			\begin{dmath}\label{(8)}
+				\mathit{d1} \coloneqq 3
+			\end{dmath}
+			\mapleinput
+			{$ \displaystyle x^{196\cdot 3\,\mod \,343}; $}
+			
+			% \mapleresult
+			\begin{dmath}\label{(9)}
+				x^{245}
+			\end{dmath}
+			\mapleinput
+			{$ \displaystyle \mathit{x2} \coloneqq \mathit{x1} +p^{1}\cdot \mathit{d1} ; $}
+			
+			% \mapleresult
+			\begin{dmath}\label{(10)}
+				\mathit{x2} \coloneqq 26
+			\end{dmath}
+			\begin{Maple Normal}
+				Step 3:
+			\end{Maple Normal}
+			\mapleinput
+			{$ \displaystyle \mathit{h2} \coloneqq x^{-286+41\,\mod \,343}; $}
+			
+			% \mapleresult
+			\begin{dmath}\label{(11)}
+				\mathit{h2} \coloneqq x^{98}
+			\end{dmath}
+			\begin{Maple Normal}
+				{$ \displaystyle \mathit{Searching} \boldsymbol{\mathrm{for}}\mathit{d2} ;\mathit{d2} =4\mathit{satisfies} s^{\mathit{d2}}=\mathit{h2}  $}
+			\end{Maple Normal}
+			\mapleinput
+			{$ \displaystyle \mathit{d2} \coloneqq 4; $}
+			
+			% \mapleresult
+			\begin{dmath}\label{(12)}
+				\mathit{d2} \coloneqq 4
+			\end{dmath}
+			\mapleinput
+			{$ \displaystyle x^{196\cdot 4\,\mod \,343}; $}
+			
+			% \mapleresult
+			\begin{dmath}\label{(13)}
+				x^{98}
+			\end{dmath}
+			\mapleinput
+			{$ \displaystyle \mathit{x3} \coloneqq \mathit{x2} +p^{2}\cdot \mathit{d2} ; $}
+			
+			% \mapleresult
+			\begin{dmath}\label{(14)}
+				\mathit{x3} \coloneqq 222
+			\end{dmath}
+			\begin{Maple Normal}
+				{$ \displaystyle \mathit{x3} \mathit{is} \mathit{our} \mathit{logarithm}  $}
+			\end{Maple Normal}
+			\end{mdframed}	
 		\end{flushleft}
 		\item Use the Pollard Rho method to verify your answer to the first example you were allocated in Question 4. 
 		
