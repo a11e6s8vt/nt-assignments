@@ -1,0 +1,221 @@
+%% Created by Maple 2023.2, Mac OS X
+%% Source Worksheet: ass2_q4_a
+%% Generated: Sun Jan 07 12:25:40 GMT 2024
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{maple}
+\usepackage[utf8]{inputenc}
+\usepackage[svgnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{breqn}
+\usepackage{textcomp}
+\begin{document}
+\lstset{basicstyle=\ttfamily,breaklines=true,columns=flexible}
+\pagestyle{empty}
+\DefineParaStyle{Maple Bullet Item}
+\DefineParaStyle{Maple Heading 1}
+\DefineParaStyle{Maple Warning}
+\DefineParaStyle{Maple Heading 4}
+\DefineParaStyle{Maple Heading 2}
+\DefineParaStyle{Maple Heading 3}
+\DefineParaStyle{Maple Dash Item}
+\DefineParaStyle{Maple Error}
+\DefineParaStyle{Maple Title}
+\DefineParaStyle{Maple Ordered List 1}
+\DefineParaStyle{Maple Text Output}
+\DefineParaStyle{Maple Ordered List 2}
+\DefineParaStyle{Maple Ordered List 3}
+\DefineParaStyle{Maple Normal}
+\DefineParaStyle{Maple Ordered List 4}
+\DefineParaStyle{Maple Ordered List 5}
+\DefineCharStyle{Maple 2D Output}
+\DefineCharStyle{Maple 2D Input}
+\DefineCharStyle{Maple Maple Input}
+\DefineCharStyle{Maple 2D Math}
+\DefineCharStyle{Maple Hyperlink}
+\begin{Maple Normal}
+{$ \displaystyle G ={\{x^{i}| 0\le i \le 342,x^{342}=1\}} $}
+\end{Maple Normal}
+\begin{Maple Normal}
+{$ \displaystyle \gcd (11,343)=1,x^{11}\mathit{generates} \mathit{the} \mathit{Group} . $}
+\end{Maple Normal}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle p \coloneqq 7;e \coloneqq 3;g \coloneqq x^{11};h \coloneqq x^{41}; $}
+
+% \mapleresult
+\begin{dmath*}
+p \coloneqq 7
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+e \coloneqq 3
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+g \coloneqq x^{11}
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath}\label{(1)}
+h \coloneqq x^{41}
+\end{dmath}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\begin{Maple Normal}
+Step1:
+\end{Maple Normal}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \mathit{x0} \coloneqq 0; $}
+
+% \mapleresult
+\begin{dmath}\label{(2)}
+\mathit{x0} \coloneqq 0
+\end{dmath}
+\mapleinput
+{$ \displaystyle s \coloneqq x^{11\cdot 49\,\mod \,343};\,\mathit{h0} \coloneqq x^{41\cdot 49\,\mod \,343}; $}
+
+% \mapleresult
+\begin{dmath*}
+s \coloneqq x^{196}
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath}\label{(3)}
+\mathit{h0} \coloneqq x^{294}
+\end{dmath}
+\begin{Maple Normal}
+{$ \displaystyle \mathit{Searching} \boldsymbol{\mathrm{for}}\mathit{d0} ;\mathit{d0} =5\mathit{satisfies} s^{\mathit{d0}}=\mathit{h0}  $}
+\end{Maple Normal}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \mathit{d0} \coloneqq 5; $}
+
+% \mapleresult
+\begin{dmath}\label{(4)}
+\mathit{d0} \coloneqq 5
+\end{dmath}
+\mapleinput
+{$ \displaystyle x^{196\cdot 5\,\mod \,343}; $}
+
+% \mapleresult
+\begin{dmath}\label{(5)}
+x^{294}
+\end{dmath}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \mathit{x1} \coloneqq \mathit{x0} +p^{0}\cdot \mathit{d0} ; $}
+
+% \mapleresult
+\begin{dmath}\label{(6)}
+\mathit{x1} \coloneqq 5
+\end{dmath}
+\begin{Maple Normal}
+Step 2:
+\end{Maple Normal}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \mathit{h1} \coloneqq x^{\mathit{(-55+41)}\cdot 7\,\mod \,343}; $}
+
+% \mapleresult
+\begin{dmath}\label{(7)}
+\mathit{h1} \coloneqq x^{245}
+\end{dmath}
+\begin{Maple Normal}
+{$ \displaystyle \mathit{Searching} \boldsymbol{\mathrm{for}}\mathit{d1} ;\mathit{d1} =3\mathit{satisfies} s^{\mathit{d1}}=\mathit{h1}  $}
+\end{Maple Normal}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \mathit{d1} \coloneqq 3; $}
+
+% \mapleresult
+\begin{dmath}\label{(8)}
+\mathit{d1} \coloneqq 3
+\end{dmath}
+\mapleinput
+{$ \displaystyle x^{196\cdot 3\,\mod \,343}; $}
+
+% \mapleresult
+\begin{dmath}\label{(9)}
+x^{245}
+\end{dmath}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \mathit{x2} \coloneqq \mathit{x1} +p^{1}\cdot \mathit{d1} ; $}
+
+% \mapleresult
+\begin{dmath}\label{(10)}
+\mathit{x2} \coloneqq 26
+\end{dmath}
+\begin{Maple Normal}
+Step 3:
+\end{Maple Normal}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \mathit{h2} \coloneqq x^{-286+41\,\mod \,343}; $}
+
+% \mapleresult
+\begin{dmath}\label{(11)}
+\mathit{h2} \coloneqq x^{98}
+\end{dmath}
+\begin{Maple Normal}
+{$ \displaystyle \mathit{Searching} \boldsymbol{\mathrm{for}}\mathit{d2} ;\mathit{d2} =4\mathit{satisfies} s^{\mathit{d2}}=\mathit{h2}  $}
+\end{Maple Normal}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \mathit{d2} \coloneqq 4; $}
+
+% \mapleresult
+\begin{dmath}\label{(12)}
+\mathit{d2} \coloneqq 4
+\end{dmath}
+\mapleinput
+{$ \displaystyle x^{196\cdot 4\,\mod \,343}; $}
+
+% \mapleresult
+\begin{dmath}\label{(13)}
+x^{98}
+\end{dmath}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \mathit{x3} \coloneqq \mathit{x2} +p^{2}\cdot \mathit{d2} ; $}
+
+% \mapleresult
+\begin{dmath}\label{(14)}
+\mathit{x3} \coloneqq 222
+\end{dmath}
+\begin{Maple Normal}
+{$ \displaystyle \mathit{x3} \mathit{is} \mathit{our} \mathit{logarithm}  $}
+\end{Maple Normal}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\end{document}
