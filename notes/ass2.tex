@@ -19,6 +19,8 @@
 \usepackage{xcolor}
 \usepackage{fontawesome5}
 \usepackage{adjustbox}
+\usepackage{tabularx, makecell, booktabs}%
+
 
 %New colors defined below
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -582,7 +584,7 @@
 				\end{adjustbox}
 			\end{table}
 			\item We found a collision in both the tables for $value = 41$ where $i = 2$ and $mj = 9 \times 5$
-			\item We calculate $t = (mj + i)\tpmod{71} = (9 \times 5 + 2)\tpmod{71} = 47\tpmod{71}$\\
+			\item We calculate $t = (mj + i)\tpmod{71} = (9 \times 5 + 2)\tpmod{71} \equiv 47\tpmod{71}$\\
 			$\implies 21^{47} \equiv 47\tpmod{71}$
 			\item Verifying the answer using Fast Modular Exponentiation:
 			\begin{align*}
@@ -603,21 +605,79 @@
  			\end{align*}
 		\end{enumerate}
 		
-		\item \textbf{\textit{Answer:}} Given $a = 26, b = 24, n = 53$. We want to solve for $t$ in the congruence: $26^t \equiv 24\tpmod{53}$\\ \medbreak
+		\item \textbf{\textit{Answer:}} Given $a = 26, b = 24, n = 53$. We want to solve for $t$ in the congruence: $26^t \equiv 24\tpmod{53}$\\ 
 		 
 		\medbreak
 		\begin{enumerate}[Step 1.]
 			\item Set m = $\lceil\sqrt{53}\rceil = 8$
 			\item --
-			\item Calculating $a^{mj}\tpmod{53}; 0 \le j < m$ \& Solve for $b.a^{-i}; 0 \le i < m$ (Step 2 and 3 tables below side-by-side)
-			
-			\item We found a collision in both the tables for $value = 41$ where $i = 2$ and $mj = 9 \times 5$
-			\item We calculate $t = (mj + i)\tpmod{71} = (9 \times 5 + 2)\tpmod{71} = 47\tpmod{71}$\\
-			$\implies 21^{47} \equiv 47\tpmod{71}$
+			\item Calculating $a^{mj}\tpmod{53}; 0 \le j < m$ \& Solve for $b.a^{-i}\tpmod{53}; 0 \le i < m$ (Step 2 and 3 tables below side-by-side)
+			\medbreak
+			$26^{-1} \equiv27\tpmod{53}$
+			\begin{table}[H]
+				\parbox{.50\linewidth}{
+					\centering
+					\begin{tabular}{|l|l|}
+						\hline
+						j & $a^{mj}\tpmod{71}$ \Tstrut\\
+						\hline
+						0 & $26^{8.0} \equiv 1$ \Tstrut\\
+						\hline
+						1 & $26^{8.1} \equiv 47$ \Tstrut\\ 
+						\hline
+						2 & $26^{8.2} \equiv 36$ \Tstrut\\ 
+						\hline
+						3 & $26^{8.3} \equiv 49$ \Tstrut\\ 
+						\hline
+						4 & $26^{8.4} \equiv 24$ \Tstrut\\ 
+						\hline
+						5 & $26^{8.5} \equiv 15$ \Tstrut\\ 
+						\hline
+						6 & $26^{8.6} \equiv 16$ \Tstrut\\ 
+						\hline
+						7 & $26^{8.7} \equiv 10$ \Tstrut\\ 
+						\hline
+					\end{tabular}
+					\caption{Step 2}
+				}
+				\hfill
+				\parbox{.50\linewidth}{
+					\centering
+					\begin{tabular}{|l|l|}
+						\hline
+						i & $b.a^{-i}\tpmod{53}$ \Tstrut\\
+						\hline
+						0 & $24.26^0 = 24.26^{52} = 26$ \Tstrut\\ 
+						\hline
+						1 & $24.26^{-1} = 24.26^{51} = 5$ \Tstrut\\ 
+						\hline
+						2 & $24.26^{-2} = 24.26^{50} = 43$ \Tstrut\\
+						\hline
+						3 & $24.26^{-3} = 24.26^{49} = 20$ \Tstrut\\
+						 \hline
+						4 & $24.26^{-4} = 24.26^{48} = 13$ \Tstrut\\
+						\hline
+						5 & $24.26^{-5} = 24.26^{47} = 27$ \Tstrut\\
+						\hline
+						6 & $24.26^{-6} = 24.26^{46} = 52$ \Tstrut\\
+						\hline
+						7 & $24.26^{-7} = 24.26^{45} = 2$ \Tstrut\\
+						\hline
+						8 & $24.26^{-8} = 24.26^{44} = 49$ \Tstrut\\
+						\hline
+					\end{tabular}
+					\caption{Step 3}}
+			\end{table}
+			\item We found a collision in both the tables for $value = 49$ where $i = 8$ and $mj = 8 \times 3$
+			\item We calculate $t = (mj + i)\tpmod{53} = (8 \times 3 + 8)\tpmod{53} \equiv 32\tpmod{53}$\\
+			$\implies 26^{32} \equiv 24\tpmod{53}$
 			\item Verifying the answer using Fast Modular Exponentiation:
-			\begin{align}
-				22
-			\end{align}
+			\begin{align*}
+				& 26^2 \equiv 40\tpmod{53} \\
+				& \therefore 26^4 = (26^2)^2 = 40^2 \equiv 10\tpmod{53} \\
+				& \implies 26^{16} = (26^4)^4 = 10^4 \equiv 36\tpmod{53} \\
+				& \implies 26^{32} = (26^{16})^2 = 36^2 \equiv 24\tpmod{53} \text{ and hence the answer}
+			\end{align*}
 		\end{enumerate}	
 		\end{enumerate}
 		\end{flushleft}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.15)  7 JAN 2024 01:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.15)  7 JAN 2024 02:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -529,28 +529,38 @@ Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \@vwid@loff=\dimen262
 \@vwid@roff=\dimen263
 ))
-\c@theorem=\count310
+(c:/texlive/2023/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2023/07/08 v2.11c `tabularx' package (DPC)
+\TX@col@width=\dimen264
+\TX@old@table=\dimen265
+\TX@old@col=\dimen266
+\TX@target=\dimen267
+\TX@delta=\dimen268
+\TX@cols=\count310
+\TX@ftn=\toks35
+)
+\c@theorem=\count311
  (./ass2.aux)
 \openout1 = `ass2.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
@@ -560,17 +570,17 @@ Package caption Info: End \AtBeginDocument code.
 
 (c:/texlive/2023/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count311
-\scratchdimen=\dimen264
+\scratchcounter=\count312
+\scratchdimen=\dimen269
 \scratchbox=\box63
-\nofMPsegments=\count312
-\nofMParguments=\count313
-\everyMPshowfont=\toks35
-\MPscratchCnt=\count314
-\MPscratchDim=\dimen265
-\MPnumerator=\count315
-\makeMPintoPDFobject=\count316
-\everyMPtoPDFconversion=\toks36
+\nofMPsegments=\count313
+\nofMParguments=\count314
+\everyMPshowfont=\toks36
+\MPscratchCnt=\count315
+\MPscratchDim=\dimen270
+\MPnumerator=\count316
+\makeMPintoPDFobject=\count317
+\everyMPtoPDFconversion=\toks37
 ) (c:/texlive/2023/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -614,34 +624,34 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring ON on input line 134.
+Package hyperref Info: Link coloring ON on input line 136.
 (./ass2.out) (./ass2.out)
 \@outlinefile=\write3
 \openout3 = `ass2.out'.
 
-\c@lstlisting=\count317
-LaTeX Font Info:    Trying to load font information for U+msa on input line 137
+\c@lstlisting=\count318
+LaTeX Font Info:    Trying to load font information for U+msa on input line 139
 .
 
 (c:/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 137
+LaTeX Font Info:    Trying to load font information for U+msb on input line 139
 .
 
 (c:/texlive/2023/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 150.
+nput line 152.
 LaTeX Font Info:    Trying to load font information for OMS+cmtt on input line 
-151.
-LaTeX Font Info:    No file OMScmtt.fd. on input line 151.
+153.
+LaTeX Font Info:    No file OMScmtt.fd. on input line 153.
 
 
 LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
-(Font)              for symbol `textbraceleft' on input line 151.
+(Font)              for symbol `textbraceleft' on input line 153.
 
 [1
 
@@ -673,7 +683,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 435--436
+Underfull \hbox (badness 10000) in paragraph at lines 437--438
 
  []
 
@@ -704,6 +714,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [7]
+Overfull \hbox (2.43333pt too wide) in paragraph at lines 642--670
+[]$[]$  $[]$ 
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -734,13 +748,13 @@ Package rerunfilecheck Info: File `ass2.out' has not changed.
 (rerunfilecheck)             Checksum: 66C6EEB0322B889246934A13B3BDF547;78.
  ) 
 Here is how much of TeX's memory you used:
- 20149 strings out of 474175
- 328653 string characters out of 5749697
+ 20207 strings out of 474175
+ 329553 string characters out of 5749697
  2716460 words of memory out of 5000000
- 41944 multiletter control sequences out of 15000+600000
+ 41999 multiletter control sequences out of 15000+600000
  568382 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,13n,95p,7898b,3487s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,14n,95p,7898b,3487s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/tex
 live/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2023
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><c:/texlive/2023/texmf-
@@ -757,7 +771,7 @@ lic/amsfonts/cm/cmtt10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfo
 nts/cm/cmtt8.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbol
 s/msam10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/ms
 bm10.pfb>
-Output written on ass2.pdf (9 pages, 242217 bytes).
+Output written on ass2.pdf (9 pages, 243982 bytes).
 PDF statistics:
  449 PDF objects out of 1000 (max. 8388607)
  400 compressed objects within 4 object streams
