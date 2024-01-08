@@ -581,7 +581,7 @@
 			\textit{Note: Somehow I couldn't make it work the Baby Steps Giant Steps Algorithm as we learned in the class. I checked the Wikipedia and it's the same as in the class. I do not know where did it go wrong. I was getting a smaller value that expected. So I followed the steps from some Youtube videos(\href{https://www.youtube.com/watch?v=007MVsELvQw}{Video1}, \href{https://www.youtube.com/watch?v=Cj_j_mX0qY0}{Video2}). The steps are similar with some minor variations in the values we calculate. Hope that's fine.}
 			\bigbreak
 			\begin{enumerate}
-			\item \textbf{\textit{Answer:}} Given $a = 21, b = 47, n = 71$. We want to solve for $t$ in the congruence: $21^t \equiv 47\tpmod{71}$\\ \medbreak
+			\item \label{lbl:verify-pollards-rho}\textbf{\textit{Answer:}} Given $a = 21, b = 47, n = 71$. We want to solve for $t$ in the congruence: $21^t \equiv 47\tpmod{71}$\\ \medbreak
 			We have $\phi(71) = 70$. 
 			\medbreak
 			\begin{enumerate}[Step 1.]
@@ -725,8 +725,8 @@
 		\item Use the Pohlig Helmann algorithm to find in the cyclic group of order n with the generating element a for both the examples assigned to you below. Verify your answer in Maple.
 		\begin{flushleft}
 			\begin{enumerate}
-				\item $a = x^{11}, b = x^{41}, n = 343$ \\ \bigbreak
-				\textbf{\textit{Answer:}} $n = 343 = 7^3$\\
+				\item \textbf{\textit{Answer:}} $a = x^{11}, b = x^{41}, n = 343$ \\ \bigbreak
+				$n = 343 = 7^3$\\
 				We will write G as $G = \{x^i | 0 \le i \le 342, x^{342} = 1\}$. Also $x^{11}$ generates $G$ as $(11, 343) = 1$.\\
 				
 				So we set $p = 7, e = 3, g = x^{11}, h = x^{41}$
@@ -901,8 +901,8 @@
 				\end{mdframed}
 				
 				\bigbreak
-				\item $a = x^{13}, b = x^{157}, n = 3267$ \bigbreak
-				\textbf{\textit{Answer:}} $n = 3267 = 3^3 \times 11^2 = 27 \times 121$\\
+				\item \textbf{\textit{Answer:}} $a = x^{13}, b = x^{157}, n = 3267$ \bigbreak
+				$n = 3267 = 3^3 \times 11^2 = 27 \times 121$\\
 				We will write G as $G = \{x^i | 0 \le i \le 3266, x^{342} = 1\}$. Also $x^{13}$ generates $G$ as $(13, 3267) = 1$.\\
 				
 				\begin{enumerate}[Step 1.]
@@ -1154,12 +1154,52 @@
 					\hline
 				\end{tabular}
 			\end{adjustbox}
-			\caption{List of composite numbers of the form P.Q}
-			\label{table:composite-pq}
+			\caption{Table Listing the Problems Allocation to Individuals}
+			\label{table:assignment-tab}
 		\end{table}
 		
 		\begin{flushleft}
-			\textbf{\textit{Answer:}}
+			\textbf{\textit{Answer:}} The below table shows the execution of the Pollard Rho algorithm to generate the data table:
+			\begin{table}[H]
+				\begin{adjustbox}{scale=0.9,center}
+				\begin{tabular}{ |p{2cm}|p{2cm}|p{2cm}|p{2cm}||p{2cm}|p{2cm}|p{2cm}| }
+				\hline
+				\multicolumn{7}{|c|}{Pollard Rho Execution Data} \\
+				\hline
+				i & x1 & a1 & b1 & x2 & a2 & b2 \\ \hline
+				1 & 21 & 1 & 0 & 15 & 2 & 0 \\ \hline
+				2 & 15 & 2 & 0 & 2 & 8 & 0 \\ \hline
+				3 & 12 & 4 & 0 & 16 & 8 & 2 \\ \hline
+				4 & 2 & 8 & 0 & 27 & 10 & 2 \\ \hline
+				5 & 23 & 8 & 1 & 44 & 21 & 4 \\ \hline
+				6 & 16 & 8 & 2 & 10 & 42 & 10 \\ \hline
+				7 & 52 & 9 & 2 & 1 & 43 & 11 \\ \hline
+				8 & 27 & 10 & 2 & 15 & 18 & 22 \\ \hline
+				9 & 19 & 20 & 4 & 2 & 2 & 18 \\ \hline
+				10 & 44 & 21 & 4 & 16 & 2 & 20 \\ \hline
+				11 & 9 & 21 & 5 & 27 & 4 & 20 \\ \hline
+				12 & 10 & 42 & 10 & 44 & 9 & 40 \\ \hline
+				13 & 68 & 43 & 10 & 10 & 18 & 12 \\ \hline
+				14 & 1 & 43 & 11 & 1 & 19 & 13 \\ \hline
+				\end{tabular}
+				\end{adjustbox}
+				\caption{Pollard Rho Execution Data}
+				\label{table:pollards-rho}
+			\end{table}
+			
+			From the table, we can see that $x1 = x2$ at the $14^{th}$ iteration. The corresponding a1, a2, b1, b2 values are: $i = 14$, $a1 = 43$, $a2 = 19$, $b1 = 11$, $b2 = 13$.
+			
+			Let $t$ be the logarithm of $b$. Calculation of the logarithm is below:
+			\begin{align}
+				&(b2 - b1).t \equiv (a1 - a2)\tpmod{p-1} \nonumber\\
+				&\implies (13 - 11).t \equiv (43 - 19)\tpmod{70} \nonumber\\
+				&\implies 2.t \equiv 24\tpmod{70}\\
+				&\text{Let }d = gcd(2, 70) = 2 \nonumber\\
+				&\text{Divide Eqn. (34) by d, we get: } t \equiv 12 \tpmod{35} \nonumber\\
+				&\text{Since gcd = 2, there are two solution to Eqn. (35) and the solutions are: }  \nonumber\\
+				&\{12, 12 + \frac{70}{2}\} = \{12, 47\}
+			\end{align}
+			When $t = 47$ our congruence $21^t \equiv 47\tpmod{71}$ is satisfied and hence the logarithm of $47$ is $47$. Thus we have verified solution of the problem in \ref{lbl:verify-pollards-rho}.
 		\end{flushleft}
 	\end{enumerate}
 	

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.15)  7 JAN 2024 19:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.15)  8 JAN 2024 01:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1174,7 +1174,16 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[14] (./ass2.aux)
+[14]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[15] (./ass2.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-12-11>
@@ -1190,10 +1199,10 @@ Package rerunfilecheck Info: File `ass2.out' has not changed.
 (rerunfilecheck)             Checksum: 66C6EEB0322B889246934A13B3BDF547;78.
  ) 
 Here is how much of TeX's memory you used:
- 25567 strings out of 474175
- 407219 string characters out of 5749697
+ 25573 strings out of 474175
+ 407314 string characters out of 5749697
  2717460 words of memory out of 5000000
- 47238 multiletter control sequences out of 15000+600000
+ 47240 multiletter control sequences out of 15000+600000
  571545 words of font info for 87 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  76i,14n,95p,7898b,3583s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1217,10 +1226,10 @@ c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb><c:/texlive
 mf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb><c:/texlive/2023/texmf-dist/fo
 nts/type1/public/amsfonts/symbols/msam10.pfb><c:/texlive/2023/texmf-dist/fonts/
 type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on ass2.pdf (14 pages, 306689 bytes).
+Output written on ass2.pdf (15 pages, 310001 bytes).
 PDF statistics:
- 520 PDF objects out of 1000 (max. 8388607)
- 455 compressed objects within 5 object streams
- 284 named destinations out of 1000 (max. 500000)
+ 528 PDF objects out of 1000 (max. 8388607)
+ 462 compressed objects within 5 object streams
+ 288 named destinations out of 1000 (max. 500000)
  9 words of extra memory for PDF output out of 10000 (max. 10000000)
 
