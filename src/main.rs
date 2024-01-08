@@ -1,6 +1,7 @@
 mod cli_ops;
 mod display;
 mod groups_modulo_n;
+mod logarithms;
 mod presets;
 mod primality;
 mod prime_factors;
@@ -399,5 +400,9 @@ fn main() {
                 println!("{}", serde_json::to_string_pretty(&num_map).unwrap());
             }
         },
+        Operations::PollardsRhoLog { a, b, n } => {
+            let result = logarithms::pollards_rho(&a, &b, &n);
+            println!("{}", serde_json::to_string_pretty(&result).unwrap())
+        }
     }
 }
