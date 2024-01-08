@@ -1,6 +1,7 @@
 use std::marker::PhantomPinned;
 
 use num_bigint::{BigInt, BigUint};
+use num_integer::Integer;
 use num_iter::{range, range_inclusive};
 use num_traits::{One, Zero};
 use num_traits::{Pow, ToPrimitive};
@@ -167,6 +168,32 @@ pub fn polynomial_mul(a: &Vec<BigInt>, b: &Vec<BigInt>, n: &BigInt, r: &BigInt) 
     return x;
 }
 
+pub fn modular_inv(n: &BigInt, p: &BigInt) -> BigInt {
+    if p.is_one() {
+        return BigInt::one();
+    }
+
+    let (mut a, mut m, mut x, mut inv) = (n.clone(), p.clone(), BigInt::zero(), BigInt::one());
+
+    while a < BigInt::zero() {
+        a += p
+    }
+
+    while a > BigInt::one() {
+        let (div, rem) = a.div_rem(&m);
+        inv -= div * &x;
+        a = rem;
+        std::mem::swap(&mut a, &mut m);
+        std::mem::swap(&mut x, &mut inv);
+    }
+
+    if inv < BigInt::zero() {
+        inv += p
+    }
+
+    inv
+}
+
 ///
 /// Find smallest r such that the order of n mod r > ln(n)^2.
 ///
@@ -211,13 +238,22 @@ mod tests {
     }
 
     #[test]
-    fn test_modular_pow() {
-        let result = modular_pow(
-            &BigInt::from(2u64),
-            &BigInt::from(825u64),
-            &BigInt::from(173u64),
+    fn test_modular_inv() {
+        let a = BigInt::from(100u64);
+        let result = a.gcd_euclid(&BigInt::from(76u64));
+        assert_eq!(result, BigInt::from(4u64));
+        assert_eq!(
+            BigInt::from(44u64),
+            BigInt::from(2024u64).gcd_euclid(&BigInt::from(748u64))
         );
-        assert_eq!(result, BigInt::from(107u64));
+    }
+
+    #[test]
+    fn test_modular_pow() {
+        assert_eq!(
+            BigInt::from(75u64),
+            modular_inv(&BigInt::from(75u64), &BigInt::from(148u64))
+        );
     }
 
     #[test]

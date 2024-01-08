@@ -67,6 +67,17 @@ pub enum Operations {
         #[arg(short = 'm', long = "modulus", value_name = "Modulus Value")]
         modulus: BigInt,
     },
+    #[command(arg_required_else_help = true)]
+    PollardsRhoLog {
+        #[arg(short = 'a', value_name = "primitive root mod n")]
+        a: BigInt,
+
+        #[arg(short = 'b', value_name = "calculating logarithm of b")]
+        b: BigInt,
+
+        #[arg(short = 'n', value_name = "Modulus Value")]
+        n: BigInt,
+    },
     PrimitiveRoots(PrimitiveRootsArgs),
 }
 

@@ -260,3 +260,36 @@ pub fn matrix_print<T: std::fmt::Display + Tabled>(
 
     println!("\n{table}\n");
 }
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct PollardsRhoJson {
+    i: String,
+    x1: String,
+    a1: String,
+    b1: String,
+    x2: String,
+    a2: String,
+    b2: String,
+}
+
+impl PollardsRhoJson {
+    pub fn new(
+        i: String,
+        x1: String,
+        a1: String,
+        b1: String,
+        x2: String,
+        a2: String,
+        b2: String,
+    ) -> Self {
+        Self {
+            i,
+            x1,
+            a1,
+            b1,
+            x2,
+            a2,
+            b2,
+        }
+    }
+}
