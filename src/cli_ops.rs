@@ -15,6 +15,15 @@ pub struct Cli {
 
 #[derive(Debug, Subcommand)]
 pub enum Operations {
+    /// GCD of two number using Euclid's Algorithm
+    #[command(arg_required_else_help = true)]
+    GcdEuclid {
+        #[arg(short = 'a', value_name = "FIRST NUMBER")]
+        a: BigInt,
+
+        #[arg(short = 'b', value_name = "SECOND NUMBER")]
+        b: BigInt,
+    },
     /// Search for the prime numbers in a range
     #[command(arg_required_else_help = true)]
     ListPrimes(NumRangeArgs),
@@ -56,6 +65,7 @@ pub enum Operations {
         num: BigInt,
     },
 
+    /// Modular Exponentiation Calculator
     #[command(arg_required_else_help = true)]
     ModularPower {
         #[arg(short = 'b', long = "base", value_name = "BASE NUMBER")]

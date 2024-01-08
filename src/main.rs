@@ -42,7 +42,7 @@ use crate::{
     presets::{search_nums_with_primitive_roots, NumCategory},
     primality::{is_prime_trial_division_parallel, AksSteps},
     prime_factors::PrimeFactors,
-    utils::modular_pow,
+    utils::{modular_pow, Gcd},
 };
 
 fn main() {
@@ -71,7 +71,10 @@ fn main() {
                 &composites.len() / 14,
             );
         }
-        Operations::PrimeFactors { num: _ } => {}
+        Operations::PrimeFactors { num } => {
+            let mut primes = vec![BigInt::from(2u64)];
+            println!("{:?}", num.prime_factors(&mut primes));
+        }
         Operations::PrimeFactorsRange(s) => match s.command {
             PFactorsCommands::All(pargs) => {
                 let start = pargs.start;
@@ -403,6 +406,9 @@ fn main() {
         Operations::PollardsRhoLog { a, b, n } => {
             let result = logarithms::pollards_rho(&a, &b, &n);
             println!("{}", serde_json::to_string_pretty(&result).unwrap())
+        }
+        Operations::GcdEuclid { a, b } => {
+            println!("{}", a.gcd_euclid(&b));
         }
     }
 }
