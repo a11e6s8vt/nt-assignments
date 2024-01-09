@@ -1,0 +1,387 @@
+%% Created by Maple 2023.2, Mac OS X
+%% Source Worksheet: ass3q5
+%% Generated: Tue Jan 09 18:29:49 GMT 2024
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{maple}
+\usepackage[utf8]{inputenc}
+\usepackage[svgnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{breqn}
+\usepackage{textcomp}
+\begin{document}
+\lstset{basicstyle=\ttfamily,breaklines=true,columns=flexible}
+\pagestyle{empty}
+\DefineParaStyle{Maple Bullet Item}
+\DefineParaStyle{Maple Heading 1}
+\DefineParaStyle{Maple Warning}
+\DefineParaStyle{Maple Heading 4}
+\DefineParaStyle{Maple Heading 2}
+\DefineParaStyle{Maple Heading 3}
+\DefineParaStyle{Maple Dash Item}
+\DefineParaStyle{Maple Error}
+\DefineParaStyle{Maple Title}
+\DefineParaStyle{Maple Ordered List 1}
+\DefineParaStyle{Maple Text Output}
+\DefineParaStyle{Maple Ordered List 2}
+\DefineParaStyle{Maple Ordered List 3}
+\DefineParaStyle{Maple Normal}
+\DefineParaStyle{Maple Ordered List 4}
+\DefineParaStyle{Maple Ordered List 5}
+\DefineCharStyle{Maple 2D Output}
+\DefineCharStyle{Maple 2D Input}
+\DefineCharStyle{Maple Maple Input}
+\DefineCharStyle{Maple 2D Math}
+\DefineCharStyle{Maple Hyperlink}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\begin{Maple Normal}
+{$ \displaystyle \mathrm{This}\mathrm{is}\mathrm{an}\mathrm{example}\mathrm{of}\mathrm{the}\mathrm{quadratic}\mathrm{sieve}\mathrm{in}\mathrm{which}\mathrm{we}\mathrm{attempt}\mathrm{to}\mathrm{factorise}n =87463 $}
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{with} (\mathit{numtheory})\colon  $}
+
+\mapleinput
+{$ \displaystyle \texttt{>\,} n \coloneqq 500657; $}
+
+% \mapleresult
+\begin{dmath}\label{(1)}
+n \coloneqq 500657
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} t \coloneqq \mathrm{trunc}(\mathit{evalf} (\mathrm{sqrt}(n))); $}
+
+% \mapleresult
+\begin{dmath}\label{(2)}
+t \coloneqq 707
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,}  $}
+
+\begin{Maple Normal}
+We begin by establishing our factor base B which is the first six primes p such that (n/p) = 1 (i.e. the first 6 primes p for which n is a quadratic residue mod p).
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,} a \coloneqq 2\colon \mathrm{i}\coloneqq 0\colon \,\mathrm{while}\,\mathrm{i}\,<\,7\,\mathrm{do}\,\mathrm{if}\,\mathit{legendre} (n ,a)=\,1\,\mathrm{then}\,\mathit{print} (a);\,i \coloneqq i +1;\,\mathrm{end}\,\mathrm{if};\,a \coloneqq \mathit{nextprime} (a)\colon \,\mathrm{end}\,\mathrm{do}\colon  $}
+
+% \mapleresult
+\begin{dmath*}
+2
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+11
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+13
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+19
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+23
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+29
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath}\label{(3)}
+31
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} y \coloneqq x \rightarrow (x +707)^{2}-500657; $}
+
+% \mapleresult
+\begin{dmath}\label{(4)}
+y \coloneqq x \hiderel{\mapsto }\left(x +707\right)^{2}-500657
+\end{dmath}
+\begin{Maple Normal}
+Hence B = \{2, 11, 13, 19, 23, 29, 31\}
+\end{Maple Normal}
+\begin{Maple Normal}
+We now search for numbers for which the factorisation into primes of y(x) is 'B smooth' (i.e. it only contains elements from the set B)
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathrm{for}\,x \,\mathrm{from}-100\,\mathrm{to}\,200\,\mathrm{do}\,\mathrm{if}\,\max (\mathit{ifactors} (y (x)))\le 31\,\mathrm{then}\,\mathit{print} (x ,y (x),\mathit{ifactor} (y (x)));\,\mathrm{end}\,\mathrm{if};\,\mathrm{end}\,\mathrm{do}; $}
+
+% \mapleresult
+\begin{dmath*}
+-97,-128557,-\left(11\right) \left(13\right) \left(29\right) \left(31\right)
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+-82,-110032,-\left(2\right)^{4} \left(13\right) \left(23\right)^{2}
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+-31,-43681,-\left(11\right)^{2} \left(19\right)^{2}
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+-12,-17632,-\left(2\right)^{5} \left(19\right) \left(29\right)
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+-10,-14848,-\left(2\right)^{9} \left(29\right)
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+-4,-6448,-\left(2\right)^{4} \left(13\right) \left(31\right)
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+2,2024,\left(2\right)^{3} \left(11\right) \left(23\right)
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+4,4864,\left(2\right)^{8} \left(19\right)
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+46,66352,\left(2\right)^{4} \left(11\right) \left(13\right) \left(29\right)
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+48,69368,\left(2\right)^{3} \left(13\right) \left(23\right) \left(29\right)
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+58,84568,\left(2\right)^{3} \left(11\right) \left(31\right)^{2}
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+61,89167,\left(13\right) \left(19\right)^{3}
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+102,153824,\left(2\right)^{5} \left(11\right) \left(19\right) \left(23\right)
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+140,216752,\left(2\right)^{4} \left(19\right) \left(23\right) \left(31\right)
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath}\label{(5)}
+178,282568,\left(2\right)^{3} \left(11\right) \left(13\right)^{2} \left(19\right)
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,}  $}
+
+\begin{Maple Normal}
+We convert the exponents of the factors into a matrix A and then form B which is the same matrix modulo 2. Column 1 of A indicates if y(x) is negative while the second column is the exponents of 2 etc.  
+
+B = \{-1, 2, 11, 13, 19, 23, 29, 31\}
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,} A \coloneqq \mathit{matrix} (15,8,[1,0,1,1,0,0,1,1, \,1,4,0,1,0,2,0,0, \,1,0,2,0,2,0,0,0, \,1,5,0,0,1,0,1,0, \,1,9,0,0,0,0,1,0, \,1,4,0,1,0,0,0,1, \,0,3,1,0,0,1,0,0, \,0,8,0,0,1,0,0,0, \,0,4,1,1,0,0,1,0, \,0,3,0,1,0,1,1,0, \,0,3,1,0,0,0,0,2, \,0,0,0,1,3,0,0,0, \,0,5,1,0,1,1,0,0, \,0,4,0,0,1,1,0,1, \,0,3,1,2,1,0,0,0]); $}
+
+% \mapleresult
+\begin{dmath}\label{(6)}
+A \coloneqq 
+\\
+\left[\begin{array}{cccccccc}
+1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 
+\\
+ 1 & 4 & 0 & 1 & 0 & 2 & 0 & 0 
+\\
+ 1 & 0 & 2 & 0 & 2 & 0 & 0 & 0 
+\\
+ 1 & 5 & 0 & 0 & 1 & 0 & 1 & 0 
+\\
+ 1 & 9 & 0 & 0 & 0 & 0 & 1 & 0 
+\\
+ 1 & 4 & 0 & 1 & 0 & 0 & 0 & 1 
+\\
+ 0 & 3 & 1 & 0 & 0 & 1 & 0 & 0 
+\\
+ 0 & 8 & 0 & 0 & 1 & 0 & 0 & 0 
+\\
+ 0 & 4 & 1 & 1 & 0 & 0 & 1 & 0 
+\\
+ 0 & 3 & 0 & 1 & 0 & 1 & 1 & 0 
+\\
+ 0 & 3 & 1 & 0 & 0 & 0 & 0 & 2 
+\\
+ 0 & 0 & 0 & 1 & 3 & 0 & 0 & 0 
+\\
+ 0 & 5 & 1 & 0 & 1 & 1 & 0 & 0 
+\\
+ 0 & 4 & 0 & 0 & 1 & 1 & 0 & 1 
+\\
+ 0 & 3 & 1 & 2 & 1 & 0 & 0 & 0 
+\end{array}\right]
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} B \coloneqq \mathit{map} (x \rightarrow x \,\mod \,2,\mathit{op} (A)); $}
+
+% \mapleresult
+\begin{dmath}\label{(7)}
+B \coloneqq 
+\\
+\left[\begin{array}{cccccccc}
+1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 
+\\
+ 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 
+\\
+ 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 
+\\
+ 1 & 1 & 0 & 0 & 1 & 0 & 1 & 0 
+\\
+ 1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 
+\\
+ 1 & 0 & 0 & 1 & 0 & 0 & 0 & 1 
+\\
+ 0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 
+\\
+ 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 
+\\
+ 0 & 0 & 1 & 1 & 0 & 0 & 1 & 0 
+\\
+ 0 & 1 & 0 & 1 & 0 & 1 & 1 & 0 
+\\
+ 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 
+\\
+ 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 
+\\
+ 0 & 1 & 1 & 0 & 1 & 1 & 0 & 0 
+\\
+ 0 & 0 & 0 & 0 & 1 & 1 & 0 & 1 
+\\
+ 0 & 1 & 1 & 0 & 1 & 0 & 0 & 0 
+\end{array}\right]
+\end{dmath}
+\begin{Maple Normal}
+We note that row 7 + row 9 + row 10 of B is 0 mod 2.
+\end{Maple Normal}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\begin{Maple Normal}
+Row 2 corresponds to x = 2 and row 9 corresponds to x = 46 and row 10 corresponds to x = 48. and so x + t are 709, 753 and 755 respectively. u is the product of these modulo n
+\end{Maple Normal}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,}  $}
+
+% \mapleresult
+\begin{dmath}\label{(8)}
+59406
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} u \coloneqq 625\cdot 676\cdot 711\cdot 768\,\mod \,500657; $}
+
+% \mapleresult
+\begin{dmath}\label{(9)}
+u \coloneqq 31115
+\end{dmath}
+\begin{Maple Normal}
+B = \{-1, 2, 11, 13, 19, 23, 29, 31\}
+
+
+The numbers used to form v are highlighted in red above and we add the columns and then divide by 2. \
+
+--> column for -1, sum   =  (1+1)/2 = 1 \
+
+--> column for 2, sum = (4+8)/2      = 6\
+
+--> column for 11, sum = (2)/2      = 1
+\end{Maple Normal}
+\begin{Maple Normal}
+--> column for 13, sum = (1+1)/2      = 1
+\end{Maple Normal}
+\begin{Maple Normal}
+--> column for 19, sum = (2+1+3)/2      = 3\
+
+--> column for 23, sum = (2)/2      = 1 
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,} v \coloneqq -1\cdot 2^{6}\cdot 11\cdot 13\cdot 19^{3}\cdot 23\,\mod \,500657; $}
+
+% \mapleresult
+\begin{dmath}\label{(10)}
+v \coloneqq 102724
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} u^{2}\mod \,500657; $}
+
+% \mapleresult
+\begin{dmath}\label{(11)}
+373244
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} v^{2}\mod \,500657; $}
+
+% \mapleresult
+\begin{dmath}\label{(12)}
+373244
+\end{dmath}
+\begin{Maple Normal}
+If we have done our calculations correct we would expect to find that u^2 congruent to v^2 mod n which we do. We now attempt to find a factor of n by finding the greatest common divisor of u-v and n 
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \gcd (u -v ,n); $}
+
+% \mapleresult
+\begin{dmath}\label{(13)}
+101
+\end{dmath}
+\begin{Maple Normal}
+We claim that 101 is a factor of n and confirm this below
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{ifactor} (500657); $}
+
+% \mapleresult
+\begin{dmath}\label{(14)}
+\left(101\right) \left(4957\right)
+\end{dmath}
+\begin{Maple Normal}
+If we do not find a non-trivial factor this way (i.e. the gcd is 1) then we need to choose a different set f linearly dependent rows and repeat until we find a solution
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,}  $}
+
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \, $}
+
+\end{document}
