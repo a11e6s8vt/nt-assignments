@@ -24,6 +24,12 @@ pub enum Operations {
         #[arg(short = 'b', value_name = "SECOND NUMBER")]
         b: BigInt,
     },
+    /// Quadratic Sieve
+    #[command(arg_required_else_help = true)]
+    QuadraticSieve {
+        #[arg(short = 'n', value_name = "NUMBER")]
+        n: BigInt,
+    },
     /// Search for the prime numbers in a range
     #[command(arg_required_else_help = true)]
     ListPrimes(NumRangeArgs),

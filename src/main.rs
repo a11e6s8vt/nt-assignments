@@ -5,6 +5,7 @@ mod logarithms;
 mod presets;
 mod primality;
 mod prime_factors;
+mod quadratic_sieve;
 mod utils;
 
 use std::{
@@ -24,6 +25,7 @@ use groups_modulo_n::{
 };
 use homedir::get_my_home;
 use num_iter::range_inclusive;
+use quadratic_sieve::prepare_matrix;
 use serde_json::Result;
 
 use display::{matrix_print, Matrix};
@@ -409,6 +411,9 @@ fn main() {
         }
         Operations::GcdEuclid { a, b } => {
             println!("{}", a.gcd_euclid(&b));
+        }
+        Operations::QuadraticSieve { n } => {
+            prepare_matrix(&n);
         }
     }
 }
