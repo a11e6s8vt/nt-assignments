@@ -1,0 +1,397 @@
+%% Created by Maple 2023.2, Mac OS X
+%% Source Worksheet: nfs_exercise
+%% Generated: Wed Jan 10 19:37:47 GMT 2024
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{maple}
+\usepackage[utf8]{inputenc}
+\usepackage[svgnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{breqn}
+\usepackage{textcomp}
+\begin{document}
+\lstset{basicstyle=\ttfamily,breaklines=true,columns=flexible}
+\pagestyle{empty}
+\DefineParaStyle{Maple Bullet Item}
+\DefineParaStyle{Maple Heading 1}
+\DefineParaStyle{Maple Warning}
+\DefineParaStyle{Maple Heading 4}
+\DefineParaStyle{Maple Heading 2}
+\DefineParaStyle{Maple Heading 3}
+\DefineParaStyle{Maple Dash Item}
+\DefineParaStyle{Maple Error}
+\DefineParaStyle{Maple Title}
+\DefineParaStyle{Maple Ordered List 1}
+\DefineParaStyle{Maple Text Output}
+\DefineParaStyle{Maple Ordered List 2}
+\DefineParaStyle{Maple Ordered List 3}
+\DefineParaStyle{Maple Normal}
+\DefineParaStyle{Maple Ordered List 4}
+\DefineParaStyle{Maple Ordered List 5}
+\DefineCharStyle{Maple 2D Output}
+\DefineCharStyle{Maple 2D Input}
+\DefineCharStyle{Maple Maple Input}
+\DefineCharStyle{Maple 2D Math}
+\DefineCharStyle{Maple Hyperlink}
+\mapleinput
+{$ \displaystyle \texttt{>\,}  $}
+
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{norm1} \coloneqq \mathrm{proc}(a ,b ,c)\,\mathrm{global}\,k ;\,k \coloneqq a^{3}-2\cdot b^{3}+4\cdot c^{3}+6\cdot a \cdot b \cdot c ;\mathrm{end}; $}
+
+% \mapleresult
+\begin{dmath}\label{(1)}
+\mathit{norm1} \coloneqq \boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{global}}\quad k ;\quad k \coloneqq a ^{3}-2*b ^{3}+4*c ^{3}+6*b *a *c \quad \boldsymbol{\textrm{end proc}}
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{norm1} (66,53,0); $}
+
+% \mapleresult
+\begin{dmath}\label{(2)}
+-10258
+\end{dmath}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \,\mathit{mult2} \coloneqq \mathrm{proc}(a ,b ,c ,d ,e ,f)\mathrm{global}\,\mathit{mul1} ,\mathit{mul2} ,\mathit{mul3} ;\, \,\mathit{mul1} \coloneqq a \cdot d -2\cdot b \cdot f -2\cdot c \cdot e ;
+\\
+ \,\mathit{mul2} \coloneqq a \cdot e +b \cdot d -2\cdot c \cdot f ;
+\\
+ \,\mathit{mul3} \coloneqq a \cdot f +b \cdot e +c \cdot d ;
+\\
+ \mathit{RETURN} (\mathit{mul1} ,\mathit{mul2} ,\mathit{mul3});\mathrm{end};\, $}
+
+% \mapleresult
+\begin{dmath}\label{(3)}
+\mathit{mult2} \coloneqq \boldsymbol{\mathrm{proc}}\left(a ,b ,c ,d ,e ,f \right)\quad \boldsymbol{\mathrm{global}}\quad \mathit{mul1} ,\mathit{mul2} ,\mathit{mul3} ;\quad \mathit{mul1} \coloneqq a *d -2*b *f -2*c *e ;\quad \mathit{mul2} \coloneqq a *e +b *d -2*c *f ;\quad \mathit{mul3} \coloneqq f *a +b *e +c *d ;\quad \mathit{RETURN} \! \left(\mathit{mul1} ,\mathit{mul2} ,\mathit{mul3} \right)\quad \boldsymbol{\textrm{end proc}}
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,}  $}
+
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \,U \coloneqq [1,1,0];A \coloneqq [0,1,0];B \coloneqq [-1,1,0];C \coloneqq [1,0,1];\mathit{D1} \coloneqq [1,1,-1];E \coloneqq [1,-2,0];F \coloneqq [3,0,-1]; $}
+
+% \mapleresult
+\begin{dmath*}
+U \coloneqq \left[1,1,0\right]
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+A \coloneqq \left[0,1,0\right]
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+B \coloneqq \left[-1,1,0\right]
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+C \coloneqq \left[1,0,1\right]
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+\mathit{D1} \coloneqq \left[1,1,-1\right]
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+E \coloneqq \left[1,-2,0\right]
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath}\label{(4)}
+F \coloneqq \left[3,0,-1\right]
+\end{dmath}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \,\mathit{mult1} \coloneqq \mathrm{proc}(x ,y);\,\mathit{mult2} (x [1],x [2],x [3],y [1],y [2],y [3])\,;\mathrm{end};\, $}
+
+% \mapleresult
+\begin{dmath}\label{(5)}
+\mathit{mult1} \coloneqq 
+\\
+\boldsymbol{\mathrm{proc}}\left(x ,y \right)\quad \mathit{mult2} \! \left(x \left[1\right],x \left[2\right],x \left[3\right],y \left[1\right],y \left[2\right],y \left[3\right]\right)\quad 
+\\
+\boldsymbol{\textrm{end proc}}
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,}  $}
+
+\mapleinput
+{$ \displaystyle \texttt{>\,}  $}
+
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{mult4} \coloneqq \mathrm{proc}()\mathrm{global}\,L ;\,L \coloneqq [];\,\mathrm{for}\,i \,\mathrm{from}\,1\,\mathrm{to}\,\mathit{nargs} \,\mathrm{do}\,L \coloneqq [\mathit{op} (L),\mathit{args} [i]];\mathrm{od};\,\mathrm{if}\,\mathit{nops} (L)=2\,\mathrm{then}\,\mathit{mult1} (\mathit{op} (1,L),\mathit{op} (2,L))\,\mathrm{else}\,k \coloneqq [\mathit{mult1} (\mathit{op} (1,L),\mathit{op} (2,L))];L \coloneqq \mathit{subsop} (1=\mathit{NULL} ,L);\,L \coloneqq \mathit{subsop} (1=\mathit{NULL} ,L);L \coloneqq [k ,\mathit{op} (L)];\,\mathit{mult4} (\mathit{op} (L));\mathrm{fi};\mathrm{end}; $}
+
+% \mapleresult
+\href{http://www.maplesoft.com/support/help/errors/view.aspx?path=Warning,%20(in%20mult4)%20%60i%60%20is%20implicitly%20declared%20local}{Warning, (in mult4) `i` is implicitly declared local}% \mapleresult
+\href{http://www.maplesoft.com/support/help/errors/view.aspx?path=Warning,%20(in%20mult4)%20%60k%60%20is%20implicitly%20declared%20local}{Warning, (in mult4) `k` is implicitly declared local}% \mapleresult
+\begin{dmath}\label{(6)}
+\mathit{mult4} \coloneqq 
+\\
+\boldsymbol{\mathrm{proc}}\left(\right)\quad \boldsymbol{\mathrm{local}}\quad i ,k ;\quad \boldsymbol{\mathrm{global}}\quad L ;\quad 
+\\
+L \coloneqq \left[\right];\quad \boldsymbol{\mathrm{for}}\quad i \quad \boldsymbol{\mathrm{to}}\quad \mathit{nargs} \quad \boldsymbol{\mathrm{do}}\quad L \coloneqq \left[\mathit{op} \! \left(L \right),\mathit{args} \left[i \right]\right]\quad \boldsymbol{\textrm{end do}};\quad 
+\\
+\boldsymbol{\mathrm{if}}\quad \mathit{nops} \! \left(L \right)=2\quad \boldsymbol{\mathrm{then}}\quad \mathit{mult1} \! \left(\mathit{op} \! \left(1,L \right),\mathit{op} \! \left(2,L \right)\right)\quad \boldsymbol{\mathrm{else}}\quad 
+\\
+k \coloneqq \left[\mathit{mult1} \! \left(\mathit{op} \! \left(1,L \right),\mathit{op} \! \left(2,L \right)\right)\right];\quad L \coloneqq \mathit{subsop} \! \left(1=\mathit{NULL} ,L \right);\quad 
+\\
+L \coloneqq \mathit{subsop} \! \left(1=\mathit{NULL} ,L \right);\quad L \coloneqq \left[k ,\mathit{op} \! \left(L \right)\right];\quad \mathit{mult4} \! \left(\mathit{op} \! \left(L \right)\right)\quad 
+\\
+\boldsymbol{\textrm{end if}}\quad 
+\\
+\boldsymbol{\textrm{end proc}}
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{mult4} (U ,U ,B ,E); $}
+
+% \mapleresult
+\begin{dmath}\label{(7)}
+1,5,3
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} H \coloneqq \mathit{mult4} (U ,A ,A ,A); $}
+
+% \mapleresult
+\begin{dmath}\label{(8)}
+H \coloneqq -2,-2,0
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,}  $}
+
+\mapleinput
+{$ \displaystyle \texttt{>\,} H \coloneqq [-2,-2,0]; $}
+
+% \mapleresult
+\begin{dmath}\label{(9)}
+H \coloneqq \left[-2,-2,0\right]
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{mult4} (H ,A ,A ,A); $}
+
+% \mapleresult
+\begin{dmath}\label{(10)}
+4,4,0
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} H \coloneqq [4,4,0]; $}
+
+% \mapleresult
+\begin{dmath}\label{(11)}
+H \coloneqq \left[4,4,0\right]
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{mult4} (H ,A ,A ,B); $}
+
+% \mapleresult
+\begin{dmath}\label{(12)}
+0,-8,-4
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} H \coloneqq [0,-8,-4]; $}
+
+% \mapleresult
+\begin{dmath}\label{(13)}
+H \coloneqq \left[0,-8,-4\right]
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{mult4} (U ,H ,B ,E); $}
+
+% \mapleresult
+\begin{dmath}\label{(14)}
+32,-16,-28
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} M \coloneqq \mathit{mult1} (0,-8,-4,-1,1,0); $}
+
+% \mapleresult
+\begin{dmath}\label{(15)}
+M \coloneqq 0,0,0
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{mult1} (0,0,0,1,-2,0); $}
+
+% \mapleresult
+\begin{dmath}\label{(16)}
+0,0,0
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \, $}
+
+\begin{Maple Normal}
+
+
+\
+
+
+
+{$ U \coloneqq [1,1,0];A \coloneqq [0,1,0];B \coloneqq [-1,1,0];C \coloneqq [1,0,1];\mathit{D1} \coloneqq [1,1,-1];E \coloneqq [1,-2,0];F \coloneqq [3,0,-1];
+\\
+  $}
+
+\
+
+U*A^8*B^2*E = 
+{$ [1,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [-1,1,0]\cdot [-1,1,0]\cdot [1,-2,0]; $}
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,}  $}
+
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{mult1} (U ,A); $}
+
+% \mapleresult
+\begin{dmath}\label{(17)}
+0,1,1
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{UA} \coloneqq [0,1,1]; $}
+
+% \mapleresult
+\begin{dmath}\label{(18)}
+\mathit{UA} \coloneqq \left[0,1,1\right]
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{mult1} (\mathit{UA} ,A); $}
+
+% \mapleresult
+\begin{dmath}\label{(19)}
+-2,0,1
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{UAA} \coloneqq [-2,0,1]; $}
+
+% \mapleresult
+\begin{dmath}\label{(20)}
+\mathit{UAA} \coloneqq \left[-2,0,1\right]
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{mult1} (\mathit{UAA} ,A); $}
+
+% \mapleresult
+\begin{dmath}\label{(21)}
+-2,-2,0
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{UAAA} \coloneqq [-2,-2,0]; $}
+
+% \mapleresult
+\begin{dmath}\label{(22)}
+\mathit{UAAA} \coloneqq \left[-2,-2,0\right]
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{mult1} (\mathit{UAAA} ,A); $}
+
+% \mapleresult
+\begin{dmath}\label{(23)}
+0,-2,-2
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{UAAAA} \coloneqq [0,-2,-2]; $}
+
+% \mapleresult
+\begin{dmath}\label{(24)}
+\mathit{UAAAA} \coloneqq \left[0,-2,-2\right]
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{mult4} (\mathit{UAAAA} ,A ,A ,A); $}
+
+% \mapleresult
+\begin{dmath}\label{(25)}
+0,4,4
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{UAAAAAAA} \coloneqq [0,4,4]; $}
+
+% \mapleresult
+\begin{dmath}\label{(26)}
+\mathit{UAAAAAAA} \coloneqq \left[0,4,4\right]
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{mult4} (\mathit{UAAAAAAA} ,A); $}
+
+% \mapleresult
+\begin{dmath}\label{(27)}
+-8,0,4
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{UA8} \coloneqq [-8,0,4]; $}
+
+% \mapleresult
+\begin{dmath}\label{(28)}
+\mathit{UA8} \coloneqq \left[-8,0,4\right]
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{mult4} (\mathit{UA8} ,B ,B ,E); $}
+
+% \mapleresult
+\begin{dmath}\label{(29)}
+-8,-8,-20
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \, $}
+
+\begin{Maple Normal}
+u = phi(a + bz + cz^2) = a + 21b + 21^2c = -8 + 21*-8 + 21^2 * -20 = -8996\
+
+v = 2^4*3*5*7 = 1680
+
+
+v^2 mod 9263 = 6448
+\end{Maple Normal}
+\begin{Maple Normal}
+u^2 mod 9263 = 6448
+\end{Maple Normal}
+\begin{Maple Normal}
+
+\end{Maple Normal}
+\begin{Maple Normal}
+gcd(9263, 1680 + 8996) =  157
+
+gcd(9263, 1680 - 8996) =  59\
+
+\
+
+
+
+
+\end{Maple Normal}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{igcd} (9263,10676); $}
+
+% \mapleresult
+\begin{dmath}\label{(30)}
+157
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{igcd} (9263,7316); $}
+
+% \mapleresult
+\begin{dmath}\label{(31)}
+59
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \mathit{ifactor} (9263); $}
+
+% \mapleresult
+\begin{dmath}\label{(32)}
+\left(59\right) \left(157\right)
+\end{dmath}
+\mapleinput
+{$ \displaystyle \texttt{>\,} \, $}
+
+\end{document}
