@@ -121,9 +121,9 @@ F \coloneqq \left[3,0,-1\right]
 
 % \mapleresult
 \begin{dmath}\label{(5)}
-\mathit{mult1} \coloneqq 
+\mathit{mult1} \coloneqq
 \\
-\boldsymbol{\mathrm{proc}}\left(x ,y \right)\quad \mathit{mult2} \! \left(x \left[1\right],x \left[2\right],x \left[3\right],y \left[1\right],y \left[2\right],y \left[3\right]\right)\quad 
+\boldsymbol{\mathrm{proc}}\left(x ,y \right)\quad \mathit{mult2} \! \left(x \left[1\right],x \left[2\right],x \left[3\right],y \left[1\right],y \left[2\right],y \left[3\right]\right)\quad
 \\
 \boldsymbol{\textrm{end proc}}
 \end{dmath}
@@ -140,19 +140,19 @@ F \coloneqq \left[3,0,-1\right]
 \href{http://www.maplesoft.com/support/help/errors/view.aspx?path=Warning,%20(in%20mult4)%20%60i%60%20is%20implicitly%20declared%20local}{Warning, (in mult4) `i` is implicitly declared local}% \mapleresult
 \href{http://www.maplesoft.com/support/help/errors/view.aspx?path=Warning,%20(in%20mult4)%20%60k%60%20is%20implicitly%20declared%20local}{Warning, (in mult4) `k` is implicitly declared local}% \mapleresult
 \begin{dmath}\label{(6)}
-\mathit{mult4} \coloneqq 
+\mathit{mult4} \coloneqq
 \\
-\boldsymbol{\mathrm{proc}}\left(\right)\quad \boldsymbol{\mathrm{local}}\quad i ,k ;\quad \boldsymbol{\mathrm{global}}\quad L ;\quad 
+\boldsymbol{\mathrm{proc}}\left(\right)\quad \boldsymbol{\mathrm{local}}\quad i ,k ;\quad \boldsymbol{\mathrm{global}}\quad L ;\quad
 \\
-L \coloneqq \left[\right];\quad \boldsymbol{\mathrm{for}}\quad i \quad \boldsymbol{\mathrm{to}}\quad \mathit{nargs} \quad \boldsymbol{\mathrm{do}}\quad L \coloneqq \left[\mathit{op} \! \left(L \right),\mathit{args} \left[i \right]\right]\quad \boldsymbol{\textrm{end do}};\quad 
+L \coloneqq \left[\right];\quad \boldsymbol{\mathrm{for}}\quad i \quad \boldsymbol{\mathrm{to}}\quad \mathit{nargs} \quad \boldsymbol{\mathrm{do}}\quad L \coloneqq \left[\mathit{op} \! \left(L \right),\mathit{args} \left[i \right]\right]\quad \boldsymbol{\textrm{end do}};\quad
 \\
-\boldsymbol{\mathrm{if}}\quad \mathit{nops} \! \left(L \right)=2\quad \boldsymbol{\mathrm{then}}\quad \mathit{mult1} \! \left(\mathit{op} \! \left(1,L \right),\mathit{op} \! \left(2,L \right)\right)\quad \boldsymbol{\mathrm{else}}\quad 
+\boldsymbol{\mathrm{if}}\quad \mathit{nops} \! \left(L \right)=2\quad \boldsymbol{\mathrm{then}}\quad \mathit{mult1} \! \left(\mathit{op} \! \left(1,L \right),\mathit{op} \! \left(2,L \right)\right)\quad \boldsymbol{\mathrm{else}}\quad
 \\
-k \coloneqq \left[\mathit{mult1} \! \left(\mathit{op} \! \left(1,L \right),\mathit{op} \! \left(2,L \right)\right)\right];\quad L \coloneqq \mathit{subsop} \! \left(1=\mathit{NULL} ,L \right);\quad 
+%k \coloneqq \left[\mathit{mult1} \! \left(\mathit{op} \! \left(1,L \right),\mathit{op} \! \left(2,L \right)\right)\right];\quad L \coloneqq \mathit{subsop} \! \left(1=\mathit{NULL} ,L \right);\quad
 \\
-L \coloneqq \mathit{subsop} \! \left(1=\mathit{NULL} ,L \right);\quad L \coloneqq \left[k ,\mathit{op} \! \left(L \right)\right];\quad \mathit{mult4} \! \left(\mathit{op} \! \left(L \right)\right)\quad 
+%L \coloneqq \mathit{subsop} \! \left(1=\mathit{NULL} ,L \right);\quad L \coloneqq \left[k ,\mathit{op} \! \left(L \right)\right];\quad \mathit{mult4} \! \left(\mathit{op} \! \left(L \right)\right)\quad
 \\
-\boldsymbol{\textrm{end if}}\quad 
+\boldsymbol{\textrm{end if}}\quad
 \\
 \boldsymbol{\textrm{end proc}}
 \end{dmath}
@@ -258,7 +258,7 @@ Row 37:        [0,  1,  1,  0,  0,  0,  0,  1,  1,  3,  3,  0,  0,  0,  0], \
 
 Row 41:        [0,  1,  0,  1,  1,  0,  0,  1,  1,  0,  0,  0,  0,  2,  0], \
 
-Row 45:        [0,  5,  0,  1,  0,  0,  0,  1,  0,  9,  1,  0,  0,  0,  0], 
+Row 45:        [0,  5,  0,  1,  0,  0,  0,  1,  0,  9,  1,  0,  0,  0,  0],
 \end{Maple Normal}
 \begin{Maple Normal}
 
@@ -268,7 +268,7 @@ Row 45:        [0,  5,  0,  1,  0,  0,  0,  1,  0,  9,  1,  0,  0,  0,  0],
 
 \
 
-U*A^8*B^2*E = 
+U*A^8*B^2*E =
 {$ [1,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [-1,1,0]\cdot [-1,1,0]\cdot [1,-2,0]; $}
 \end{Maple Normal}
 \mapleinput

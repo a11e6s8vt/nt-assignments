@@ -42,17 +42,14 @@
 
 \begin{Maple Normal}
 Here we look to break down an element of Q
-{$ ((-2)^{\frac{1}{3}})\mathit{into} a \mathit{set} \mathit{of} \mathit{primes} \mathit{with} \mathit{relatively} \mathit{small} \mathit{norms} .\mathit{We} \mathit{need} \mathit{procedures}  $}for Norm, Multiplication, Inversion and Division in the field 
+{$ ((-2)^{\frac{1}{3}})\mathit{into} a \mathit{set} \mathit{of} \mathit{primes} \mathit{with} \mathit{relatively} \mathit{small} \mathit{norms} .\mathit{We} \mathit{need} \mathit{procedures}  $}for Norm, Multiplication, Inversion and Division in the field
 \end{Maple Normal}
 \begin{Maple Normal}
 The three roots of the equation z
-{$ ^{3} $} = -2 are given below. If z1 is the real root then the two conjugate complex roots are z2 = wz and z3 = 
-{$ w^{2} $}z where 
+{$ ^{3} $} = -2 are given below. If z1 is the real root then the two conjugate complex roots are z2 = wz and z3 =
+{$ w^{2} $}z where
 \end{Maple Normal}
-\begin{Maple Normal}
-w:= 1/2*(-1 +i
-{$ *\mathrm{sqrt}(3)\right); $}
-\end{Maple Normal}
+
 \mapleinput
 {$ \displaystyle \texttt{>\,} \mathit{solve} (z^{3}=-2,z); $}
 
@@ -120,7 +117,7 @@ The following procedures perform multiplication, inversion and division in our f
 
 % \mapleresult
 \begin{dmath}\label{(7)}
-\mathit{divide3} \coloneqq 
+\mathit{divide3} \coloneqq
 \\
 \boldsymbol{\mathrm{proc}}\left(a ,b ,c ,d ,e ,f \right)\quad \mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(d ,e ,f \right)\right)\quad \boldsymbol{\textrm{end proc}}
 \end{dmath}
@@ -190,7 +187,7 @@ We need procedures to decide on divisibility and then how many times we can divi
 
 \end{Maple Normal}
 \begin{Maple Normal}
-The 'divisibleby' procedures check if the outcome of the division rule produces integer values in each of the three positions      s[1], s[2], and s[3]. If it does we can perform the 'divideby' procedure to extract all powers of the member of the factor base. 
+The 'divisibleby' procedures check if the outcome of the division rule produces integer values in each of the three positions      s[1], s[2], and s[3]. If it does we can perform the 'divideby' procedure to extract all powers of the member of the factor base.
 \end{Maple Normal}
 \begin{Maple Normal}
 
@@ -199,7 +196,7 @@ The 'divisibleby' procedures check if the outcome of the division rule produces 
 
 \end{Maple Normal}
 \mapleinput
-{$ \displaystyle \texttt{>\,} \mathit{divisiblebyA} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (0,1,0))];\,\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\, \,\mathit{divisiblebyB} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (-1,1,0))];\,\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\, \,\mathit{divisiblebyC} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (1,0,1))];\,\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\, \,\mathit{divisiblebyD} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (1,1,-1))];\,\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\, \mathit{divisiblebyE} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (1,-2,0))];\,\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\, \,\mathit{divisiblebyF} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (3,0,-1))];\,\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\, \,\mathit{divisiblebyU} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (1,1,0))];\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\, 
+{$ \displaystyle \texttt{>\,} \mathit{divisiblebyA} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (0,1,0))];\,\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\, \,\mathit{divisiblebyB} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (-1,1,0))];\,\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\, \,\mathit{divisiblebyC} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (1,0,1))];\,\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\, \,\mathit{divisiblebyD} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (1,1,-1))];\,\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\, \mathit{divisiblebyE} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (1,-2,0))];\,\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\, \,\mathit{divisiblebyF} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (3,0,-1))];\,\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\, \,\mathit{divisiblebyU} \coloneqq \mathrm{proc}(a ,b ,c);\,s \coloneqq [\mathit{mult2} (a ,b ,c ,\mathit{invert2} (1,1,0))];\mathrm{if}\,\mathit{type} (s [1],\mathit{integer})\,\land \,\mathit{type} (s [2],\mathit{integer})\,\land \,\mathit{type} (s [3],\mathit{integer})\,\mathrm{then}\,\mathit{true} \,\mathrm{else}\,\mathit{false} ;\mathrm{fi};\,\mathrm{end};\,
 \\
   $}
 
@@ -212,133 +209,133 @@ The 'divisibleby' procedures check if the outcome of the division rule produces 
 \href{http://www.maplesoft.com/support/help/errors/view.aspx?path=Warning,%20(in%20divisiblebyF)%20%60s%60%20is%20implicitly%20declared%20local}{Warning, (in divisiblebyF) `s` is implicitly declared local}% \mapleresult
 \href{http://www.maplesoft.com/support/help/errors/view.aspx?path=Warning,%20(in%20divisiblebyU)%20%60s%60%20is%20implicitly%20declared%20local}{Warning, (in divisiblebyU) `s` is implicitly declared local}% \mapleresult
 \begin{dmath*}
-\mathit{divisiblebyA} \coloneqq 
+\mathit{divisiblebyA} \coloneqq
 \\
-\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad 
+\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad
 \\
-s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(0,1,0\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad 
+s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(0,1,0\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad
 \\
-\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad 
+\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad
 \\
-\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad 
+\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad
 \\
-\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad 
+\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad
 \\
-\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad 
-\\
-\boldsymbol{\textrm{end proc}}
-\end{dmath*}
-\vspace{-\bigskipamount}
-% \mapleresult
-\begin{dmath*}
-\mathit{divisiblebyB} \coloneqq 
-\\
-\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad 
-\\
-s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(-1,1,0\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad 
-\\
-\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad 
-\\
-\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad 
-\\
-\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad 
-\\
-\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad 
+\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad
 \\
 \boldsymbol{\textrm{end proc}}
 \end{dmath*}
 \vspace{-\bigskipamount}
 % \mapleresult
 \begin{dmath*}
-\mathit{divisiblebyC} \coloneqq 
+\mathit{divisiblebyB} \coloneqq
 \\
-\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad 
+\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad
 \\
-s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(1,0,1\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad 
+s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(-1,1,0\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad
 \\
-\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad 
+\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad
 \\
-\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad 
+\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad
 \\
-\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad 
+\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad
 \\
-\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad 
-\\
-\boldsymbol{\textrm{end proc}}
-\end{dmath*}
-\vspace{-\bigskipamount}
-% \mapleresult
-\begin{dmath*}
-\mathit{divisiblebyD} \coloneqq 
-\\
-\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad 
-\\
-s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(1,1,-1\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad 
-\\
-\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad 
-\\
-\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad 
-\\
-\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad 
-\\
-\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad 
+\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad
 \\
 \boldsymbol{\textrm{end proc}}
 \end{dmath*}
 \vspace{-\bigskipamount}
 % \mapleresult
 \begin{dmath*}
-\mathit{divisiblebyE} \coloneqq 
+\mathit{divisiblebyC} \coloneqq
 \\
-\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad 
+\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad
 \\
-s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(1,-2,0\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad 
+s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(1,0,1\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad
 \\
-\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad 
+\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad
 \\
-\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad 
+\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad
 \\
-\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad 
+\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad
 \\
-\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad 
+\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad
 \\
 \boldsymbol{\textrm{end proc}}
 \end{dmath*}
 \vspace{-\bigskipamount}
 % \mapleresult
 \begin{dmath*}
-\mathit{divisiblebyF} \coloneqq 
+\mathit{divisiblebyD} \coloneqq
 \\
-\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad 
+\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad
 \\
-s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(3,0,-1\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad 
+s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(1,1,-1\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad
 \\
-\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad 
+\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad
 \\
-\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad 
+\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad
 \\
-\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad 
+\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad
 \\
-\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad 
+\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad
+\\
+\boldsymbol{\textrm{end proc}}
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+\mathit{divisiblebyE} \coloneqq
+\\
+\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad
+\\
+s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(1,-2,0\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad
+\\
+\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad
+\\
+\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad
+\\
+\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad
+\\
+\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad
+\\
+\boldsymbol{\textrm{end proc}}
+\end{dmath*}
+\vspace{-\bigskipamount}
+% \mapleresult
+\begin{dmath*}
+\mathit{divisiblebyF} \coloneqq
+\\
+\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad
+\\
+s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(3,0,-1\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad
+\\
+\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad
+\\
+\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad
+\\
+\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad
+\\
+\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad
 \\
 \boldsymbol{\textrm{end proc}}
 \end{dmath*}
 \vspace{-\bigskipamount}
 % \mapleresult
 \begin{dmath}\label{(9)}
-\mathit{divisiblebyU} \coloneqq 
+\mathit{divisiblebyU} \coloneqq
 \\
-\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad 
+\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad s ;\quad
 \\
-s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(1,1,0\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad 
+s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(1,1,0\right)\right)\right];\quad \boldsymbol{\mathrm{if}}\quad
 \\
-\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad 
+\mathit{type} \! \left(s \left[1\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad \mathit{type} \! \left(s \left[2\right],\mathit{integer} \right)\quad \boldsymbol{\land}\quad
 \\
-\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad 
+\mathit{type} \! \left(s \left[3\right],\mathit{integer} \right)\quad
 \\
-\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad 
+\boldsymbol{\mathrm{then}}\quad \mathit{true} \quad
 \\
-\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad 
+\boldsymbol{\mathrm{else}}\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad
 \\
 \boldsymbol{\textrm{end proc}}
 \end{dmath}
@@ -436,17 +433,17 @@ s \coloneqq \left[\mathit{mult2} \! \left(a ,b ,c ,\mathit{invert2} \! \left(1,1
 \href{http://www.maplesoft.com/support/help/errors/view.aspx?path=Warning,%20(in%20dividebyU2)%20%60k2%60%20is%20implicitly%20declared%20local}{Warning, (in dividebyU2) `k2` is implicitly declared local}% \mapleresult
 \href{http://www.maplesoft.com/support/help/errors/view.aspx?path=Warning,%20(in%20dividebyU2)%20%60k3%60%20is%20implicitly%20declared%20local}{Warning, (in dividebyU2) `k3` is implicitly declared local}% \mapleresult
 \begin{dmath}\label{(16)}
-\mathit{dividebyU2} \coloneqq \boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad \mathit{oldk1} ,\mathit{oldk2} ,\mathit{oldk3} ,\mathit{k1} ,\mathit{k2} ,\mathit{k3} ;\quad \boldsymbol{\mathrm{global}}\quad \mathit{countU} ,s ,\mathit{sign1} ;\quad \mathit{sign1} \coloneqq -1;\quad \boldsymbol{\mathrm{if}}\quad \mathit{norm1} \! \left(a ,b ,c \right)<>1\quad \boldsymbol{\land}\quad \mathit{norm1} \! \left(a ,b ,c \right)<>-1\quad 
+\mathit{dividebyU2} \coloneqq \boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad \boldsymbol{\mathrm{local}}\quad \mathit{oldk1} ,\mathit{oldk2} ,\mathit{oldk3} ,\mathit{k1} ,\mathit{k2} ,\mathit{k3} ;\quad \boldsymbol{\mathrm{global}}\quad \mathit{countU} ,s ,\mathit{sign1} ;\quad \mathit{sign1} \coloneqq -1;\quad \boldsymbol{\mathrm{if}}\quad \mathit{norm1} \! \left(a ,b ,c \right)<>1\quad \boldsymbol{\land}\quad \mathit{norm1} \! \left(a ,b ,c \right)<>-1\quad
 \\
-\boldsymbol{\mathrm{then}}\quad \mathit{false} \quad \boldsymbol{\mathrm{else}}\quad \mathit{oldk1} \coloneqq a ;\quad \mathit{oldk2} \coloneqq b ;\quad \mathit{oldk3} \coloneqq c ;\quad s \coloneqq \left[a ,b ,c \right];\quad \boldsymbol{\mathrm{if}}\quad s =\left[0,0,0\right]\quad \boldsymbol{\mathrm{then}}\quad \mathit{false} \quad \boldsymbol{\mathrm{elif}}\quad s =\left[-1,1,-1\right]\quad \boldsymbol{\mathrm{then}}\quad \mathit{false} \quad \boldsymbol{\mathrm{elif}}\quad s =\left[1,-1,1\right]\quad \boldsymbol{\mathrm{then}}\quad \mathit{false} \quad \boldsymbol{\mathrm{elif}}\quad s =\left[1,0,0\right]\quad \boldsymbol{\mathrm{then}}\quad 
+\boldsymbol{\mathrm{then}}\quad \mathit{false} \quad \boldsymbol{\mathrm{else}}\quad \mathit{oldk1} \coloneqq a ;\quad \mathit{oldk2} \coloneqq b ;\quad \mathit{oldk3} \coloneqq c ;\quad s \coloneqq \left[a ,b ,c \right];\quad \boldsymbol{\mathrm{if}}\quad s =\left[0,0,0\right]\quad \boldsymbol{\mathrm{then}}\quad \mathit{false} \quad \boldsymbol{\mathrm{elif}}\quad s =\left[-1,1,-1\right]\quad \boldsymbol{\mathrm{then}}\quad \mathit{false} \quad \boldsymbol{\mathrm{elif}}\quad s =\left[1,-1,1\right]\quad \boldsymbol{\mathrm{then}}\quad \mathit{false} \quad \boldsymbol{\mathrm{elif}}\quad s =\left[1,0,0\right]\quad \boldsymbol{\mathrm{then}}\quad
 \\
-\mathit{countU} \coloneqq 0;\quad \mathit{sign1} \coloneqq 0;\quad \mathit{print} \! \left(\mathit{countU} \right);\quad \mathit{print} \! \left(\mathit{sign1} \right)\quad \boldsymbol{\mathrm{elif}}\quad s =\left[-1,0,0\right]\quad \boldsymbol{\mathrm{then}}\quad 
+\mathit{countU} \coloneqq 0;\quad \mathit{sign1} \coloneqq 0;\quad \mathit{print} \! \left(\mathit{countU} \right);\quad \mathit{print} \! \left(\mathit{sign1} \right)\quad \boldsymbol{\mathrm{elif}}\quad s =\left[-1,0,0\right]\quad \boldsymbol{\mathrm{then}}\quad
 \\
-\mathit{countU} \coloneqq 0;\quad \mathit{sign1} \coloneqq 1;\quad \mathit{print} \! \left(\mathit{countU} \right);\quad \mathit{print} \! \left(\mathit{sign1} \right)\quad \boldsymbol{\mathrm{else}}\quad \boldsymbol{\mathrm{if}}\quad s =\left[-1,1,-1\right]\quad \boldsymbol{\mathrm{then}}\quad \mathit{false} \quad \boldsymbol{\mathrm{else}}\quad \mathit{countU} \coloneqq 1;\quad \boldsymbol{\mathrm{while}}\quad 
+\mathit{countU} \coloneqq 0;\quad \mathit{sign1} \coloneqq 1;\quad \mathit{print} \! \left(\mathit{countU} \right);\quad \mathit{print} \! \left(\mathit{sign1} \right)\quad \boldsymbol{\mathrm{else}}\quad \boldsymbol{\mathrm{if}}\quad s =\left[-1,1,-1\right]\quad \boldsymbol{\mathrm{then}}\quad \mathit{false} \quad \boldsymbol{\mathrm{else}}\quad \mathit{countU} \coloneqq 1;\quad \boldsymbol{\mathrm{while}}\quad
 \\
-\mathit{not} \! \left(s \left[1\right]=1\quad \boldsymbol{\land}\quad s \left[2\right]=1\quad \boldsymbol{\land}\quad s \left[3\right]=0\quad \boldsymbol{\lor}\quad 
+\mathit{not} \! \left(s \left[1\right]=1\quad \boldsymbol{\land}\quad s \left[2\right]=1\quad \boldsymbol{\land}\quad s \left[3\right]=0\quad \boldsymbol{\lor}\quad
 \\
-s \left[1\right]=-1\quad \boldsymbol{\land}\quad s \left[2\right]=-1\quad \boldsymbol{\land}\quad s \left[3\right]=0\right)\quad 
+s \left[1\right]=-1\quad \boldsymbol{\land}\quad s \left[2\right]=-1\quad \boldsymbol{\land}\quad s \left[3\right]=0\right)\quad
 \\
 \boldsymbol{\mathrm{do}}\quad \mathit{countU} \coloneqq \mathit{countU} +1;\quad \mathit{k1} \coloneqq s \left[1\right];\quad \mathit{k2} \coloneqq s \left[2\right];\quad \mathit{k3} \coloneqq s \left[3\right];\quad s \coloneqq \left[\mathit{divide3} \! \left(\mathit{k1} ,\mathit{k2} ,\mathit{k3} ,1,1,0\right)\right]\quad \boldsymbol{\textrm{end do}};\quad \boldsymbol{\mathrm{if}}\quad \mathit{k1} =1\quad \boldsymbol{\mathrm{then}}\quad \mathit{sign1} \coloneqq 1\quad \boldsymbol{\mathrm{else}}\quad \mathit{sign1} \coloneqq 1\quad \boldsymbol{\textrm{end if}}\quad \boldsymbol{\textrm{end if}}\quad \boldsymbol{\textrm{end if}}\quad \boldsymbol{\textrm{end if}}\quad \boldsymbol{\textrm{end proc}}
 \end{dmath}
@@ -464,27 +461,27 @@ The factorisation procedure below performs the divisions by each of the factor b
 
 % \mapleresult
 \begin{dmath}\label{(17)}
-\mathit{factorisation} \coloneqq 
+\mathit{factorisation} \coloneqq
 \\
-\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad 
+\boldsymbol{\mathrm{proc}}\left(a ,b ,c \right)\quad
 \\
-\boldsymbol{\mathrm{if}}\quad a =0\quad \boldsymbol{\land}\quad b =0\quad \boldsymbol{\land}\quad c =0\quad \boldsymbol{\mathrm{then}}\quad \mathit{false} \quad \boldsymbol{\mathrm{else}}\quad 
+\boldsymbol{\mathrm{if}}\quad a =0\quad \boldsymbol{\land}\quad b =0\quad \boldsymbol{\land}\quad c =0\quad \boldsymbol{\mathrm{then}}\quad \mathit{false} \quad \boldsymbol{\mathrm{else}}\quad
 \\
 \mathit{dividebyU2} \! \left(\mathit{dividebyA} \! \left(\mathit{dividebyB} \! \left(\mathit{dividebyC} \! \left(\mathit{dividebyD} \! \left(\mathit{dividebyE} \! \left(\mathit{dividebyF} \! \left(a ,b ,c \right)\right)\right)\right)\right)\right)\right)
 \\
-;\quad 
+;\quad
 \\
-\boldsymbol{\mathrm{if}}\quad 0<=\mathit{sign1} \quad \boldsymbol{\mathrm{then}}\quad 
+\boldsymbol{\mathrm{if}}\quad 0<=\mathit{sign1} \quad \boldsymbol{\mathrm{then}}\quad
 \\
 \mathit{print} \! \left(a ,b ,
 \\
 \left[\mathit{sign1} ,\mathit{countU} ,\mathit{countA} ,\mathit{countB} ,\mathit{countC} ,\mathit{countD} ,\mathit{countE} ,
 \\
-\mathit{countF} \right]\right)\quad 
+\mathit{countF} \right]\right)\quad
 \\
-\boldsymbol{\mathrm{else}}\quad \mathit{print} \! \left(a ,b ,\mathit{False\,-\,does\,not\,factor\,} \right);\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad 
+\boldsymbol{\mathrm{else}}\quad \mathit{print} \! \left(a ,b ,\mathit{False\,-\,does\,not\,factor\,} \right);\quad \mathit{false} \quad \boldsymbol{\textrm{end if}}\quad
 \\
-\boldsymbol{\textrm{end if}}\quad 
+\boldsymbol{\textrm{end if}}\quad
 \\
 \boldsymbol{\textrm{end proc}}
 \end{dmath}
@@ -502,9 +499,9 @@ The next two procedures perform multiplication of triples [a,b,c]; mult1 combine
 
 % \mapleresult
 \begin{dmath}\label{(18)}
-\mathit{mult1} \coloneqq 
+\mathit{mult1} \coloneqq
 \\
-\boldsymbol{\mathrm{proc}}\left(x ,y \right)\quad \mathit{mult2} \! \left(x \left[1\right],x \left[2\right],x \left[3\right],y \left[1\right],y \left[2\right],y \left[3\right]\right)\quad 
+\boldsymbol{\mathrm{proc}}\left(x ,y \right)\quad \mathit{mult2} \! \left(x \left[1\right],x \left[2\right],x \left[3\right],y \left[1\right],y \left[2\right],y \left[3\right]\right)\quad
 \\
 \boldsymbol{\textrm{end proc}}
 \end{dmath}
@@ -521,19 +518,19 @@ The next two procedures perform multiplication of triples [a,b,c]; mult1 combine
 \href{http://www.maplesoft.com/support/help/errors/view.aspx?path=Warning,%20(in%20mult4)%20%60i%60%20is%20implicitly%20declared%20local}{Warning, (in mult4) `i` is implicitly declared local}% \mapleresult
 \href{http://www.maplesoft.com/support/help/errors/view.aspx?path=Warning,%20(in%20mult4)%20%60k%60%20is%20implicitly%20declared%20local}{Warning, (in mult4) `k` is implicitly declared local}% \mapleresult
 \begin{dmath}\label{(19)}
-\mathit{mult4} \coloneqq 
+\mathit{mult4} \coloneqq
 \\
-\boldsymbol{\mathrm{proc}}\left(\right)\quad \boldsymbol{\mathrm{local}}\quad i ,k ;\quad \boldsymbol{\mathrm{global}}\quad L ;\quad 
+\boldsymbol{\mathrm{proc}}\left(\right)\quad \boldsymbol{\mathrm{local}}\quad i ,k ;\quad \boldsymbol{\mathrm{global}}\quad L ;\quad
 \\
-L \coloneqq \left[\right];\quad \boldsymbol{\mathrm{for}}\quad i \quad \boldsymbol{\mathrm{to}}\quad \mathit{nargs} \quad \boldsymbol{\mathrm{do}}\quad L \coloneqq \left[\mathit{op} \! \left(L \right),\mathit{args} \left[i \right]\right]\quad \boldsymbol{\textrm{end do}};\quad 
+L \coloneqq \left[\right];\quad \boldsymbol{\mathrm{for}}\quad i \quad \boldsymbol{\mathrm{to}}\quad \mathit{nargs} \quad \boldsymbol{\mathrm{do}}\quad L \coloneqq \left[\mathit{op} \! \left(L \right),\mathit{args} \left[i \right]\right]\quad \boldsymbol{\textrm{end do}};\quad
 \\
-\boldsymbol{\mathrm{if}}\quad \mathit{nops} \! \left(L \right)=2\quad \boldsymbol{\mathrm{then}}\quad \mathit{mult1} \! \left(\mathit{op} \! \left(1,L \right),\mathit{op} \! \left(2,L \right)\right)\quad \boldsymbol{\mathrm{else}}\quad 
+\boldsymbol{\mathrm{if}}\quad \mathit{nops} \! \left(L \right)=2\quad \boldsymbol{\mathrm{then}}\quad \mathit{mult1} \! \left(\mathit{op} \! \left(1,L \right),\mathit{op} \! \left(2,L \right)\right)\quad \boldsymbol{\mathrm{else}}\quad
 \\
-k \coloneqq \left[\mathit{mult1} \! \left(\mathit{op} \! \left(1,L \right),\mathit{op} \! \left(2,L \right)\right)\right];\quad L \coloneqq \mathit{subsop} \! \left(1=\mathit{NULL} ,L \right);\quad 
+k \coloneqq \left[\mathit{mult1} \! \left(\mathit{op} \! \left(1,L \right),\mathit{op} \! \left(2,L \right)\right)\right];\quad L \coloneqq \mathit{subsop} \! \left(1=\mathit{NULL} ,L \right);\quad
 \\
-L \coloneqq \mathit{subsop} \! \left(1=\mathit{NULL} ,L \right);\quad L \coloneqq \left[k ,\mathit{op} \! \left(L \right)\right];\quad \mathit{mult4} \! \left(\mathit{op} \! \left(L \right)\right)\quad 
+L \coloneqq \mathit{subsop} \! \left(1=\mathit{NULL} ,L \right);\quad L \coloneqq \left[k ,\mathit{op} \! \left(L \right)\right];\quad \mathit{mult4} \! \left(\mathit{op} \! \left(L \right)\right)\quad
 \\
-\boldsymbol{\textrm{end if}}\quad 
+\boldsymbol{\textrm{end if}}\quad
 \\
 \boldsymbol{\textrm{end proc}}
 \end{dmath}
@@ -575,7 +572,7 @@ N \coloneqq 9263
 In the next step we populate a list B with the values of a and b (small) where the factor base for a + 21b contains only the small primes \{2,3,5,7,11,13\}
 \end{Maple Normal}
 \begin{Maple Normal}
-There are 47 pairs (a,b) with a and b between -9 and 9 where both a + 21b and [a,b,0] can be completely factorised using a small factor base. The values of the factors form a 15 column matrix; the first 7 columns are the powers of -1, 2, 3, 5, 7, 11, 13 that factor a + 21b and the last 8 are the powers of -1, U, A, B, C, D, E, F that factorise [a,b,0]. To display the matrix we need to increase the default size to 50x50. 
+There are 47 pairs (a,b) with a and b between -9 and 9 where both a + 21b and [a,b,0] can be completely factorised using a small factor base. The values of the factors form a 15 column matrix; the first 7 columns are the powers of -1, 2, 3, 5, 7, 11, 13 that factor a + 21b and the last 8 are the powers of -1, U, A, B, C, D, E, F that factorise [a,b,0]. To display the matrix we need to increase the default size to 50x50.
 \end{Maple Normal}
 \mapleinput
 {$ \displaystyle \texttt{>\,} \mathit{interface} (\mathit{rtablesize} =50) $}
@@ -694,102 +691,102 @@ Row	a	b	a+21b\
 
 % \mapleresult
 \begin{dmath}\label{(24)}
-R \coloneqq 
+R \coloneqq
 \\
 \left[\begin{array}{ccccccccccccccc}
-1 & 3 & 2 & 0 & 0 & 0 & 0 & 1 & 2 & 0 & 3 & 2 & 0 & 0 & 0 
+1 & 3 & 2 & 0 & 0 & 0 & 0 & 1 & 2 & 0 & 3 & 2 & 0 & 0 & 0
 \\
- 1 & 0 & 2 & 0 & 0 & 0 & 0 & 1 & 2 & 0 & 6 & 0 & 0 & 0 & 0 
+ 1 & 0 & 2 & 0 & 0 & 0 & 0 & 1 & 2 & 0 & 6 & 0 & 0 & 0 & 0
 \\
- 1 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 2 & 0 
+ 1 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 2 & 0
 \\
- 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 1 
+ 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 1
 \\
- 1 & 1 & 2 & 1 & 0 & 0 & 0 & 1 & 1 & 3 & 0 & 0 & 1 & 0 & 0 
+ 1 & 1 & 2 & 1 & 0 & 0 & 0 & 1 & 1 & 3 & 0 & 0 & 1 & 0 & 0
 \\
- 1 & 4 & 3 & 0 & 0 & 0 & 0 & 1 & 1 & 3 & 0 & 2 & 0 & 0 & 0 
+ 1 & 4 & 3 & 0 & 0 & 0 & 0 & 1 & 1 & 3 & 0 & 2 & 0 & 0 & 0
 \\
- 1 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 3 & 3 & 0 & 0 & 0 & 0 
+ 1 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 3 & 3 & 0 & 0 & 0 & 0
 \\
- 1 & 3 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 6 & 0 & 0 & 0 & 0 & 0 
+ 1 & 3 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 6 & 0 & 0 & 0 & 0 & 0
 \\
- 0 & 4 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 6 & 1 & 0 & 0 & 0 & 0 
+ 0 & 4 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 6 & 1 & 0 & 0 & 0 & 0
 \\
- 1 & 1 & 1 & 0 & 0 & 1 & 0 & 1 & 2 & 0 & 3 & 0 & 0 & 0 & 0 
+ 1 & 1 & 1 & 0 & 0 & 1 & 0 & 1 & 2 & 0 & 3 & 0 & 0 & 0 & 0
 \\
- 1 & 0 & 2 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 0 
+ 1 & 0 & 2 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 0
 \\
- 1 & 3 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 2 & 0 & 0 & 0 
+ 1 & 3 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 2 & 0 & 0 & 0
 \\
- 0 & 2 & 1 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 4 & 0 & 0 & 0 & 0 
+ 0 & 2 & 1 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 4 & 0 & 0 & 0 & 0
 \\
- 1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 1 
+ 1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 1
 \\
- 1 & 2 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 3 & 0 & 0 & 0 & 0 & 0 
+ 1 & 2 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 3 & 0 & 0 & 0 & 0 & 0
 \\
- 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 3 & 0 & 0 & 0 & 0 & 0 
+ 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 3 & 0 & 0 & 0 & 0 & 0
 \\
- 0 & 3 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 3 & 1 & 0 & 0 & 0 & 0 
+ 0 & 3 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 3 & 1 & 0 & 0 & 0 & 0
 \\
- 1 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 
+ 1 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0
 \\
- 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 
+ 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0
 \\
- 1 & 2 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 7 & 0 & 0 & 0 & 0 & 0 
+ 1 & 2 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 7 & 0 & 0 & 0 & 0 & 0
 \\
- 1 & 0 & 2 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 3 & 0 & 0 & 0 & 0 
+ 1 & 0 & 2 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 3 & 0 & 0 & 0 & 0
 \\
- 1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 
+ 1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0
 \\
- 0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 4 & 0 & 0 & 0 & 0 & 0 
+ 0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 4 & 0 & 0 & 0 & 0 & 0
 \\
- 0 & 0 & 2 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 3 & 0 & 0 & 0 & 0 
+ 0 & 0 & 2 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 3 & 0 & 0 & 0 & 0
 \\
- 0 & 1 & 2 & 0 & 0 & 1 & 0 & 1 & 2 & 0 & 3 & 0 & 1 & 0 & 0 
+ 0 & 1 & 2 & 0 & 0 & 1 & 0 & 1 & 2 & 0 & 3 & 0 & 1 & 0 & 0
 \\
- 0 & 2 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 7 & 0 & 0 & 0 & 0 & 0 
+ 0 & 2 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 7 & 0 & 0 & 0 & 0 & 0
 \\
- 1 & 2 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 
+ 1 & 2 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0
 \\
- 0 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 
+ 0 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0
 \\
- 1 & 3 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 3 & 1 & 0 & 0 & 0 & 0 
+ 1 & 3 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 3 & 1 & 0 & 0 & 0 & 0
 \\
- 0 & 2 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 3 & 0 & 0 & 0 & 0 & 0 
+ 0 & 2 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 3 & 0 & 0 & 0 & 0 & 0
 \\
- 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 
+ 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1
 \\
- 1 & 2 & 1 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 4 & 0 & 0 & 0 & 0 
+ 1 & 2 & 1 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 4 & 0 & 0 & 0 & 0
 \\
- 0 & 3 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 0 
+ 0 & 3 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 0
 \\
- 0 & 1 & 1 & 0 & 0 & 1 & 0 & 1 & 2 & 0 & 3 & 0 & 0 & 0 & 0 
+ 0 & 1 & 1 & 0 & 0 & 1 & 0 & 1 & 2 & 0 & 3 & 0 & 0 & 0 & 0
 \\
- 1 & 4 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 6 & 1 & 0 & 0 & 0 & 0 
+ 1 & 4 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 6 & 1 & 0 & 0 & 0 & 0
 \\
- 0 & 3 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 6 & 0 & 0 & 0 & 0 & 0 
+ 0 & 3 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 6 & 0 & 0 & 0 & 0 & 0
 \\
- 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 3 & 3 & 0 & 0 & 0 & 0 
+ 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 3 & 3 & 0 & 0 & 0 & 0
 \\
- 0 & 4 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 3 & 0 & 2 & 0 & 0 & 0 
+ 0 & 4 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 3 & 0 & 2 & 0 & 0 & 0
 \\
- 0 & 1 & 2 & 1 & 0 & 0 & 0 & 1 & 1 & 3 & 0 & 0 & 1 & 0 & 0 
+ 0 & 1 & 2 & 1 & 0 & 0 & 0 & 1 & 1 & 3 & 0 & 0 & 1 & 0 & 0
 \\
- 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 1 
+ 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 1
 \\
- 0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 2 & 0 
+ 0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 2 & 0
 \\
- 0 & 0 & 2 & 0 & 0 & 0 & 0 & 1 & 2 & 0 & 6 & 0 & 0 & 0 & 0 
+ 0 & 0 & 2 & 0 & 0 & 0 & 0 & 1 & 2 & 0 & 6 & 0 & 0 & 0 & 0
 \\
- 0 & 3 & 2 & 0 & 0 & 0 & 0 & 1 & 2 & 0 & 3 & 2 & 0 & 0 & 0 
+ 0 & 3 & 2 & 0 & 0 & 0 & 0 & 1 & 2 & 0 & 3 & 2 & 0 & 0 & 0
 \\
- 0 & 2 & 2 & 1 & 0 & 0 & 0 & 1 & 2 & 0 & 7 & 0 & 0 & 0 & 0 
+ 0 & 2 & 2 & 1 & 0 & 0 & 0 & 1 & 2 & 0 & 7 & 0 & 0 & 0 & 0
 \\
- 0 & 5 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 9 & 1 & 0 & 0 & 0 & 0 
+ 0 & 5 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 9 & 1 & 0 & 0 & 0 & 0
 \\
- 0 & 2 & 1 & 0 & 0 & 1 & 0 & 1 & 2 & 3 & 3 & 0 & 0 & 0 & 0 
+ 0 & 2 & 1 & 0 & 0 & 1 & 0 & 1 & 2 & 3 & 3 & 0 & 0 & 0 & 0
 \\
- 0 & 4 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 9 & 0 & 0 & 0 & 0 & 0 
+ 0 & 4 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 9 & 0 & 0 & 0 & 0 & 0
 \end{array}\right]
 \end{dmath}
 \begin{Maple Normal}

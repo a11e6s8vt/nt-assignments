@@ -1,0 +1,845 @@
+% Assignment1 - Ajeesh T. Vijayan
+\documentclass[11pt,a4paper,fleqn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{enumerate}
+\usepackage{amsmath, amssymb}
+\usepackage{array, makecell}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[left=2.5cm,right=1.5cm,top=2cm,bottom=1.5cm]{geometry}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{listings, lstautogobble}
+\usepackage{listings-rust}
+\usepackage[verbatim]{lstfiracode}
+\usepackage[table, x11names]{xcolor}
+\usepackage{fontawesome5}
+\usepackage{adjustbox}
+\usepackage{tabularx, makecell, booktabs}%
+\usepackage{maple}
+\usepackage{breqn}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{maple}
+\usepackage[utf8]{inputenc}
+\usepackage[svgnames]{xcolor}
+\usepackage{breqn}
+\usepackage{verbatimbox,caption,float,lipsum}
+\usepackage{mdframed}
+\newfloat{Code}
+\captionsetup{Code}
+
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+	mathescape=true,
+	language=Rust,
+	backgroundcolor=\color{backcolour},
+	style=FiraCodeStyle,
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\small,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=3pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+\lstdefinestyle{DOS}
+{
+	backgroundcolor=\color{black},
+	basicstyle=\scriptsize\color{white}\ttfamily
+}
+
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+
+\lstdefinelanguage{json}{
+	mathescape=true,
+	basicstyle=\normalfont\ttfamily,
+	numbers=left,
+	numberstyle=\scriptsize,
+	stepnumber=1,
+	numbersep=8pt,
+	showstringspaces=false,
+	breaklines=true,
+	frame=lines,
+	backgroundcolor=\color{background},
+	literate=
+	*{0}{{{\color{numb}0}}}{1}
+	{1}{{{\color{numb}1}}}{1}
+	{2}{{{\color{numb}2}}}{1}
+	{3}{{{\color{numb}3}}}{1}
+	{4}{{{\color{numb}4}}}{1}
+	{5}{{{\color{numb}5}}}{1}
+	{6}{{{\color{numb}6}}}{1}
+	{7}{{{\color{numb}7}}}{1}
+	{8}{{{\color{numb}8}}}{1}
+	{9}{{{\color{numb}9}}}{1}
+	{:}{{{\color{punct}{:}}}}{1}
+	{,}{{{\color{punct}{,}}}}{1}
+	{\{}{{{\color{delim}{\{}}}}{1}
+	{\}}{{{\color{delim}{\}}}}}{1}
+	{[}{{{\color{delim}{[}}}}{1}
+	{]}{{{\color{delim}{]}}}}{1},
+}
+
+\lstnewenvironment{myverbatim}[1][]{%
+	\lstset{
+		basicstyle=\ttfamily,
+		frame=tb,
+		#1
+	}%
+}{}
+
+\makeatletter
+\newcommand{\github}[1]{%
+	\href{#1}{\faGithubSquare}%
+}
+\makeatother
+
+\makeatletter
+\newcommand{\tpmod}[1]{{\@displayfalse\pmod{#1}}}
+\makeatother
+
+\newtheorem{theorem}{Theorem}
+
+% Define typographic struts, as suggested by Claudio Beccari
+%   in an article in TeX and TUG News, Vol. 2, 1993.
+\newcommand\Tstrut{\rule{0pt}{2.6ex}}         % = `top' strut
+\newcommand\Bstrut{\rule[-0.9ex]{0pt}{0pt}}   % = `bottom' strut
+
+\captionsetup[table]{position=bottom}   %% or below
+
+\pagestyle{fancy}
+\lhead{Ajeesh T. Vijayan}
+\rhead{Student No: 22077273}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\title{MA7010 – Number Theory for Cryptography - Assignment 3}
+\author{Ajeesh Thattukunnel Vijayan}
+\date{January 11\textsuperscript{th} 2024}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\newcommand{\roverline}[1]{\mathpalette\doroverline{#1}}
+\newcommand{\doroverline}[2]{\overline{#1#2}}
+\setcounter{MaxMatrixCols}{20}
+
+\begin{document}
+\lstset{basicstyle=\ttfamily,breaklines=true,columns=flexible}
+\pagestyle{empty}
+\DefineParaStyle{Maple Bullet Item}
+\DefineParaStyle{Maple Heading 1}
+\DefineParaStyle{Maple Warning}
+\DefineParaStyle{Maple Heading 4}
+\DefineParaStyle{Maple Heading 2}
+\DefineParaStyle{Maple Heading 3}
+\DefineParaStyle{Maple Dash Item}
+\DefineParaStyle{Maple Error}
+\DefineParaStyle{Maple Title}
+\DefineParaStyle{Maple Ordered List 1}
+\DefineParaStyle{Maple Text Output}
+\DefineParaStyle{Maple Ordered List 2}
+\DefineParaStyle{Maple Ordered List 3}
+\DefineParaStyle{Maple Normal}
+\DefineParaStyle{Maple Ordered List 4}
+\DefineParaStyle{Maple Ordered List 5}
+\DefineCharStyle{Maple 2D Output}
+\DefineCharStyle{Maple 2D Input}
+\DefineCharStyle{Maple Maple Input}
+\DefineCharStyle{Maple 2D Math}
+\DefineCharStyle{Maple Hyperlink}
+	\maketitle
+	\section{Introduction}
+	\begin{table}[H]
+		\begin{adjustbox}{scale=0.9,center}
+			\begin{tabular}{ |p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}| }
+				\hline
+				Name & a & b & c & d & Q6 \\
+				\hline
+				Ajeesh & $2929$   & $20953$   & $500657$   & $23861$ & ii \\
+				\hline
+			\end{tabular}
+		\end{adjustbox}
+		\caption{Input Numbers For Ajeesh}
+		\label{table:assignment-tab}
+	\end{table}
+	\section{Answers} \label{sec:Forces}
+
+	\begin{enumerate}[1.]
+		\item For the number $a$ given to you on page 1 answer the following:
+		\begin{enumerate}[a.]
+			\item Show that $a$ can be written as the sum of squares in two different ways
+			\bigskip
+			\begin{flushleft}
+				\textbf{\textit{Answer:}}
+			\end{flushleft}
+			\item Hence apply Euler’s method to factorise $a$.
+			\begin{flushleft}
+				\textbf{\textit{Answer:}}
+			\end{flushleft}
+		\end{enumerate}
+		\item
+		\begin{enumerate}[(a)]
+			\item Take the number $b$ assigned to you on page 1 and apply the gcd method to find its smallest factor.
+			\begin{flushleft}
+				\textbf{\textit{Answer:}}
+			\end{flushleft}
+			\item What is the value of $P_0$ that you need to guarantee finding a factor given that $b$ is composite?
+			\begin{flushleft}
+				\textbf{\textit{Answer:}}
+			\end{flushleft}
+		\end{enumerate}
+		\item Take the number $c$ assigned to you on page and use the $p-1$ method to find one factor of $c$. You may assume that $c-1$ factorises into primes of $size < 100$.
+		\begin{flushleft}
+			\textbf{\textit{Answer:}}
+		\end{flushleft}
+		\item Take the number $d$ assigned to you on page and use the $p-1$ method to find both factors of $d$. You may NOT use the maple procedure provided in weblearn.
+		\begin{flushleft}
+			\item \textbf{\textit{Answer:}}
+		\end{flushleft}
+		\item Take the same number d and now factorise using the Quadratic Sieve method. You may use Maple commands included in the week 10 workshop folder.
+
+		\begin{flushleft}
+			\textbf{\textit{Answer:}} $d = 500657$\\
+            \begin{enumerate}[Step 1.]
+                \item We use the polynomial $y(x) = x^2 - d$ to find the B-smooth numbers. We initialise $x = \sqrt{500657}$ to start the sieve. Calculate the square root of $d$.\\
+                $a = \lfloor\sqrt{500657}\rfloor = 707$\\
+                We then $y(x), y(x + 1), y(x + 2), ...$
+                \item Calculate the factor base. Euler's criteria for odd primes to determine whether a number is a quadratic residue or not is in action here. We got the below Factor Base: \\
+                $\{2, 11, 13, 19, 23, 29, 31\}$. We added $-1$ to it to consider negative values too. Hence the Factor Base became $\{-1, 2, 11, 13, 19, 23, 29, 31\}$
+                \item Calculate $y(x)$ and sieve the B-smooth numbers. Here we set $B = 7$.
+                \item the table below shows the sieved numbers and the corresponding exponents matrix (I wrote some Rust code to \ref{lst:qudratic-sieve} generate these values.)
+                \begin{table}[H]
+                    \begin{adjustbox}{scale=1.2,center}
+                        \begin{tabular}{ |l|l|l|l|l|l|l|l|l|l| }
+                            \hline
+                            \textbf{x} & \textbf{y(x + a)} & \textbf{-1} & \textbf{2} & \textbf{11} & \textbf{13} & \textbf{19} & \textbf{23} & \textbf{29} & \textbf{31} \Tstrut\\
+                            \hline
+                            -97 & 610 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1\\ \hline
+                            \rowcolor{SeaGreen3!30!}
+                            -82 & 625 & 1 & 4 & 0 & 1 & 0 & 2 & 0 & 0\\ \hline
+                            \rowcolor{SeaGreen3!30!}
+                            -31 & 676 & 1 & 0 & 2 & 0 & 2 & 0 & 0 & 0\\ \hline
+                            -12 & 695 & 1 & 5 & 0 & 0 & 1 & 0 & 1 & 0\\ \hline
+                            -10 & 697 & 1 & 9 & 0 & 0 & 0 & 0 & 1 & 0\\ \hline
+                            -4  & 703 & 1 & 4 & 0 & 1 & 0 & 0 & 0 & 1\\ \hline
+                            2   & 709 & 0 & 3 & 1 & 0 & 0 & 1 & 0 & 0\\ \hline
+                            \rowcolor{SeaGreen3!30!}
+                            4   & 711 & 0 & 8 & 0 & 0 & 1 & 0 & 0 & 0\\ \hline
+                            46  & 753 & 0 & 4 & 1 & 1 & 0 & 0 & 1 & 0\\ \hline
+                            48  & 755 & 0 & 3 & 0 & 1 & 0 & 1 & 1 & 0\\ \hline
+                            58  & 765 & 0 & 3 & 1 & 0 & 0 & 0 & 0 & 2\\ \hline
+                            \rowcolor{SeaGreen3!30!}
+                            61  & 768 & 0 & 0 & 0 & 1 & 3 & 0 & 0 & 0\\ \hline
+                            102 & 809 & 0 & 5 & 1 & 0 & 1 & 1 & 0 & 0\\ \hline
+                            140 & 847 & 0 & 4 & 0 & 0 & 1 & 1 & 0 & 1\\ \hline
+                            178 & 885 & 0 & 3 & 1 & 2 & 1 & 0 & 0 & 0\\ \hline
+                            \multicolumn{2}{|r|}{Selected Rows' sum} & 2 & 12 & 2 & 2 & 6 & 2 & 0 & 0 \\
+                            \hline
+                            \multicolumn{2}{|r|}{Values for $v$} & 1 & 6 & 1 & 1 & 3 & 1 & 0 & 0 \\
+                            \hline
+                        \end{tabular}
+                    \end{adjustbox}
+                    \caption{Quadratic Sieve Factorisation}
+                    \label{table:qudratic-field-sieve}
+                \end{table}
+                \item We calculate $v$ and $u$ as follows:
+                \begin{align*}
+                    &u = 625 \times 676 \times 711 \times 768 \tpmod{500657} \\
+                    &  = 31115 \\
+                    &v = -1 \times 2^6 \times 11 \times 13 \times 19 \times 23 \tpmod{500657} \\
+                    &  = 102724\\
+                    & u^2 \equiv v^2 \tpmod{500657} \implies gcd(d, u-v) and gcd(d, u+v) are factors of d\\
+                    & gcd(500657, 71609) = 101 \\
+                    & gcd(500657, 133839) = 4957\\\
+                    &   \therefore 500657 = 101 \times 4957 \square
+                \end{align*}
+                \item The Rust code for generating the above result is below.
+                \begin{lstlisting}[
+style={mystyle},
+caption={Quadratic Sieve},
+label={lst:quadratic-sieve}
+]
+
+pub fn prepare_matrix(n: &BigInt) {
+    let mut primes = vec![BigInt::from(2u64)];
+    let a = n.sqrt();
+    println!("Square Root of {} = {}", n, a);
+
+    let mut factor_base = vec![
+    BigInt::from(2u64),
+    BigInt::from(5u64),
+    BigInt::from(7u64),
+    BigInt::from(11u64),
+    BigInt::from(13u64),
+    BigInt::from(17u64),
+    BigInt::from(19u64),
+    BigInt::from(23u64),
+    BigInt::from(29u64),
+    BigInt::from(31u64),
+    ];
+
+    println!("Legendre Symbol is calculated
+        using Euler's criteria: ");
+    println!("If n^(p-1)/2 (mod p) = 1,
+        then (n/p) = 1, else (n/p) = -1");
+    factor_base
+        .retain(|x| modular_pow(n, &((x - 1) / BigInt::from(2u64)), x) == BigInt::one());
+    //factor_base.insert(0, BigInt::from(-1i32));
+    println!("The calculated Factor Base is: {:?}", &factor_base);
+    let mut y_x: Vec<BigInt> = Vec::new();
+    let start = a.clone() - BigInt::from(100u64);
+    let end = a.clone() + BigInt::from(200u64);
+
+    let mut m_by_n: Vec<Vec<i32>> = Vec::new();
+    for i in range_inclusive(start, end) {
+        let x = &i - &a;
+        y_x.push(x.clone());
+        let mut y = &i * &i - n;
+        if y.sign() == Sign::Minus {
+            y = -1 * y;
+        }
+        let p_factors = y.prime_factors(&mut primes).clone();
+        let p_factors_map: HashMap<BigInt, i32> = p_factors
+        .iter()
+        .cloned()
+        .map(|(p, e)| (p, e as i32))
+        .collect();
+        let distinct_factors = p_factors
+        .iter()
+        .map(|x| x.0.clone())
+        .collect::<Vec<BigInt>>();
+        let set1: HashSet<BigInt> = factor_base
+            .iter().cloned().collect();
+        let set2: HashSet<BigInt> = distinct_factors
+            .iter().cloned().collect();
+
+        if set2.is_subset(&set1) {
+            // println!("{} {} {:?}", i - &a, &y, p_factors);
+
+            let mut one_by_n: Vec<i32> = Vec::new();
+            for base in factor_base.iter() {
+                if set2.contains(&base) {
+                    let e = p_factors_map.get(&base).unwrap();
+                    one_by_n.push(e.clone());
+                } else {
+                    one_by_n.push(0);
+                }
+            }
+
+            if x.sign() == Sign::Minus {
+                one_by_n.insert(0, 1);
+            } else {
+                one_by_n.insert(0, 0);
+            }
+            m_by_n.push(one_by_n.clone());
+            println!("{:>3} {:>2}  {:?}", x, i, one_by_n);
+        }
+    }
+}
+                \end{lstlisting}
+
+                \bigbreak
+                We can use the below command to generate the desired matrix:
+                \begin{lstlisting}[style=DOS, caption=Quadratic Sieve Matrix Generation]
+            ./target/debug/nt-assignments quadratic-sieve -n 500657
+            Square Root of 500657 = 707
+            Legendre Symbol is calculated using Euler's criteria:
+            If n^(p-1)/2 (mod p) = 1, then (n/p) = 1, else (n/p) = -1
+            The calculated Factor Base is: [2, 11, 13, 19, 23, 29, 31]
+            -97 610  [1, 0, 1, 1, 0, 0, 1, 1]
+            -82 625  [1, 4, 0, 1, 0, 2, 0, 0]
+            -31 676  [1, 0, 2, 0, 2, 0, 0, 0]
+            -12 695  [1, 5, 0, 0, 1, 0, 1, 0]
+            -10 697  [1, 9, 0, 0, 0, 0, 1, 0]
+            -4 703  [1, 4, 0, 1, 0, 0, 0, 1]
+            2 709  [0, 3, 1, 0, 0, 1, 0, 0]
+            4 711  [0, 8, 0, 0, 1, 0, 0, 0]
+            46 753  [0, 4, 1, 1, 0, 0, 1, 0]
+            48 755  [0, 3, 0, 1, 0, 1, 1, 0]
+            58 765  [0, 3, 1, 0, 0, 0, 0, 2]
+            61 768  [0, 0, 0, 1, 3, 0, 0, 0]
+            102 809  [0, 5, 1, 0, 1, 1, 0, 0]
+            140 847  [0, 4, 0, 0, 1, 1, 0, 1]
+            178 885  [0, 3, 1, 2, 1, 0, 0, 0]
+
+
+            ./target/debug/nt-assignments gcd-euclid  -a 500657 -b 71609
+            101
+            ./target/debug/nt-assignments gcd-euclid  -a 500657 -b 133839
+            4957
+                \end{lstlisting}
+            \end{enumerate}
+		\end{flushleft}
+
+		\item The Maple worksheet in Weblearn for this assignment shows part of an attempt to factorise $N = 9263 = 59*157$ using the Number Field Sieve. In this we claim the following:
+		\begin{enumerate}[i.]
+			\item $A = [0 , 1, 0]$ is a prime(irreducible) element of $Z(\sqrt[3]{-2})$  with $norm = 2$
+			\item $B = [-1 ,-1, 0]$ is a prime(irreducible) element of $Z(\sqrt[3]{-2})$  with $norm = 3$
+			\item $C = [1, 0 , 1]$ is a prime(irreducible) element of $Z(\sqrt[3]{-2})$  with $norm = 5$
+			\item $D = [1 , 1, -1]$ is a prime(irreducible) element of $Z(\sqrt[3]{-2})$  with $norm = 11$
+			\item $E = [1 , -2, 0]$ is a prime(irreducible) element of $Z(\sqrt[3]{-2})$  with $norm = 17$
+			\item $F = [3 , 0, -1]$ is a prime(irreducible) element of $Z(\sqrt[3]{-2})$  with $norm = 23$
+		\end{enumerate}
+		We also derive a $48 \times 15$ matrix $R$ consisting of values of $a$ and $b$ such that $a + 21b$ can be factorised using small primes and $[a, b, 0]$ can be factorised in $Z(\sqrt[3]{-2})$ using just the primes $\{A, B, C, D, E, F\}$ and a unit element $U = [1, 1, 0]$.
+		\begin{enumerate}[a.]
+			\item Prove the statement above allocated to you on page 1 using the definition of a norm.
+			\begin{flushleft}
+                \textbf{\textit{Answer:}} Norm is defined as the product of all the conjugates of the minimum polynomial in the field. i,e. in the For the polynomial $f(x) = x^3 + 2$, the roots are $\theta = \{\sqrt[3]{-2}, \theta.\frac{(-1 + i\sqrt{3})}{2}, \theta.\frac{(-1 - i\sqrt{3})}{2}\}$. Hence the algebraic integers in $Z(\sqrt[3]{-2})$ are of the form $a + b\theta + c\theta^2$. We represent these integers as $[a, b, c]$. The norm is defined as:
+                \begin{align*}
+                    &N[a, b, c] = a^3 - 2b^3 + 4c^3 + 6abc.
+                    &\text{hence in our case, } [a, b, c] = [-1 , -1, 0]
+                    &\implies N([a, b, c]) = -1 + 2 = 1
+                    &\implies the given statement is wrong.
+                \end{align*}
+                Since the $norm = 1$, the given element $B = [-1, -1, 0]$ is a $unit$ in $Z(\sqrt[3]{-2})$, not a prime. $\square$
+            \end{flushleft}
+            \item Show that rows 23, 37, 41 and 45 of the matrix  form a linearly dependent set modulo 2
+            \begin{flushleft}
+                \textbf{\textit{Answer:}} The rows 23, 37, 41, 45 in matrix form is:\\
+
+                \bigbreak
+                $A_{4\times15} = \begin{pmatrix}
+                    0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 4 & 0 & 0 & 0 & 0 & 0\\
+                    0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 3 & 3 & 0 & 0 & 0 & 0\\
+                    0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 2 & 0\\
+                    0 & 5 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 9 & 1 & 0 & 0 & 0 & 0
+                \end{pmatrix}$
+
+                \medbreak
+                $A \tpmod{2}$ gives,
+                $A = \begin{pmatrix}
+                    0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+                    0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0\\
+                    0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0\\
+                    0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 0 & 0
+                \end{pmatrix}$
+                \medbreak
+                Performing row operations on $A$ to find the Row Echelon form:\\
+                R2 = R2 + R1,\\
+                R3 = R3 + R1,\\
+                R4 = R4 + R1:\\
+                $B = \begin{pmatrix}
+                    0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+                    0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 0\\
+                    0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0\\
+                    0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0
+                \end{pmatrix}$
+                \medbreak
+                Swap R2 and R4\\
+                $B = \begin{pmatrix}
+                    0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+                    0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0\\
+                    0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0\\
+                    0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 0
+               \end{pmatrix}$
+               \medbreak
+               R3 = R3 + R2\\
+               $B = \begin{pmatrix}
+                    0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+                    0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0\\
+                    0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 0\\
+                    0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 0
+               \end{pmatrix}$
+               \medbreak
+               R3 and R4 are the same, R4 is a linear combination of the row R4. Hence the matrix becomes:\\
+               $B = \begin{pmatrix}
+                    0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+                    0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0\\
+                    0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 0\\
+                    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+               \end{pmatrix}$
+               \medbreak
+               Hence the $rank(A) = 3$ (the number of leading 1's in the $B$) which is less than the number of rows in $A$ and that implies $A$ that the row vectors that form the matrix $A$ are linearly dependent. $\square$
+
+            \end{flushleft}
+
+            \item Hence find an equation of the form u2 – v2 such that u2 – v2 and N have a common factor of 59 thus factorising N. You may use the Maple procedure for multiplication in $Z(\sqrt[3]{-2})$ to help you find u and v.
+    		\begin{flushleft}
+                \textbf{\textit{Answer:}}
+                \begin{align*}
+                    & N = 9263  = 21^3 + 2
+                    &\text{Hence we can form the polynomial} f(x) = x^3 + 2. \\
+                    &\text{An element}\beta \text{ is of the form} (a + b\theta + c\theta^2) \in \mathbb{Z}(\sqrt[3]{-2})\\
+                    &\text{The Algebraic Factor Base given is} = \{U = [1, 1, 0], A = [0, 1, 0], B = [-1, 1, 0], C = [1, 0, 1], D = [1, 1,-1], E = [1,-2, 0], F = [3, 0,-1]\} \\
+                    &\text{The Rational Factor Base given is } = \{-1, 2, 3, 5, 7,11, 13\}
+                \end{align*}
+
+                The below table has the values selected for calculating $u$ and $v$:
+                \begin{table}[H]
+                    \begin{adjustbox}{scale=0.9,center}
+                        \begin{tabular}{ |l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l| }
+                            \hline
+                            \textbf{a} & \textbf{b} & \textbf{a+21b} & \textbf{-1} & \textbf{2} & \textbf{3} & \textbf{5} & \textbf{7} & \textbf{11} & \textbf{13} & \textbf{-1} & \textbf{U} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} & \textbf{E} & \textbf{F} \Tstrut\\
+                            \hline
+                            0 & 2   & 42  & 0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 4 & 0 & 0 & 0 & 0 & 0 \\
+                            \hline
+                            6 & 0   & 6  & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 3 & 3 & 0 & 0 & 0 & 0 \\
+                            \hline
+                            7 & 3   & 70  & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 2 & 0 \\
+                            \hline
+                            -8 & 8   & 160  & 0 & 5 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 9 & 1 & 0 & 0 & 0 & 0 \\
+                            \hline
+                            \multicolumn{3}{|l|}{Sum Of Rows} & 0 & 10 & 2 & 2 & 2 & 0 & 0 & 4 & 2 & 16 & 4 & 0 & 0 & 2 & 0 \\
+                            \hline
+                        \end{tabular}
+                    \end{adjustbox}
+                    \caption{Number Field Sieve Factorisation}
+                    \label{table:number-field-sieve}
+                \end{table}
+
+                Calculating the $v$ value by multiplying the rational factor bases with halved \\
+                values from the Sum Row: $v = 2^5 \times 3 \times 5 \times 7 = 1680$ \\
+                Calculating the $u$ value by multiplying the algebraic factor bases with halved \\
+                values from the Sum Row:
+                \begin{align*}
+                    \beta = &[a, b, c] \\
+                    = &U \times A^8 \times B^2 \times E \\
+                    = &[1, 1, 0] \times [0, 1, 0]^8 \times [-1, 1, 0] \times [-1, 1, 0] \times [1, -2, 0]\\
+                \end{align*}
+                We get value for $u$ after substituting for $a$, $b$, $c$ in $a + b\theta + c\theta^2$ where $\theta = 21$.\\
+                $u = -8 + 21 \times -8 + 21^2 \times -20 = -8996$\\
+                $u^2 = 6448\tpmod{9263}, u^2 = 6448 \tpmod{9263}$\\
+
+                And we get $v^2 \equiv u^2 \tpmod{9263}$ \\
+                \medbreak
+                Calculating gcd to find the factors:
+                \medbreak
+                $gcd(9263, 1680 + 8996) = 157$\\
+                $gcd(9263, 1680 - 8996) = 59$\\
+                \medbreak
+                Hence $N = 9263 = 59 \times 157$ and we have factorised $N = 9263$ $\square$
+
+                \bigbreak
+                The Maple calculation performed is given below:
+                \begin{mdframed}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,}  $}
+
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{norm1} \coloneqq \mathrm{proc}(a ,b ,c)\,\mathrm{global}\,k ;\,k \coloneqq a^{3}-2\cdot b^{3}+4\cdot c^{3}+6\cdot a \cdot b \cdot c ;\mathrm{end}; $}
+
+                % \mapleresult
+                \begin{dmath}\label{(2)}
+                    -10258
+                \end{dmath}
+
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \,U \coloneqq [1,1,0];A \coloneqq [0,1,0];B \coloneqq [-1,1,0];C \coloneqq [1,0,1];\mathit{D1} \coloneqq [1,1,-1];E \coloneqq [1,-2,0];F \coloneqq [3,0,-1]; $}
+
+                % \mapleresult
+                \begin{dmath*}
+                    U \coloneqq \left[1,1,0\right]
+                \end{dmath*}
+                \vspace{-\bigskipamount}
+                % \mapleresult
+                \begin{dmath*}
+                    A \coloneqq \left[0,1,0\right]
+                \end{dmath*}
+                \vspace{-\bigskipamount}
+                % \mapleresult
+                \begin{dmath*}
+                    B \coloneqq \left[-1,1,0\right]
+                \end{dmath*}
+                \vspace{-\bigskipamount}
+                % \mapleresult
+                \begin{dmath*}
+                    C \coloneqq \left[1,0,1\right]
+                \end{dmath*}
+                \vspace{-\bigskipamount}
+                % \mapleresult
+                \begin{dmath*}
+                    \mathit{D1} \coloneqq \left[1,1,-1\right]
+                \end{dmath*}
+                \vspace{-\bigskipamount}
+                % \mapleresult
+                \begin{dmath*}
+                    E \coloneqq \left[1,-2,0\right]
+                \end{dmath*}
+                \vspace{-\bigskipamount}
+                % \mapleresult
+                \begin{dmath}\label{(4)}
+                    F \coloneqq \left[3,0,-1\right]
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \,\mathit{mult1} \coloneqq \mathrm{proc}(x ,y);\,\mathit{mult2} (x [1],x [2],x [3],y [1],y [2],y [3])\,;\mathrm{end};\, $}
+
+
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{mult4} \coloneqq \mathrm{proc}()\mathrm{global}\,L ;\,L \coloneqq [];\,
+                    \mathrm{for}\,i \,\mathrm{from}\,1\,\mathrm{to}\,\mathit{nargs} \,\\
+                           \mathrm{do}\,L \coloneqq [\mathit{op} (L),\mathit{args} [i]];\mathrm{od};\,\\
+                           \mathrm{if}\,\mathit{nops} (L)=2\,\mathrm{then}\,\\
+                            \mathit{mult1} (\mathit{op} (1,L),\mathit{op} (2,L))\,
+                            \mathrm{else}\,k \coloneqq [\mathit{mult1} (\mathit{op} (1,L),\mathit{op} (2,L))];L\\
+                            \coloneqq \mathit{subsop} (1=\mathit{NULL} ,L);\,L \coloneqq \mathit{subsop} (1=\mathit{NULL} ,L);L \coloneqq [k ,\mathit{op} (L)];\,\mathit{mult4} (\mathit{op} (L));
+                    \mathrm{fi};
+                    \mathrm{end}; $}
+
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{mult4} (U ,U ,B ,E); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(7)}
+                    1,5,3
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} H \coloneqq \mathit{mult4} (U ,A ,A ,A); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(8)}
+                    H \coloneqq -2,-2,0
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,}  $}
+
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} H \coloneqq [-2,-2,0]; $}
+
+                % \mapleresult
+                \begin{dmath}\label{(9)}
+                    H \coloneqq \left[-2,-2,0\right]
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{mult4} (H ,A ,A ,A); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(10)}
+                    4,4,0
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} H \coloneqq [4,4,0]; $}
+
+                % \mapleresult
+                \begin{dmath}\label{(11)}
+                    H \coloneqq \left[4,4,0\right]
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{mult4} (H ,A ,A ,B); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(12)}
+                    0,-8,-4
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} H \coloneqq [0,-8,-4]; $}
+
+                % \mapleresult
+                \begin{dmath}\label{(13)}
+                    H \coloneqq \left[0,-8,-4\right]
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{mult4} (U ,H ,B ,E); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(14)}
+                    32,-16,-28
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} M \coloneqq \mathit{mult1} (0,-8,-4,-1,1,0); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(15)}
+                    M \coloneqq 0,0,0
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{mult1} (0,0,0,1,-2,0); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(16)}
+                    0,0,0
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \, $}
+                \begin{Maple Normal}
+
+
+                    \
+
+                    U*A^8*B^2*E =
+                    {$ [1,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [0,1,0]\cdot [-1,1,0]\cdot [-1,1,0]\cdot [1,-2,0]; $}
+                \end{Maple Normal}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,}  $}
+
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{mult1} (U ,A); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(17)}
+                    0,1,1
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{UA} \coloneqq [0,1,1]; $}
+
+                % \mapleresult
+                \begin{dmath}\label{(18)}
+                    \mathit{UA} \coloneqq \left[0,1,1\right]
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{mult1} (\mathit{UA} ,A); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(19)}
+                    -2,0,1
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{UAA} \coloneqq [-2,0,1]; $}
+
+                % \mapleresult
+                \begin{dmath}\label{(20)}
+                    \mathit{UAA} \coloneqq \left[-2,0,1\right]
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{mult1} (\mathit{UAA} ,A); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(21)}
+                    -2,-2,0
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{UAAA} \coloneqq [-2,-2,0]; $}
+
+                % \mapleresult
+                \begin{dmath}\label{(22)}
+                    \mathit{UAAA} \coloneqq \left[-2,-2,0\right]
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{mult1} (\mathit{UAAA} ,A); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(23)}
+                    0,-2,-2
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{UAAAA} \coloneqq [0,-2,-2]; $}
+
+                % \mapleresult
+                \begin{dmath}\label{(24)}
+                    \mathit{UAAAA} \coloneqq \left[0,-2,-2\right]
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{mult4} (\mathit{UAAAA} ,A ,A ,A); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(25)}
+                    0,4,4
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{UAAAAAAA} \coloneqq [0,4,4]; $}
+
+                % \mapleresult
+                \begin{dmath}\label{(26)}
+                    \mathit{UAAAAAAA} \coloneqq \left[0,4,4\right]
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{mult4} (\mathit{UAAAAAAA} ,A); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(27)}
+                    -8,0,4
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{UA8} \coloneqq [-8,0,4]; $}
+
+                % \mapleresult
+                \begin{dmath}\label{(28)}
+                    \mathit{UA8} \coloneqq \left[-8,0,4\right]
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{mult4} (\mathit{UA8} ,B ,B ,E); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(29)}
+                    -8,-8,-20
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \, $}
+
+                \begin{Maple Normal}
+                    u = phi(a + bz + cz^2) = a + 21b + 21^2c = -8 + 21*-8 + 21^2 * -20 = -8996\
+                    v = 2^4*3*5*7 = 1680
+                    v^2 mod 9263 = 6448
+                \end{Maple Normal}
+                \begin{Maple Normal}
+                    u^2 mod 9263 = 6448
+                \end{Maple Normal}
+
+                \begin{Maple Normal}
+                    gcd(9263, 1680 + 8996) =  157
+
+                    gcd(9263, 1680 - 8996) =  59
+                \end{Maple Normal}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{igcd} (9263,10676); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(30)}
+                    157
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{igcd} (9263,7316); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(31)}
+                    59
+                \end{dmath}
+                \mapleinput
+                {$ \displaystyle \texttt{>\,} \mathit{ifactor} (9263); $}
+
+                % \mapleresult
+                \begin{dmath}\label{(32)}
+                    \left(59\right) \left(157\right)
+                \end{dmath}
+            \end{mdframed}
+            \end{flushleft}
+        \end{enumerate}
+
+		\item Compare the methods for integer factorisation you have seen in the module and summarises their strengths and weaknesses, including the size of numbers that can be factorised, usability and whether or not they work for a broad range of numbers.
+	\end{enumerate}
+
+	\begin{thebibliography}{unsrt}
+
+		\bibitem{Modular_Mathematics}
+		C R Jordan \& D A Jordan \emph{MODULAR MATHEMATICS Groups }.
+
+		\bibitem{gt_solutions}
+		Dr. Ben Fairbairn \emph{GROUP THEORY Solutions to Exercises}.
+
+		\bibitem{online_ref_1}
+		\emph{https://github.com/Ssophoclis/AKS-algorithm/blob/master/AKS.py}
+
+	\end{thebibliography}
+
+\end{document}
