@@ -1,16 +1,12 @@
-use std::{
-    collections::{HashMap, HashSet},
-    hash::Hash,
-};
+use std::collections::{HashMap, HashSet};
 
 use ndarray::Array;
 use num_bigint::{BigInt, Sign};
 use num_integer::Integer;
 use num_iter::range_inclusive;
 use num_traits::One;
-use rayon::vec;
 
-use crate::{primality::next_prime, prime_factors::PrimeFactors, utils::modular_pow};
+use crate::{prime_factors::PrimeFactors, utils::modular_pow};
 
 fn zeros(size: usize) -> Vec<i32> {
     let mut zero_vec: Vec<i32> = Vec::with_capacity(size);
