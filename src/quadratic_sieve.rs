@@ -39,13 +39,14 @@ pub fn prepare_matrix(n: &BigInt) {
     factor_base.retain(|x| modular_pow(n, &((x - 1) / BigInt::from(2u64)), x) == BigInt::one());
     //factor_base.insert(0, BigInt::from(-1i32));
     println!("The calculated Factor Base is: {:?}", &factor_base);
-    let mut LS: HashMap<BigInt, Vec<(BigInt, usize)>> = HashMap::new();
+    let mut y_x: Vec<BigInt> = Vec::new();
     let start = a.clone() - BigInt::from(100u64);
     let end = a.clone() + BigInt::from(200u64);
 
     let mut m_by_n: Vec<Vec<i32>> = Vec::new();
     for i in range_inclusive(start, end) {
         let x = &i - &a;
+        y_x.push(x.clone());
         let mut y = &i * &i - n;
         if y.sign() == Sign::Minus {
             y = -1 * y;
@@ -82,7 +83,7 @@ pub fn prepare_matrix(n: &BigInt) {
                 one_by_n.insert(0, 0);
             }
             m_by_n.push(one_by_n.clone());
-            println!("{}  {:?}", i, one_by_n);
+            println!("{:>3} {:>2}  {:?}", x, i, one_by_n);
         }
     }
 }
