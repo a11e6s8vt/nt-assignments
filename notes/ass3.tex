@@ -128,6 +128,7 @@
 \makeatother
 
 \newtheorem{theorem}{Theorem}
+\newcommand{\qed}{\tag*{$\blacksquare$}}
 
 % Define typographic struts, as suggested by Claudio Beccari
 %   in an article in TeX and TUG News, Vol. 2, 1993.
@@ -203,10 +204,42 @@
 			\bigskip
 			\begin{flushleft}
 				\textbf{\textit{Answer:}}
+                \begin{align*}
+                    &a = 2929 \\
+                    &\text{Let } u = 5, v = 2, w = 10, x = 1\\
+                    &\text{Brahmagupta Identity helps us to write this numbers in two different sum of squares form}\\
+                    &(u^2 + v^2)(w^2 + x^2) = (uw - vx)^2 + (ux + vw)^2\\
+                    &                       = (uw + vx)^2 + (ux - vw)^2\\
+                    &\therefore (uw - vx)^2 + (ux + vw)^2 = (5 \times 10 - 2 \times 1)^2 + (5 \times 1 + 2\times 10)^2 = 48^2 + 25^2 \\
+                    &\text{and }  (uw + vx)^2 + (ux - vw)^2 = (5 \times 10 + 2 \times 1)^2 + (5 \times 1 - 2 \times 10)^2 = 52^2 + (-15)^2\\
+                    &\text{Hence the two different sum of squares forms of 2929 are: }\\
+                    &2929 = 48^2 + 25^2\\
+                    &2929 = 52^2 + 15^2
+                    \qed
+                \end{align*}
 			\end{flushleft}
 			\item Hence apply Euler’s method to factorise $a$.
 			\begin{flushleft}
 				\textbf{\textit{Answer:}}
+                \begin{align*}
+                    &\text{From 1.(a) above, we have }\\
+                    &2929 = 48^2 + 25^2 = a^2 + b^2\\
+                    &2929 = 52^2 + 15^2 = c^2 + d^2\\
+                    &\therefore a^2 + b^2 = c^2 + d^2\\
+                    &\implies a^2 - c^2 = b^2 - d^2\\
+                    &\implies (a - c)(a + c) = (b - d)(b + d)\\
+               \end{align*}
+               \begin{align*}
+                    &\text{Let } k = gcd(a - c, b + d) \text{ and } h = gcd(a + c, b + d)\\
+                    &\therefore k = 2 \text{ and } h = 20\\
+                    &\implies a - c =  k.l \implies 4 = 2 \times l \implies l = 2\\
+                    &b - d = k.m \implies 10 = 2 \times m \implies m = 5\\
+                    &a + c = h.m' \implies 100 = 20 \times m' \implies m' = 5\\
+                    &b + d = h.l' \implies 40 = 20 \times l' \implies l' = 2\\
+                    &\therefore n = 2929 = ((\frac{k}{2})^2 + (\frac{h}{2})^2)(l^2 + m^2)\\
+                    & = (1^2 + 10^2)(2^2 + 5^2) = (101 \times 29)
+                    \qed
+                \end{align*}
 			\end{flushleft}
 		\end{enumerate}
 		\item
@@ -214,10 +247,391 @@
 			\item Take the number $b$ assigned to you on page 1 and apply the gcd method to find its smallest factor.
 			\begin{flushleft}
 				\textbf{\textit{Answer:}}
+                \begin{align*}
+                    & b = 20953\\
+                    &\text{Set } k = \lfloor\sqrt{b}\rfloor = 144\\
+                    &P_0 = \prod_{primes < 144}^{}p = 10014646650599190067509233131649940057366334653200433090\\
+                    &gcd(10014646650599190067509233131649940057366334653200433090, 20953) = 23, \\
+                    &\text{which is the smallest factor of 20953}
+                    \qed
+                \end{align*}
+                \bigbreak
+                The Maple worksheet for this exercise is below:
+                \begin{mdframed}
+                    \mapleinput
+                    {$ \displaystyle \texttt{>\,} \mathit{p0} \coloneqq 1 $}
+
+                    % \mapleresult
+                    \begin{dmath}\label{(1)}
+                        \mathit{p0} \coloneqq 1
+                    \end{dmath}
+                    \mapleinput
+                    {$ \displaystyle \texttt{>\,} k \coloneqq 2; $}
+
+                    % \mapleresult
+                    \begin{dmath}\label{(2)}
+                        k \coloneqq 2
+                    \end{dmath}
+                    \mapleinput
+                    {$ \displaystyle \texttt{>\,} \mathrm{while}\,k \,<\,144\,\mathrm{do} \,\mathit{p0} \coloneqq \mathit{p0} \cdot k ;
+                        \\
+                        \,k \coloneqq \mathit{nextprime} (k);
+                        \\
+                        \,\mathrm{od}; $}
+
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 2
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 3
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 6
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 5
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 30
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 7
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 210
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 11
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 2310
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 13
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 30030
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 17
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 510510
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 19
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 9699690
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 23
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 223092870
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 29
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 6469693230
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 31
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 200560490130
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 37
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 7420738134810
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 41
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 304250263527210
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 43
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 13082761331670030
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 47
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 614889782588491410
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 53
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 32589158477190044730
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 59
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 1922760350154212639070
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 61
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 117288381359406970983270
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 67
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 7858321551080267055879090
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 71
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 557940830126698960967415390
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 73
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 40729680599249024150621323470
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 79
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 3217644767340672907899084554130
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 83
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 267064515689275851355624017992790
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 89
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 23768741896345550770650537601358310
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 97
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 2305567963945518424753102147331756070
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 101
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 232862364358497360900063316880507363070
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 103
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 23984823528925228172706521638692258396210
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 107
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 2566376117594999414479597815340071648394470
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 109
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 279734996817854936178276161872067809674997230
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 113
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 31610054640417607788145206291543662493274686990
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 127
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 4014476939333036189094441199026045136645885247730
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 131
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 525896479052627740771371797072411912900610967452630
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 137
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 72047817630210000485677936198920432067383702541010310
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        k \coloneqq 139
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath*}
+                        \mathit{p0} \coloneqq 10014646650599190067509233131649940057366334653200433090
+                    \end{dmath*}
+                    \vspace{-\bigskipamount}
+                    % \mapleresult
+                    \begin{dmath}\label{(3)}
+                        k \coloneqq 149
+                    \end{dmath}
+                    \mapleinput
+                    {$ \displaystyle \texttt{>\,} \mathit{igcd} (10014646650599190067509233131649940057366334653200433090,20953) $}
+
+                    % \mapleresult
+                    \begin{dmath}\label{(4)}
+                        23
+                    \end{dmath}
+                    \mapleinput
+                    {$ \displaystyle \texttt{>\,} \, $}
+                \end{mdframed}
 			\end{flushleft}
 			\item What is the value of $P_0$ that you need to guarantee finding a factor given that $b$ is composite?
 			\begin{flushleft}
-				\textbf{\textit{Answer:}}
+				\textbf{\textit{Answer:}} From the Maple worksheet from 2(a), the $P_0$ value that guarantee a minimum factor is the product of all primes upto $23$ inclusive of $23$. Hence the required $P0 = 223092870$
 			\end{flushleft}
 		\end{enumerate}
 		\item Take the number $c$ assigned to you on page and use the $p-1$ method to find one factor of $c$. You may assume that $c-1$ factorises into primes of $size < 100$.
@@ -283,14 +697,15 @@
                     & u^2 \equiv v^2 \tpmod{500657} \implies gcd(d, u-v) and gcd(d, u+v) are factors of d\\
                     & gcd(500657, 71609) = 101 \\
                     & gcd(500657, 133839) = 4957\\\
-                    &   \therefore 500657 = 101 \times 4957 \square
+                    &   \therefore 500657 = 101 \times 4957
+                    \qed
                 \end{align*}
                 \item The Rust code for generating the above result is below.
                 \begin{lstlisting}[
-style={mystyle},
-caption={Quadratic Sieve},
-label={lst:quadratic-sieve}
-]
+                style={mystyle},
+                caption={Quadratic Sieve},
+                label={lst:qudratic-sieve}
+                ]
 
 pub fn prepare_matrix(n: &BigInt) {
     let mut primes = vec![BigInt::from(2u64)];
@@ -535,12 +950,12 @@ pub fn prepare_matrix(n: &BigInt) {
                 And we get $v^2 \equiv u^2 \tpmod{9263}$ \\
                 \medbreak
                 Calculating gcd to find the factors:
-                \medbreak
-                $gcd(9263, 1680 + 8996) = 157$\\
-                $gcd(9263, 1680 - 8996) = 59$\\
-                \medbreak
-                Hence $N = 9263 = 59 \times 157$ and we have factorised $N = 9263$ $\square$
-
+                \begin{align*}
+                gcd(9263, 1680 + 8996) = 157\\
+                gcd(9263, 1680 - 8996) = 59\\
+                \text{Hence, N is factorised as } N = 9263 = 59 \times 157
+                \qed
+                \end{align*}
                 \bigbreak
                 The Maple calculation performed is given below:
                 \begin{mdframed}
