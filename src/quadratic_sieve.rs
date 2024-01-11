@@ -19,7 +19,7 @@ fn zeros(size: usize) -> Vec<i32> {
 pub fn prepare_matrix(n: &BigInt) {
     let mut primes = vec![BigInt::from(2u64)];
     let a = n.sqrt();
-    println!("{}", a);
+    println!("Square Root of {} = {}", n, a);
 
     let mut factor_base = vec![
         BigInt::from(2u64),
@@ -34,11 +34,11 @@ pub fn prepare_matrix(n: &BigInt) {
         BigInt::from(31u64),
     ];
 
-    for i in factor_base.iter() {
-        println!("{}", modular_pow(n, &((i - 1) / BigInt::from(2)), i));
-    }
+    println!("Legendre Symbol is calculated using Euler's criteria: ");
+    println!("If n^(p-1)/2 (mod p) = 1, then (n/p) = 1, else (n/p) = -1");
     factor_base.retain(|x| modular_pow(n, &((x - 1) / BigInt::from(2u64)), x) == BigInt::one());
     //factor_base.insert(0, BigInt::from(-1i32));
+    println!("The calculated Factor Base is: {:?}", &factor_base);
     let mut LS: HashMap<BigInt, Vec<(BigInt, usize)>> = HashMap::new();
     let start = a.clone() - BigInt::from(100u64);
     let end = a.clone() + BigInt::from(200u64);
@@ -85,14 +85,4 @@ pub fn prepare_matrix(n: &BigInt) {
             println!("{}  {:?}", i, one_by_n);
         }
     }
-    let mut sum_vec: Vec<i32> = zeros(m_by_n[0].len());
-    for row in m_by_n.iter() {
-        let mut i = 0;
-        while i < row.len() {
-            sum_vec[i] += row[i];
-            i += 1;
-        }
-    }
-    //let A = Array::from_vec(m_by_n.clone());
-    println!("     {:?}", sum_vec);
 }
