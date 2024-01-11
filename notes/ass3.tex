@@ -4,7 +4,7 @@
 \usepackage{array}
 \usepackage{caption}
 \usepackage{enumerate}
-\usepackage{amsmath, amssymb}
+\usepackage{amsmath, amssymb,amsthm}
 \usepackage{array, makecell}
 \usepackage{booktabs}
 \usepackage{graphicx}
@@ -128,7 +128,9 @@
 \makeatother
 
 \newtheorem{theorem}{Theorem}
-\newcommand{\qed}{\tag*{$\blacksquare$}}
+\newcommand{\qedn}{\tag*{$\blacksquare$}}
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
 
 % Define typographic struts, as suggested by Claudio Beccari
 %   in an article in TeX and TUG News, Vol. 2, 1993.
@@ -214,8 +216,7 @@
                     &\text{and }  (uw + vx)^2 + (ux - vw)^2 = (5 \times 10 + 2 \times 1)^2 + (5 \times 1 - 2 \times 10)^2 = 52^2 + (-15)^2\\
                     &\text{Hence the two different sum of squares forms of 2929 are: }\\
                     &2929 = 48^2 + 25^2\\
-                    &2929 = 52^2 + 15^2
-                    \qed
+                    &2929 = 52^2 + 15^2  \hfill\qedn
                 \end{align*}
 			\end{flushleft}
 			\item Hence apply Euler’s method to factorise $a$.
@@ -238,7 +239,7 @@
                     &b + d = h.l' \implies 40 = 20 \times l' \implies l' = 2\\
                     &\therefore n = 2929 = ((\frac{k}{2})^2 + (\frac{h}{2})^2)(l^2 + m^2)\\
                     & = (1^2 + 10^2)(2^2 + 5^2) = (101 \times 29)
-                    \qed
+                    \hfill\qedn
                 \end{align*}
 			\end{flushleft}
 		\end{enumerate}
@@ -252,8 +253,8 @@
                     &\text{Set } k = \lfloor\sqrt{b}\rfloor = 144\\
                     &P_0 = \prod_{primes < 144}^{}p = 10014646650599190067509233131649940057366334653200433090\\
                     &gcd(10014646650599190067509233131649940057366334653200433090, 20953) = 23, \\
-                    &\text{which is the smallest factor of 20953}
-                    \qed
+                    &\text{which is the smallest factor of 20953}.
+                    \hfill\qedn
                 \end{align*}
                 \bigbreak
                 The Maple worksheet for this exercise is below:
@@ -631,57 +632,256 @@
 			\end{flushleft}
 			\item What is the value of $P_0$ that you need to guarantee finding a factor given that $b$ is composite?
 			\begin{flushleft}
-				\textbf{\textit{Answer:}} From the Maple worksheet from 2(a), the $P_0$ value that guarantee a minimum factor is the product of all primes upto $23$ inclusive of $23$. Hence the required $P0 = 223092870$
+				\textbf{\textit{Answer:}} From the Maple worksheet from 2(a), the $P_0$ value that guarantee a minimum factor is the product of all primes upto $23$ inclusive of $23$. Hence the required $P0 = 223092870$ \qed
 			\end{flushleft}
 		\end{enumerate}
 		\item Take the number $c$ assigned to you on page and use the $p-1$ method to find one factor of $c$. You may assume that $c-1$ factorises into primes of $size < 100$.
 		\begin{flushleft}
 			\textbf{\textit{Answer:}}
+            \begin{align*}
+                &N = 500657\\
+                &\text{Set } L = [2,3,2,5,7,2,3,11,13,2,17,19,23,5,3,29,31,2,37,41,\\
+                &\hfill 43,47,49,53,59,61,2,67,71,73,79,3,83,89,97]\\
+                &a = 3
+            \end{align*}
+            \begin{table}[H]
+                \begin{adjustbox}{scale=1.2,center}
+                    \begin{tabular}{ |l|l|l|l| }
+                        \hline
+                        \textbf{num} & \textbf{a} &\textbf{$ b = a^{num} \tpmod{N}$} & \textbf{gcd(b - 1, N)} \Tstrut\\
+                        \hline
+                        2 &         3 &         9 &    1\\\hline
+                        3 &         9 &       729 &    1\\\hline
+                        2 &       729 &     30784 &    1\\\hline
+                        5 &     30784 &    131942 &    1\\\hline
+                        7 &    131942 &    388833 &    1\\\hline
+                        2 &    388833 &    197744 &    1\\\hline
+                        3 &    197744 &    261270 &    1\\\hline
+                        11 &    261270 &     18971 &    1\\\hline
+                        13 &     18971 &    275059 &    1\\\hline
+                        2 &    275059 &    170269 &    1\\\hline
+                        17 &    170269 &    138053 &    1\\\hline
+                        19 &    138053 &    381008 &    1\\\hline
+                        23 &    381008 &     73825 &    1\\\hline
+                        5 &     73825 &    438038 &  101\\\hline
+                    \end{tabular}
+                \end{adjustbox}
+                \caption{Pollard's P-1 Factorisation}
+                \label{table:pollards-p-1}
+            \end{table}
+            Hence the smallest factor of $500657$ is $101$ \qed
+
+            The Rust code for generating the above result is below.
+            \begin{lstlisting}[
+                style={mystyle},
+                caption={Pollard's P-1 Factorisation},
+                label={lst:pollards p-1}
+                ]
+             pub fn pollards_p_1(n: &BigInt, mut a: BigInt) {
+                 if miller_rabin_primality(n) {
+                     println!("{} is a prime", &n);
+                     return;
+                 }
+                 // This list need to be generated dynamically.
+                 // Static it is for now.
+                 let prime_powers: Vec<BigInt> = vec![
+                 BigInt::from(2u64),
+                 BigInt::from(3u64),
+                 BigInt::from(2u64),
+                 BigInt::from(5u64),
+                 BigInt::from(7u64),
+                 BigInt::from(2u64),
+                 BigInt::from(3u64),
+                 BigInt::from(11u64),
+                 BigInt::from(13u64),
+                 BigInt::from(2u64),
+                 BigInt::from(17u64),
+                 BigInt::from(19u64),
+                 BigInt::from(23u64),
+                 BigInt::from(5u64),
+                 BigInt::from(3u64),
+                 BigInt::from(29u64),
+                 BigInt::from(31u64),
+                 BigInt::from(2u64),
+                 BigInt::from(37u64),
+                 BigInt::from(41u64),
+                 BigInt::from(43u64),
+                 BigInt::from(47u64),
+                 BigInt::from(49u64),
+                 BigInt::from(53u64),
+                 BigInt::from(59u64),
+                 BigInt::from(61u64),
+                 BigInt::from(2u64),
+                 BigInt::from(67u64),
+                 BigInt::from(71u64),
+                 BigInt::from(73u64),
+                 BigInt::from(79u64),
+                 BigInt::from(3u64),
+                 BigInt::from(83u64),
+                 BigInt::from(89u64),
+                 BigInt::from(97u64),
+                 ];
+
+                 for num in prime_powers.iter() {
+                     let b = modular_pow(&a, num, n);
+                     let gcd = n.gcd_euclid(&(&b - BigInt::one()));
+                     println!("{:>10} {:>10} {:>10} {:>5}",
+                            num, &a, &b, gcd);
+                     if &gcd > &BigInt::one() {
+                         break;
+                     }
+                     a = b;
+                 }
+             }
+
+            \end{lstlisting}
+
 		\end{flushleft}
 		\item Take the number $d$ assigned to you on page and use the $p-1$ method to find both factors of $d$. You may NOT use the maple procedure provided in weblearn.
 		\begin{flushleft}
-			\item \textbf{\textit{Answer:}}
+			\textbf{\textit{Answer:}} $d = 23861$
+            \begin{enumerate}[i.]
+                \item
+                \begin{align*}
+                    &i = 2, a = 2, b = a^i \tpmod{d} = 2^2 \tpmod{23861} = 4, \\
+                    &23861 = 7953 \times 3 + 2, 3 = 1 \times 2 + 1 \implies gcd = 1\\
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 3, a = 4, b = 4^3 \tpmod{23861} = 64, \\
+                    &23861 = 378 \times 63 + 47, 63 = 1 \times 47 + 16, 47 = 2 \times 16 + 15, 16 = 1\times15 + 1\\
+                    &\implies gcd = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 2, a = 64, b = 64^2 \tpmod{23861} = 4096,\\
+                    &23861 = 5\times4095 + 3386, 4095 = 1\times3386 + 709, 3386 = 4\times709 + 550, \\
+                    &709 = 1\times550 + 159\\
+                    &550 = 3\times159 + 73, 159 = 2\times73 + 13, 73 = 5\times13 + 8, \\
+                    &13 = 1\times8 + 5, 8 = 1\times5 + 3, \\
+                    &5 = 1\times3 + 2, 3 = 1\times2 + 1 \implies gcd = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 5, a = 4096, b = 4096^5\tpmod{23861} = 17634\\
+                    &\text{Calculating gcd takes too much time. Hence I used the gcd calc and modular power calc I developed for this assignment}\\
+                    &gcd(23861, 17633) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 7, a = 17634, b = 17634^7\tpmod{23861} = 8861\\
+                    &gcd(23861, 17633) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 2, a = 8861, b = 8861^2\tpmod{23861} =14631\\
+                    &gcd(23861, 14630) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 3, a = 14631, b = 14631^3\tpmod{23861} = 7152\\
+                    &gcd(23861, 7151) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 11, a = 7152, b = 17643^11\tpmod{23861} = 10163\\
+                    &gcd(23861, 10162) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 13, a = 10163, b = 10163^13\tpmod{23861} = 2401\\
+                    &gcd(23861, 2400) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 2, a = 2401, b = 2401^2\tpmod{23861} = 14300\\
+                    &gcd(23861, 14299) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 17, a = 14300, b = 14300^17\tpmod{23861} = 10052\\
+                    &gcd(23861, 10051) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 19, a = 10052, b = 10052^19\tpmod{23861} = 23584\\
+                    &gcd(23861, 23583) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 23, a = 23584, b = 23584^23\tpmod{23861} = 10069\\
+                    &gcd(23861, 10068) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 5, a = 10069, b = 10069^5\tpmod{23861} = 9432\\
+                    &gcd(23861, 9431) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 3, a = 9432, b = 9432^3\tpmod{23861} = 20788\\
+                    &gcd(23861, 20787) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 29, a = 20788, b = 20788^29\tpmod{23861} = 15228\\
+                    &gcd(23861, 15227) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 31, a = 15228, b = 15228^31\tpmod{23861} = 20741\\
+                    &gcd(23861, 20740) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 2, a = 20741, b = 20741^2\tpmod{23861} = 22973\\
+                    &gcd(23861, 22972) = 1
+                \end{align*}
+                \item
+                \begin{align*}
+                    &i = 37, a = 20741, b = 20741^37\tpmod{23861} = 3792\\
+                    &gcd(23861, 3791) = 223 > 1 \implies 223|23861 \text{and is one of the factors}\\
+                    &23861/223 = 107 \implies \text{107 is the other factor}\\
+                    &23861 = 107 \times 223 \qedn
+                \end{align*}
+           \end{enumerate}
 		\end{flushleft}
 		\item Take the same number d and now factorise using the Quadratic Sieve method. You may use Maple commands included in the week 10 workshop folder.
 
 		\begin{flushleft}
-			\textbf{\textit{Answer:}} $d = 500657$\\
+			\textbf{\textit{Answer:}} $d = 23861$\\
             \begin{enumerate}[Step 1.]
                 \item We use the polynomial $y(x) = x^2 - d$ to find the B-smooth numbers. We initialise $x = \sqrt{500657}$ to start the sieve. Calculate the square root of $d$.\\
-                $a = \lfloor\sqrt{500657}\rfloor = 707$\\
+                $a = \lfloor\sqrt{23861}\rfloor = 154$\\
                 We then $y(x), y(x + 1), y(x + 2), ...$
                 \item Calculate the factor base. Euler's criteria for odd primes to determine whether a number is a quadratic residue or not is in action here. We got the below Factor Base: \\
-                $\{2, 11, 13, 19, 23, 29, 31\}$. We added $-1$ to it to consider negative values too. Hence the Factor Base became $\{-1, 2, 11, 13, 19, 23, 29, 31\}$
-                \item Calculate $y(x)$ and sieve the B-smooth numbers. Here we set $B = 7$.
+                $\{2, 5, 19, 29\}$. We added $-1$ to it to consider negative values too. Hence the Factor Base became $\{-1, 2, 5, 19, 29\}$
+                \item Calculate $y(x)$ and sieve the B-smooth numbers. Here we set $B = 4$.
                 \item the table below shows the sieved numbers and the corresponding exponents matrix (I wrote some Rust code to \ref{lst:qudratic-sieve} generate these values.)
                 \begin{table}[H]
                     \begin{adjustbox}{scale=1.2,center}
-                        \begin{tabular}{ |l|l|l|l|l|l|l|l|l|l| }
+                        \begin{tabular}{ |l|l|l|l|l|l|l|l|l| }
                             \hline
-                            \textbf{x} & \textbf{y(x + a)} & \textbf{-1} & \textbf{2} & \textbf{11} & \textbf{13} & \textbf{19} & \textbf{23} & \textbf{29} & \textbf{31} \Tstrut\\
+                            \textbf{x} & \textbf{y(x + a)} & \textbf{-1} & \textbf{2} & \textbf{5} & \textbf{19} & \textbf{29} & \textbf{37} & \textbf{41} \Tstrut\\
                             \hline
-                            -97 & 610 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1\\ \hline
+                            -63 & 91   & 1 & 2 & 1 & 1 & 0 & 0 & 1 \\\hline
+                            -55 & 99   & 1 & 2 & 1 & 1 & 0 & 1 & 0 \\\hline
                             \rowcolor{SeaGreen3!30!}
-                            -82 & 625 & 1 & 4 & 0 & 1 & 0 & 2 & 0 & 0\\ \hline
+                            -25 & 129  & 1 & 2 & 1 & 2 & 0 & 0 & 0 \\\hline
+                            -18 & 136  & 1 & 0 & 1 & 0 & 1 & 1 & 0 \\\hline
                             \rowcolor{SeaGreen3!30!}
-                            -31 & 676 & 1 & 0 & 2 & 0 & 2 & 0 & 0 & 0\\ \hline
-                            -12 & 695 & 1 & 5 & 0 & 0 & 1 & 0 & 1 & 0\\ \hline
-                            -10 & 697 & 1 & 9 & 0 & 0 & 0 & 0 & 1 & 0\\ \hline
-                            -4  & 703 & 1 & 4 & 0 & 1 & 0 & 0 & 0 & 1\\ \hline
-                            2   & 709 & 0 & 3 & 1 & 0 & 0 & 1 & 0 & 0\\ \hline
-                            \rowcolor{SeaGreen3!30!}
-                            4   & 711 & 0 & 8 & 0 & 0 & 1 & 0 & 0 & 0\\ \hline
-                            46  & 753 & 0 & 4 & 1 & 1 & 0 & 0 & 1 & 0\\ \hline
-                            48  & 755 & 0 & 3 & 0 & 1 & 0 & 1 & 1 & 0\\ \hline
-                            58  & 765 & 0 & 3 & 1 & 0 & 0 & 0 & 0 & 2\\ \hline
-                            \rowcolor{SeaGreen3!30!}
-                            61  & 768 & 0 & 0 & 0 & 1 & 3 & 0 & 0 & 0\\ \hline
-                            102 & 809 & 0 & 5 & 1 & 0 & 1 & 1 & 0 & 0\\ \hline
-                            140 & 847 & 0 & 4 & 0 & 0 & 1 & 1 & 0 & 1\\ \hline
-                            178 & 885 & 0 & 3 & 1 & 2 & 1 & 0 & 0 & 0\\ \hline
-                            \multicolumn{2}{|r|}{Selected Rows' sum} & 2 & 12 & 2 & 2 & 6 & 2 & 0 & 0 \\
+                            -10 & 144  & 1 & 0 & 5 & 0 & 0 & 0 & 0 \\\hline
+                            0 & 154  & 0 & 0 & 1 & 0 & 1 & 0 & 0 \\\hline
+                            1 & 155  & 0 & 2 & 0 & 0 & 0 & 0 & 1 \\\hline
+                            2 & 156  & 0 & 0 & 2 & 1 & 0 & 0 & 0 \\\hline
+                            11 & 165  & 0 & 2 & 0 & 0 & 2 & 0 & 0 \\\hline
+                            19 & 173  & 0 & 2 & 0 & 0 & 0 & 1 & 1 \\\hline
+                            40 & 194  & 0 & 0 & 2 & 1 & 1 & 0 & 0 \\\hline
+                            127 & 281  & 0 & 2 & 2 & 1 & 1 & 0 & 0 \\\hline
+                            165 & 319  & 0 & 2 & 2 & 1 & 0 & 0 & 1 \\\hline
+                            \multicolumn{2}{|r|}{Selected Rows' sum} & 2 & 2 & 6 & 2 & 0 & 0 & 0 \\
                             \hline
-                            \multicolumn{2}{|r|}{Values for $v$} & 1 & 6 & 1 & 1 & 3 & 1 & 0 & 0 \\
+                            \multicolumn{2}{|r|}{Values for $v$} & 1 & 1 & 3 & 1 & 0 & 0 & 0 \\
                             \hline
                         \end{tabular}
                     \end{adjustbox}
@@ -690,15 +890,15 @@
                 \end{table}
                 \item We calculate $v$ and $u$ as follows:
                 \begin{align*}
-                    &u = 625 \times 676 \times 711 \times 768 \tpmod{500657} \\
-                    &  = 31115 \\
-                    &v = -1 \times 2^6 \times 11 \times 13 \times 19 \times 23 \tpmod{500657} \\
-                    &  = 102724\\
-                    & u^2 \equiv v^2 \tpmod{500657} \implies gcd(d, u-v) and gcd(d, u+v) are factors of d\\
-                    & gcd(500657, 71609) = 101 \\
-                    & gcd(500657, 133839) = 4957\\\
-                    &   \therefore 500657 = 101 \times 4957
-                    \qed
+                    &u = 129 \times 144 \tpmod{23861} \\
+                    &  = 18576 \\
+                    &v = -1 \times 2 \times 5^3 \times 19 \tpmod{23861} \\
+                    &  = 19111\\
+                    & u^2 \equiv v^2 \tpmod{23861} \implies gcd(d, u-v) and gcd(d, u+v) are factors of d\\
+                    & gcd(23861, 19111 - 18576) = 107 \\
+                    & gcd(23861, 19111 + 18576) = 223\\\
+                    &   \therefore 23861 = 101 \times 223
+                    \hfill\qedn
                 \end{align*}
                 \item The Rust code for generating the above result is below.
                 \begin{lstlisting}[
@@ -723,17 +923,21 @@ pub fn prepare_matrix(n: &BigInt) {
     BigInt::from(23u64),
     BigInt::from(29u64),
     BigInt::from(31u64),
+    BigInt::from(37u64),
+    BigInt::from(41u64),
     ];
 
-    println!("Legendre Symbol is calculated
-        using Euler's criteria: ");
+    println!("Legendre Symbol is calculated using Euler's criteria: ");
     println!("If n^(p-1)/2 (mod p) = 1,
-        then (n/p) = 1, else (n/p) = -1");
+               then (n/p) = 1, else (n/p) = -1");
     factor_base
-        .retain(|x| modular_pow(n, &((x - 1) / BigInt::from(2u64)), x) == BigInt::one());
+       .retain(|x| modular_pow(n, &((x - 1) / BigInt::from(2u64)),
+                x) == BigInt::one());
     //factor_base.insert(0, BigInt::from(-1i32));
     println!("The calculated Factor Base is: {:?}", &factor_base);
     let mut y_x: Vec<BigInt> = Vec::new();
+    // start = sqrt(n) - 100, end = sqrt(n) + 200
+    // These values should be dynamic
     let start = a.clone() - BigInt::from(100u64);
     let end = a.clone() + BigInt::from(200u64);
 
@@ -741,6 +945,7 @@ pub fn prepare_matrix(n: &BigInt) {
     for i in range_inclusive(start, end) {
         let x = &i - &a;
         y_x.push(x.clone());
+        // y(x) = (x + a)^2 - n
         let mut y = &i * &i - n;
         if y.sign() == Sign::Minus {
             y = -1 * y;
@@ -756,9 +961,9 @@ pub fn prepare_matrix(n: &BigInt) {
         .map(|x| x.0.clone())
         .collect::<Vec<BigInt>>();
         let set1: HashSet<BigInt> = factor_base
-            .iter().cloned().collect();
+               .iter().cloned().collect();
         let set2: HashSet<BigInt> = distinct_factors
-            .iter().cloned().collect();
+               .iter().cloned().collect();
 
         if set2.is_subset(&set1) {
             // println!("{} {} {:?}", i - &a, &y, p_factors);
@@ -779,7 +984,7 @@ pub fn prepare_matrix(n: &BigInt) {
                 one_by_n.insert(0, 0);
             }
             m_by_n.push(one_by_n.clone());
-            println!("{:>3} {:>2}  {:?}", x, i, one_by_n);
+            println!("{:>5} {:>5}  {:?}", x, i, one_by_n);
         }
     }
 }
@@ -788,32 +993,24 @@ pub fn prepare_matrix(n: &BigInt) {
                 \bigbreak
                 We can use the below command to generate the desired matrix:
                 \begin{lstlisting}[style=DOS, caption=Quadratic Sieve Matrix Generation]
-            ./target/debug/nt-assignments quadratic-sieve -n 500657
-            Square Root of 500657 = 707
-            Legendre Symbol is calculated using Euler's criteria:
-            If n^(p-1)/2 (mod p) = 1, then (n/p) = 1, else (n/p) = -1
-            The calculated Factor Base is: [2, 11, 13, 19, 23, 29, 31]
-            -97 610  [1, 0, 1, 1, 0, 0, 1, 1]
-            -82 625  [1, 4, 0, 1, 0, 2, 0, 0]
-            -31 676  [1, 0, 2, 0, 2, 0, 0, 0]
-            -12 695  [1, 5, 0, 0, 1, 0, 1, 0]
-            -10 697  [1, 9, 0, 0, 0, 0, 1, 0]
-            -4 703  [1, 4, 0, 1, 0, 0, 0, 1]
-            2 709  [0, 3, 1, 0, 0, 1, 0, 0]
-            4 711  [0, 8, 0, 0, 1, 0, 0, 0]
-            46 753  [0, 4, 1, 1, 0, 0, 1, 0]
-            48 755  [0, 3, 0, 1, 0, 1, 1, 0]
-            58 765  [0, 3, 1, 0, 0, 0, 0, 2]
-            61 768  [0, 0, 0, 1, 3, 0, 0, 0]
-            102 809  [0, 5, 1, 0, 1, 1, 0, 0]
-            140 847  [0, 4, 0, 0, 1, 1, 0, 1]
-            178 885  [0, 3, 1, 2, 1, 0, 0, 0]
-
-
-            ./target/debug/nt-assignments gcd-euclid  -a 500657 -b 71609
-            101
-            ./target/debug/nt-assignments gcd-euclid  -a 500657 -b 133839
-            4957
+                ./target/debug/nt-assignments quadratic-sieve -n 23861
+                Square Root of 23861 = 154
+                Legendre Symbol is calculated using Euler's criteria:
+                If n^(p-1)/2 (mod p) = 1, then (n/p) = 1, else (n/p) = -1
+                The calculated Factor Base is: [2, 5, 19, 29, 37, 41]
+                -63    91  [1, 2, 1, 1, 0, 0, 1]
+                -55    99  [1, 2, 1, 1, 0, 1, 0]
+                -25   129  [1, 2, 1, 2, 0, 0, 0]
+                -18   136  [1, 0, 1, 0, 1, 1, 0]
+                -10   144  [1, 0, 5, 0, 0, 0, 0]
+                  0   154  [0, 0, 1, 0, 1, 0, 0]
+                  1   155  [0, 2, 0, 0, 0, 0, 1]
+                  2   156  [0, 0, 2, 1, 0, 0, 0]
+                 11   165  [0, 2, 0, 0, 2, 0, 0]
+                 19   173  [0, 2, 0, 0, 0, 1, 1]
+                 40   194  [0, 0, 2, 1, 1, 0, 0]
+                127   281  [0, 2, 2, 1, 1, 0, 0]
+                165   319  [0, 2, 2, 1, 0, 0, 1]
                 \end{lstlisting}
             \end{enumerate}
 		\end{flushleft}
@@ -954,7 +1151,7 @@ pub fn prepare_matrix(n: &BigInt) {
                 gcd(9263, 1680 + 8996) = 157\\
                 gcd(9263, 1680 - 8996) = 59\\
                 \text{Hence, N is factorised as } N = 9263 = 59 \times 157
-                \qed
+                \hfill\qedn
                 \end{align*}
                 \bigbreak
                 The Maple calculation performed is given below:
