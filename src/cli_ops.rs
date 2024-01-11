@@ -24,6 +24,15 @@ pub enum Operations {
         #[arg(short = 'b', value_name = "SECOND NUMBER")]
         b: BigInt,
     },
+    /// Pollard's p - 1 Method
+    #[command(arg_required_else_help = true)]
+    PollardsPOne {
+        #[arg(short = 'n', value_name = "NUMBER to be factored")]
+        n: BigInt,
+
+        #[arg(short = 'a', value_name = "Initial base")]
+        a: BigInt,
+    },
     /// Quadratic Sieve
     #[command(arg_required_else_help = true)]
     QuadraticSieve {

@@ -32,6 +32,8 @@ pub fn prepare_matrix(n: &BigInt) {
         BigInt::from(23u64),
         BigInt::from(29u64),
         BigInt::from(31u64),
+        BigInt::from(37u64),
+        BigInt::from(41u64),
     ];
 
     println!("Legendre Symbol is calculated using Euler's criteria: ");
@@ -40,6 +42,8 @@ pub fn prepare_matrix(n: &BigInt) {
     //factor_base.insert(0, BigInt::from(-1i32));
     println!("The calculated Factor Base is: {:?}", &factor_base);
     let mut y_x: Vec<BigInt> = Vec::new();
+    // start = sqrt(n) - 100, end = sqrt(n) + 200
+    // These values should be dynamic
     let start = a.clone() - BigInt::from(100u64);
     let end = a.clone() + BigInt::from(200u64);
 
@@ -47,6 +51,7 @@ pub fn prepare_matrix(n: &BigInt) {
     for i in range_inclusive(start, end) {
         let x = &i - &a;
         y_x.push(x.clone());
+        // y(x) = (x + a)^2 - n
         let mut y = &i * &i - n;
         if y.sign() == Sign::Minus {
             y = -1 * y;
@@ -83,7 +88,7 @@ pub fn prepare_matrix(n: &BigInt) {
                 one_by_n.insert(0, 0);
             }
             m_by_n.push(one_by_n.clone());
-            println!("{:>3} {:>2}  {:?}", x, i, one_by_n);
+            println!("{:>5} {:>5}  {:?}", x, i, one_by_n);
         }
     }
 }

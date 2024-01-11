@@ -1,5 +1,6 @@
 mod cli_ops;
 mod display;
+mod factorisations;
 mod groups_modulo_n;
 mod logarithms;
 mod presets;
@@ -19,6 +20,7 @@ use cli_ops::{
     CarmichaelNumsCommands, Cli, Operations, PFactorsCommands, PrimalityCommands,
     PrimitiveRootsCommands,
 };
+use factorisations::pollards_p_1;
 use fmtastic::Superscript;
 use groups_modulo_n::{
     euler_totient_phi, is_integer_of_form_pk_2pk, primitive_roots_trial_n_error,
@@ -414,6 +416,9 @@ fn main() {
         }
         Operations::QuadraticSieve { n } => {
             prepare_matrix(&n);
+        }
+        Operations::PollardsPOne { n, a } => {
+            pollards_p_1(&n, a);
         }
     }
 }
