@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.15)  11 JAN 2024 18:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.15)  12 JAN 2024 00:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1080,12 +1080,12 @@ OMS/cmsy/m/n/10.95 ^^@\OT1/cmr/m/n/10.95 1\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10
 
 Package mdframed Info: Box was splittet wrong
  starting loop to iterate the splitting point
-(mdframed)              on input line 1437.
+(mdframed)              on input line 1433.
 [13]
 Package mdframed Info: Box was splittet wrong
  starting loop to iterate the splitting point
-(mdframed)              on input line 1437.
- [14] [15] [16] (./ass3.aux)
+(mdframed)              on input line 1433.
+ [14] [15] [16] [17] (./ass3.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-12-11>
@@ -1098,10 +1098,10 @@ Package rerunfilecheck Info: File `ass3.out' has not changed.
 (rerunfilecheck)             Checksum: C2C6761E75A6CA978126B66348FD2A92;181.
  ) 
 Here is how much of TeX's memory you used:
- 25965 strings out of 474175
- 413422 string characters out of 5749697
+ 25982 strings out of 474175
+ 413611 string characters out of 5749697
  2574460 words of memory out of 5000000
- 47679 multiletter control sequences out of 15000+600000
+ 47681 multiletter control sequences out of 15000+600000
  567384 words of font info for 71 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  76i,14n,95p,7898b,3576s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1122,10 +1122,10 @@ nts/cm/cmtt10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cm
 tt8.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.
 pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
 
-Output written on ass3.pdf (16 pages, 264018 bytes).
+Output written on ass3.pdf (17 pages, 271616 bytes).
 PDF statistics:
- 451 PDF objects out of 1000 (max. 8388607)
- 393 compressed objects within 4 object streams
- 241 named destinations out of 1000 (max. 500000)
+ 475 PDF objects out of 1000 (max. 8388607)
+ 415 compressed objects within 5 object streams
+ 256 named destinations out of 1000 (max. 500000)
  17 words of extra memory for PDF output out of 10000 (max. 10000000)
 
