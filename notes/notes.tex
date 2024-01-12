@@ -1,0 +1,41 @@
+\documentclass{article}
+\title{General Guidelines on Browsing the Source Code}
+\author{Ajeesh T Vijayan  \\
+   MSc Cryptography  \\
+   London Metropolitan University
+}
+
+\date{\today}
+\begin{document}
+
+    \maketitle
+
+    \section*{Notes}
+    This document describes how to browse the code developed as part of the
+    Number Theory assignment.
+
+    \begin{enumerate}
+        \item Assignment answer sheets are named as:
+            \begin{itemize}
+                \item ajeesh\_msc\_crypto\_ass1.pdf,
+                \item ajeesh\_msc\_crypto\_ass2.pdf,
+                \item ajeesh\_msc\_crypto\_ass2.pdf
+            \end{itemize}
+        \item "src" directory contains the source code. "main.rs" is where the all the control flow starts
+            \begin{itemize}
+                \item primality.rs contains all primality related code,
+                \item groups\_modulo.rs has all the primitive roots related code,
+                \item quadratic\_sieve.rs contains the method to print the matrix for linear dependency calc.
+                \item prime\_factors.rs contains code for prime factoring. It import methods from primality.rs
+                \item logarithms.rs contains the code for Pollards Rho method
+                \item presets.rs is a wrapper module for many of the methods in the above file. For example, when we need factorisation for a range of numbers, we write a wrapper in presets.rs which calls methods from primality.rs and prime\_factors.rs in loop
+                \item utils.rs contains code for modular exponentiation, gcd calc, etc.
+                \item cli\_ops defines the command line options
+            \end{itemize}
+        \item "notes" directory contains all the "latex" files.
+        \item "results" directory has some sample json files from code execution.
+        \item nt-assignments.exe is the executable file
+    \end{enumerate}
+
+
+\end{document}
