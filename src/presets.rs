@@ -15,16 +15,22 @@ use num_iter::{range, range_inclusive};
 
 use homedir::get_my_home;
 use rand::seq::SliceRandom;
-use rayon::iter::{
-    IndexedParallelIterator, IntoParallelIterator, IntoParallelRefIterator, ParallelBridge,
-    ParallelIterator,
+use rayon::{
+    iter::{
+        IndexedParallelIterator, IntoParallelIterator, IntoParallelRefIterator, ParallelBridge,
+        ParallelIterator,
+    },
+    result,
 };
 
-use std::io::{BufRead, BufReader};
 use std::io::{ErrorKind, Write};
 use std::{
     collections::HashMap,
     fs::{self, File},
+};
+use std::{
+    io::{BufRead, BufReader},
+    process::Output,
 };
 
 use tabled::{
@@ -241,7 +247,7 @@ pub fn gcd_test_range(start: &BigInt, end: &BigInt) {
     println!("\n{table}\n");
 }
 
-pub fn test_primality_miller_rabin(n: &BigInt) -> (String, Vec<String>) {
+pub fn ass1_question3_miller_rabin(n: &BigInt) -> (String, Vec<String>) {
     let mut non_witnesses: Vec<String> = Vec::new();
     let mut n_minus_one_form = String::new();
     for base in range(BigInt::from(2u64), n - 1) {

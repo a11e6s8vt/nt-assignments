@@ -65,9 +65,17 @@ pub enum Operations {
     #[command(arg_required_else_help = true)]
     CarmichaelNums(CarmichaelNumsArgs),
 
+
+    // Check if a number is Prime or Composite using Miller Rabin
+    #[command(arg_required_else_help = true)]
+    MillerRabin {
+        #[arg(short = 'n', long = "num", value_name = "NUMBER")]
+        num: BigInt,
+    },
+
     /// Ass1 - Question3
     #[command(arg_required_else_help = true)]
-    Question3(NumRangeArgs),
+    Ass1Question3(NumRangeArgs),
 
     /// Ass1 - Question3
     #[command(arg_required_else_help = true)]
@@ -165,7 +173,6 @@ pub struct PrimalityArgs {
 #[derive(Debug, Subcommand)]
 pub enum PrimalityCommands {
     GCD(PrimalityRangeArgs),
-    MillerRabin(PrimalityRangeArgs),
 }
 
 #[derive(Debug, Args)]

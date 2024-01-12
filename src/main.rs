@@ -35,7 +35,7 @@ use num_bigint::BigInt;
 use num_traits::{One, Zero};
 use presets::{
     find_primes_in_range_trial_division_parallel, gcd_test_range, list_carmichael_nums,
-    list_prime_factors_in_range, test_primality_miller_rabin,
+    list_prime_factors_in_range,
 };
 use primality::{aks, carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
@@ -43,8 +43,8 @@ use utils::findr;
 
 use crate::{
     display::MillerRabinJson,
-    presets::{search_nums_with_primitive_roots, NumCategory},
-    primality::{is_prime_trial_division_parallel, AksSteps},
+    presets::{ass1_question3_miller_rabin, search_nums_with_primitive_roots, NumCategory},
+    primality::{is_prime_trial_division_parallel, miller_rabin_primality, AksSteps},
     prime_factors::PrimeFactors,
     utils::{modular_pow, Gcd},
 };
@@ -126,7 +126,15 @@ fn main() {
         Operations::Primality(s) => match s.command {
             PrimalityCommands::GCD(gcd_test_args) => {
                 if let Some(num) = gcd_test_args.num {
-                    gcd_test(&num, 5);
+                    let res = gcd_test(&num, 5);
+                    for i in res.iter() {
+                        if i.1 > BigInt::one() {
+                            println!("GCD Test: {} is Composite.", num);
+                            return;
+                        }
+                    }
+
+                    println!("GCD Test: {} is Prime.", num);
                 } else {
                     if let Some(start) = gcd_test_args.start {
                         if let Some(end) = gcd_test_args.end {
@@ -135,10 +143,14 @@ fn main() {
                     }
                 }
             }
-            PrimalityCommands::MillerRabin(miller_rabin_args) => {
-                println!("{:?}", miller_rabin_args)
-            }
         },
+        Operations::MillerRabin { num } => {
+            if miller_rabin_primality(&num) {
+                println!("{} is Prime", num);
+            } else {
+                println!("{} is Composite", num);
+            }
+        }
         Operations::CarmichaelNums(s) => match s.command {
             CarmichaelNumsCommands::Korselt(cargs) => {
                 let start = cargs.start;
@@ -153,7 +165,7 @@ fn main() {
                 println!("\n{}\n", carmichael_nums.0);
             }
         },
-        Operations::Question3(s) => {
+        Operations::Ass1Question3(s) => {
             let mut composites =
                 list_prime_factors_in_range(&s.start, &s.end, NumCategory::Composites).1;
             // filter only odd composite numbers with only two factors
@@ -169,7 +181,7 @@ fn main() {
             for (num, p_factors) in composites.iter() {
                 println!("Processing the number: {}", num);
                 // call miller-rabin test
-                let (n_minus_one_form, non_witnesses) = test_primality_miller_rabin(num);
+                let (n_minus_one_form, non_witnesses) = ass1_question3_miller_rabin(num);
                 // Convert prime factors to String format
                 let mut form = String::new();
                 for (factor, exp) in p_factors {

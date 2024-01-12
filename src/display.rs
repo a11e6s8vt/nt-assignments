@@ -198,7 +198,7 @@ pub fn format_miller_rabin_steps_print(
 }
 
 pub fn miller_rabin_output_print(table_data: &Vec<MillerRabinTable>) {
-    let _table = Table::new(table_data)
+    let table = Table::new(table_data)
         .with(Merge::vertical())
         .with(Style::modern())
         .with(BorderSpanCorrection)
@@ -206,11 +206,11 @@ pub fn miller_rabin_output_print(table_data: &Vec<MillerRabinTable>) {
 
     // let json = serde_json::to_string(table_data).unwrap();
     // println!("{}", json);
-    // let mut table1 = Table::new(table_data);
-    // table1.with(STYLE_2);
+    let mut table1 = Table::new(table_data);
+    table1.with(STYLE_2);
 
-    // let output1 = table1.to_string();
-    // println!("\n{}\n", table);
+    let output1 = table1.to_string();
+    println!("\n{}\n", table);
     // let mut html_table =
     //     HtmlTable::with_header(Vec::<Vec<String>>::from(Table::builder(table_data)));
     // html_table.set_alignment(Entity::Row(1), Alignment::center());
