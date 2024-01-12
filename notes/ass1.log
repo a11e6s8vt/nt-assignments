@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.15)  5 JAN 2024 10:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.15)  12 JAN 2024 04:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -522,27 +522,30 @@ Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 
 LaTeX Warning: Label `miller-rabin-50-100' multiply defined.
 
+
+LaTeX Warning: Label `number_theory_1' multiply defined.
+
 )
 \openout1 = `ass1.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 143.
-LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
@@ -605,19 +608,19 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring ON on input line 143.
+Package hyperref Info: Link coloring ON on input line 147.
 (./ass1.out) (./ass1.out)
 \@outlinefile=\write3
 \openout3 = `ass1.out'.
 
 \c@lstlisting=\count316
-LaTeX Font Info:    Trying to load font information for U+msa on input line 146
+LaTeX Font Info:    Trying to load font information for U+msa on input line 150
 .
 
 (c:/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 146
+LaTeX Font Info:    Trying to load font information for U+msb on input line 150
 .
 
 (c:/texlive/2023/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -626,12 +629,12 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 <primes.png, id=13, 896.75024pt x 339.669pt>
 File: primes.png Graphic file (type png)
 <use primes.png>
-Package pdftex.def Info: primes.png  used on input line 169.
+Package pdftex.def Info: primes.png  used on input line 173.
 (pdftex.def)             Requested size: 403.53389pt x 152.84962pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 170.
+(caption)                particular \caption on input line 174.
 See the caption package documentation for explanation.
 
 [1
@@ -640,16 +643,16 @@ See the caption package documentation for explanation.
 <composites.png, id=29, 999.13275pt x 742.57425pt>
 File: composites.png Graphic file (type png)
 <use composites.png>
-Package pdftex.def Info: composites.png  used on input line 179.
+Package pdftex.def Info: composites.png  used on input line 183.
 (pdftex.def)             Requested size: 449.60558pt x 334.15532pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 180.
+(caption)                particular \caption on input line 184.
 See the caption package documentation for explanation.
 
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 192.
+nput line 196.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -660,25 +663,25 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [2 <./primes.png> <./composites.png>]
 LaTeX Font Info:    Trying to load font information for U+fontawesomebrands0 on
- input line 233.
+ input line 237.
 
 (c:/texlive/2023/texmf-dist/tex/latex/fontawesome5/ufontawesomebrands0.fd)
 LaTeX Font Info:    Font shape `U/fontawesomebrands0/solid/n' in size <10.95> n
 ot available
 (Font)              Font shape `U/fontawesomebrands0/regular/n' tried instead o
-n input line 233.
+n input line 237.
 
 
 LaTeX Warning: The counter will not be printed.
-             The label is: (b) on input line 245.
+             The label is: (b) on input line 249.
 
 LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 2
-46.
+50.
 (c:/texlive/2023/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 246.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 250.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -707,17 +710,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [5]
-Overfull \hbox (5.38791pt too wide) in paragraph at lines 427--427
+Overfull \hbox (5.38791pt too wide) in paragraph at lines 431--431
 []|\OT1/cmr/m/n/10.95 Factorisation| 
  []
 
 
-Overfull \hbox (5.38791pt too wide) in paragraph at lines 427--427
+Overfull \hbox (5.38791pt too wide) in paragraph at lines 431--431
 []|\OT1/cmr/m/n/10.95 Factorisation| 
  []
 
 
-Overfull \hbox (5.38791pt too wide) in paragraph at lines 427--428
+Overfull \hbox (5.38791pt too wide) in paragraph at lines 431--432
 []|\OT1/cmr/m/n/10.95 Factorisation| 
  []
 
@@ -733,17 +736,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 <n_is_p.q.png, id=273, 859.41075pt x 384.2355pt>
 File: n_is_p.q.png Graphic file (type png)
 <use n_is_p.q.png>
-Package pdftex.def Info: n_is_p.q.png  used on input line 471.
+Package pdftex.def Info: n_is_p.q.png  used on input line 475.
 (pdftex.def)             Requested size: 386.73126pt x 172.90437pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 472.
+(caption)                particular \caption on input line 476.
 See the caption package documentation for explanation.
 
 
 LaTeX Warning: The counter will not be printed.
-             The label is: (c) on input line 485.
+             The label is: (c) on input line 489.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -757,12 +760,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 <gcd_test_3.png, id=287, 888.921pt x 536.60475pt>
 File: gcd_test_3.png Graphic file (type png)
 <use gcd_test_3.png>
-Package pdftex.def Info: gcd_test_3.png  used on input line 493.
+Package pdftex.def Info: gcd_test_3.png  used on input line 497.
 (pdftex.def)             Requested size: 400.01076pt x 241.4699pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 494.
+(caption)                particular \caption on input line 498.
 See the caption package documentation for explanation.
 
 
@@ -784,10 +787,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [9]
 
-LaTeX Warning: The counter will not be printed.
-             The label is: 2. on input line 600.
-
-
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
 (fancyhdr)                \setlength{\headheight}{13.59999pt}.
@@ -796,21 +795,16 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [10]
-<carmichael_flt.png, id=409, 990.099pt x 134.30174pt>
+<carmichael_flt.png, id=410, 990.099pt x 134.30174pt>
 File: carmichael_flt.png Graphic file (type png)
 <use carmichael_flt.png>
-Package pdftex.def Info: carmichael_flt.png  used on input line 679.
+Package pdftex.def Info: carmichael_flt.png  used on input line 682.
 (pdftex.def)             Requested size: 445.54044pt x 60.43521pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 680.
+(caption)                particular \caption on input line 683.
 See the caption package documentation for explanation.
-
-
-Overfull \hbox (9.29364pt too wide) in paragraph at lines 679--680
- [] 
- []
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -821,12 +815,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [11 <./carmichael_flt.png>]
-
-LaTeX Warning: The counter will not be printed.
-             The label is: 3. on input line 739.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 740--741
+Underfull \hbox (badness 10000) in paragraph at lines 743--744
 
  []
 
@@ -839,12 +828,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [12{c:/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-Overfull \hbox (27.10318pt too wide) detected at line 802
+Overfull \hbox (13.1115pt too wide) detected at line 805
 []
  []
 
 
-Overfull \hbox (198.6531pt too wide) detected at line 809
+Overfull \hbox (184.66142pt too wide) detected at line 812
 []
  []
 
@@ -858,26 +847,26 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [13]
 LaTeX Font Info:    Trying to load font information for OMS+cmtt on input line 
-823.
-LaTeX Font Info:    No file OMScmtt.fd. on input line 823.
+826.
+LaTeX Font Info:    No file OMScmtt.fd. on input line 826.
 
 
 LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
-(Font)              for symbol `textbraceleft' on input line 823.
+(Font)              for symbol `textbraceleft' on input line 826.
 
 
-Overfull \hbox (44.71931pt too wide) detected at line 853
+Overfull \hbox (30.72763pt too wide) detected at line 856
 []
  []
 
 
-Overfull \hbox (44.71931pt too wide) detected at line 861
+Overfull \hbox (30.72763pt too wide) detected at line 864
 []
  []
 
 
-Overfull \hbox (44.71931pt too wide) detected at line 869
+Overfull \hbox (30.72763pt too wide) detected at line 872
 []
  []
 
@@ -891,22 +880,15 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [14]
 
-LaTeX Warning: Command \textpm invalid in math mode on input line 932.
+LaTeX Warning: Command \textpm invalid in math mode on input line 935.
 
 LaTeX Font Info:    Trying to load font information for TS1+cmtt on input line 
-932.
+935.
 (c:/texlive/2023/texmf-dist/tex/latex/base/ts1cmtt.fd
 File: ts1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
 
-LaTeX Warning: Command \textpm invalid in math mode on input line 932.
-
-Missing character: There is no ± in font cmr10!
-
-LaTeX Warning: Command \textpm invalid in math mode on input line 934.
-
-
-LaTeX Warning: Command \textpm invalid in math mode on input line 934.
+LaTeX Warning: Command \textpm invalid in math mode on input line 935.
 
 Missing character: There is no ± in font cmr10!
 
@@ -919,10 +901,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [15]
 
-LaTeX Warning: Command \textpm invalid in math mode on input line 942.
+LaTeX Warning: Command \textpm invalid in math mode on input line 937.
 
 
-LaTeX Warning: Command \textpm invalid in math mode on input line 942.
+LaTeX Warning: Command \textpm invalid in math mode on input line 937.
+
+Missing character: There is no ± in font cmr10!
+
+LaTeX Warning: Command \textpm invalid in math mode on input line 945.
+
+
+LaTeX Warning: Command \textpm invalid in math mode on input line 945.
 
 Missing character: There is no ± in font cmr10!
 
@@ -943,10 +932,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [17]
-
-LaTeX Warning: The counter will not be printed.
-             The label is: 4. on input line 1068.
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -982,7 +967,31 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[21] (./ass1.aux)
+[21]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[22]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[23
+pdfTeX warning (ext4): destination with the same identifier (name{cite.number_t
+heory_1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1348 \end{document}
+                     ] (./ass1.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-12-11>
@@ -998,34 +1007,37 @@ Package rerunfilecheck Info: File `ass1.out' has not changed.
 (rerunfilecheck)             Checksum: 33E34E730204ACAE9098A78E08A7F3C0;146.
  ) 
 Here is how much of TeX's memory you used:
- 20903 strings out of 474175
- 340139 string characters out of 5749697
- 2568460 words of memory out of 5000000
- 42132 multiletter control sequences out of 15000+600000
- 569341 words of font info for 80 fonts, out of 8000000 for 9000
+ 20927 strings out of 474175
+ 340392 string characters out of 5749697
+ 2662460 words of memory out of 5000000
+ 42138 multiletter control sequences out of 15000+600000
+ 569509 words of font info for 81 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,14n,95p,7898b,3479s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2023/texmf-dist/fonts/type1/public/fontawesome5/FontAwesome5Brand
-s-Regular.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12
-.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><c
-:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive
-/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><c:/texlive/2023/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><c:/texlive/2023/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2023/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmr12.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-r17.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:
-/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/texlive/20
-23/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2023/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2023/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2023/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmti10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmtt10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmt
-t8.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on ass1.pdf (21 pages, 527741 bytes).
+s-Regular.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10
+.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/
+texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><c:/texlive
+/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb><c:/texlive/2023/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2023/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmmi5.pfb><c:/texlive/2023/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmmi7.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmmi8.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmr10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb
+><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texli
+ve/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2023/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/texlive/2023/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2023/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmsy10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmsy7.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+sy8.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><
+c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb><c:/texliv
+e/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb><c:/texlive/2023/tex
+mf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
+Output written on ass1.pdf (23 pages, 563508 bytes).
 PDF statistics:
- 1189 PDF objects out of 1200 (max. 8388607)
- 1104 compressed objects within 12 object streams
- 817 named destinations out of 1000 (max. 500000)
+ 1234 PDF objects out of 1440 (max. 8388607)
+ 1141 compressed objects within 12 object streams
+ 834 named destinations out of 1000 (max. 500000)
  42 words of extra memory for PDF output out of 10000 (max. 10000000)
 
