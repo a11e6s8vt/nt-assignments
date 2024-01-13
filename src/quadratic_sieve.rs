@@ -1,6 +1,5 @@
 use std::collections::{HashMap, HashSet};
 
-use ndarray::Array;
 use num_bigint::{BigInt, Sign};
 use num_integer::Integer;
 use num_iter::range_inclusive;

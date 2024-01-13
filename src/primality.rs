@@ -5,6 +5,7 @@ use crate::{
     prime_factors::PrimeFactors,
     utils::{abs_log, fastpoly, generate_random_int_in_range, modular_pow, Gcd},
 };
+use clap::ValueEnum;
 use fmtastic::Superscript;
 use num_bigint::BigInt;
 use num_iter::{range, range_inclusive, Range};
@@ -16,6 +17,15 @@ use tabled::settings::style::{HorizontalLine, On, Style};
 const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
     .line_horizontal(HorizontalLine::inherit(Style::modern()))
     .remove_horizontals();
+
+#[derive(clap::ValueEnum, Clone, Debug)]
+pub enum PrimalityMethods {
+    TrialDivision,
+    Fermat,
+    Gcd,
+    MillerRabin,
+    AKS,
+}
 
 ///
 /// is_prime calculates if a number is prime by verifying numbers upto √n.
