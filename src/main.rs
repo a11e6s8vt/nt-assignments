@@ -58,6 +58,8 @@ fn main() -> Result<(), String> {
         let line = readline()?;
         let line = line.trim();
         if line.is_empty() {
+            let help = cli().render_long_help();
+            println!("{help}");
             continue;
         }
 
