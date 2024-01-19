@@ -11,7 +11,8 @@ mod utils;
 
 use std::io::Write;
 
-use clap::{arg, Arg, ArgAction, ArgGroup, Command};
+use clap::{arg, value_parser, Arg, ArgAction, ArgGroup, Command, ValueHint};
+use num_integer::Integer;
 use std::{
     collections::{BTreeMap, HashMap},
     fs::{self, File},
@@ -47,7 +48,8 @@ use crate::{
     display::MillerRabinJson,
     presets::{ass1_question3_miller_rabin, search_nums_with_primitive_roots, NumCategory},
     primality::{
-        is_prime_trial_division_parallel, miller_rabin_primality, AksSteps, PrimalityMethods,
+        is_prime_trial_division_parallel, miller_rabin_primality, AksSteps, CarmichaelMethods,
+        PrimalityMethods,
     },
     prime_factors::PrimeFactors,
     utils::{modular_pow, Gcd},
@@ -117,6 +119,45 @@ fn respond(line: &str) -> Result<bool, String> {
         Some(("composites-pq", matches)) => {
             let s = matches.get_one::<BigInt>("start").expect("required");
             let e = matches.get_one::<BigInt>("end").expect("required");
+
+            let mut composites = list_prime_factors_in_range(s, &e, NumCategory::CompositesPQ).1;
+            // filter only odd composite numbers with only two factors
+            composites.retain(|(num, _)| num % 2 != BigInt::zero());
+
+            let table_data = &composites
+                .iter()
+                .map(|x| Matrix::new(x.0.to_string()))
+                .collect::<Vec<Matrix>>();
+            matrix_print(
+                table_data,
+                "Composites N = P.Q:".to_string(),
+                &composites.len() / 14,
+            );
+            // let (primes, _) = find_primes_in_range_trial_division_parallel(s.clone(), e.clone());
+
+            // let table_data = &primes
+            //     .iter()
+            //     .map(|x| Matrix::new(x.to_string()))
+            //     .collect::<Vec<Matrix>>();
+            // matrix_print(table_data, "Prime Numbers:".to_string(), &primes.len() / 5);
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
+        }
+        Some(("carmichael-nums", matches)) => {
+            let s = matches.get_one::<BigInt>("start").expect("required");
+            let e = matches.get_one::<BigInt>("end").expect("required");
+            let method = matches
+                .get_one::<CarmichaelMethods>("method")
+                .expect("required");
+            match method {
+                &CarmichaelMethods::Fermat => {
+                    let carmichael_nums = list_carmichael_nums(s, e, carmichael_nums_flt);
+                    println!("\n{}\n", carmichael_nums.0);
+                }
+                CarmichaelMethods::Korselt => {
+                    let carmichael_nums = list_carmichael_nums(s, e, carmichael_nums_korselt);
+                    println!("\n{}\n", carmichael_nums.0);
+                }
+            }
             // let (primes, _) = find_primes_in_range_trial_division_parallel(s.clone(), e.clone());
 
             // let table_data = &primes
@@ -160,40 +201,102 @@ fn respond(line: &str) -> Result<bool, String> {
             let method = matches
                 .get_one::<PrimalityMethods>("method")
                 .expect("required");
-            let n1 = matches.get_one::<BigInt>("num1").expect("required");
+            let n = matches.get_one::<BigInt>("num").expect("required");
             match method {
-                PrimalityMethods::TrialDivision => {}
-                PrimalityMethods::Fermat => {}
-                PrimalityMethods::Gcd => {
-                    if let Some(n2) = matches.get_one::<BigInt>("num2") {
-                        gcd_test_range(n1, n2);
+                PrimalityMethods::TrialDivision => {
+                    if is_prime_trial_division_parallel(n) {
+                        println!("{} is Prime", n);
                     } else {
-                        let res = gcd_test(n1, 5);
-                        let mut composite = false;
-                        for i in res.iter() {
-                            if i.1 > BigInt::one() {
-                                composite = true;
-                                println!("GCD Test: {} is Composite.", n1);
-                            }
+                        println!("{} is Composite", n);
+                    }
+                }
+                PrimalityMethods::Fermat => {
+                    println!("Fermat Primality Test - Not Implemented!");
+                }
+                PrimalityMethods::Gcd => {
+                    let res = gcd_test(n, 5);
+                    let mut composite = false;
+                    for i in res.iter() {
+                        if i.1 > BigInt::one() {
+                            composite = true;
+                            println!("GCD Test: {} is Composite.", n);
                         }
-                        if !composite {
-                            println!("GCD Test: {} is Prime.", n1);
-                        }
+                    }
+                    if !composite {
+                        println!("GCD Test: {} is Prime.", n);
                     }
                 }
                 PrimalityMethods::MillerRabin => {
-                    if let Some(n2) = matches.get_one::<BigInt>("num2") {
-                        todo!()
+                    if miller_rabin_primality(n) {
+                        println!("{} is Probably Prime", n);
                     } else {
-                        if miller_rabin_primality(n1) {
-                            println!("{} is Prime", n1);
-                        } else {
-                            println!("{} is Composite", n1);
-                        }
+                        println!("{} is Definitely Composite", n);
                     }
                 }
                 PrimalityMethods::AKS => {}
             }
+        }
+        Some(("miller-rabin-liars", matches)) => {
+            let n = matches.get_one::<BigInt>("num").expect("required");
+            let mut primes = vec![BigInt::from(2u64)];
+            let p_factors = n.prime_factors(&mut primes);
+            let mut json_out: BTreeMap<String, MillerRabinJson> = BTreeMap::new();
+            // call miller-rabin test
+            let (n_minus_one_form, non_witnesses) = ass1_question3_miller_rabin(n);
+            // Convert prime factors to String format
+            let mut form = String::new();
+            for (factor, exp) in p_factors {
+                form.push_str(&format!("{}{} x ", factor, Superscript(exp.clone())));
+            }
+            let mut form = form.trim_end().to_string();
+            form.pop();
+            let mr_json = MillerRabinJson::new(n_minus_one_form, form, non_witnesses);
+            json_out.insert(n.to_string(), mr_json);
+
+            println!("{}", serde_json::to_string_pretty(&json_out).unwrap());
+            // let my_home = get_my_home()
+            //     .unwrap()
+            //     .unwrap()
+            //     .to_str()
+            //     .unwrap()
+            //     .to_string();
+            // let mut output_dir = String::new();
+            // let mut fname = String::new();
+
+            // if cfg!(windows) {
+            //     output_dir.push_str(&my_home);
+            //     output_dir.push_str("\\ass1-question3");
+            //     println!("Path = {}", &output_dir);
+            //     fname.push_str(&output_dir);
+            //     fname.push_str("\\");
+            //     fname.push_str("question3.json");
+            // } else if cfg!(unix) {
+            //     output_dir.push_str(&my_home);
+            //     output_dir.push_str("/ass1-question3");
+            //     println!("Path = {}", &output_dir);
+            //     fname.push_str(&output_dir);
+            //     fname.push_str("/");
+            //     fname.push_str("question3.json");
+            // }
+            // println!("output dir: {}", &output_dir);
+            // if !fs::metadata(&output_dir).is_ok() {
+            //     let _ = fs::create_dir(&output_dir);
+            // }
+            // match File::create(&fname) {
+            //     Ok(file) => {
+            //         println!("Output has been written to the file: {}", &fname);
+            //         serde_json::to_writer_pretty(file, &json_out).unwrap();
+            //     }
+            //     Err(e) => panic!("Problem creating the file: {:?}", e),
+            // }
+            // let (primes, _) = find_primes_in_range_trial_division_parallel(s.clone(), e.clone());
+
+            // let table_data = &primes
+            //     .iter()
+            //     .map(|x| Matrix::new(x.to_string()))
+            //     .collect::<Vec<Matrix>>();
+            // matrix_print(table_data, "Prime Numbers:".to_string(), &primes.len() / 5);
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
         }
         Some(("quit", _matches)) => {
             write!(std::io::stdout(), "Exiting ...").map_err(|e| e.to_string())?;
@@ -213,19 +316,19 @@ fn cli() -> Command {
         {all-args}
     ";
     // strip out name/version
-    const APPLET_TEMPLATE: &str = "\
+    const APP_TEMPLATE: &str = "\
         {about-with-newline}\n\
         {usage-heading}\n    {usage}\n\
         \n\
         {all-args}{after-help}\
     ";
 
-    Command::new("repl")
+    let cmd = Command::new("nt-tools")
         .multicall(true)
         .arg_required_else_help(true)
         .subcommand_required(true)
-        .subcommand_value_name("APPLET")
-        .subcommand_help_heading("APPLETS")
+        .subcommand_value_name("NTAPP")
+        .subcommand_help_heading("NTAPP")
         .help_template(PARSER_TEMPLATE)
         .subcommand(
             Command::new("primes")
@@ -240,7 +343,7 @@ fn cli() -> Command {
                         .value_parser(clap::value_parser!(BigInt)),
                 )
                 .about("Search for prime numbers between START and END numbers")
-                .help_template(APPLET_TEMPLATE),
+                .help_template(APP_TEMPLATE),
         )
         .subcommand(
             Command::new("composites")
@@ -255,7 +358,7 @@ fn cli() -> Command {
                         .value_parser(clap::value_parser!(BigInt)),
                 )
                 .about("Search for composite numbers between START and END numbers")
-                .help_template(APPLET_TEMPLATE),
+                .help_template(APP_TEMPLATE),
         )
         .subcommand(
             Command::new("composites-pq")
@@ -270,7 +373,30 @@ fn cli() -> Command {
                         .value_parser(clap::value_parser!(BigInt)),
                 )
                 .about("Search for composite numbers of the form \"p.q\" between START and END numbers")
-                .help_template(APPLET_TEMPLATE),
+                .help_template(APP_TEMPLATE),
+        )
+        .subcommand(
+            Command::new("carmichael-nums")
+                .arg(Arg::new("method")
+                    .long("method")
+                    .required(true)
+                    .value_parser(clap::builder::EnumValueParser::<CarmichaelMethods>::new())
+                    .help("Choose the algorithm")
+                )
+                .arg(Arg::new("start")
+                    .short('s')
+                    .long("start")
+                    .required(true)
+                    .value_parser(clap::value_parser!(BigInt))
+                )
+                .arg(Arg::new("end")
+                    .short('e')
+                    .long("end")
+                    .required(true)
+                    .value_parser(clap::value_parser!(BigInt)),
+                )
+                .about("Carmichael Number search in a range.")
+                .help_template(APP_TEMPLATE),
         )
         .subcommand(
             Command::new("ifactors")
@@ -293,9 +419,8 @@ fn cli() -> Command {
                     .num_args(0)
                     .requires("NUM2")
                 )
-                .about("Find the Integer Factorisation of a number. If the second argument is passed, 
-                            it prints the factorisation of all numbers in the range.")
-                .help_template(APPLET_TEMPLATE),
+                .about("Finds the Integer Factorisation of a number.")
+                .help_template(APP_TEMPLATE),
         )
         .subcommand(
             Command::new("primality")
@@ -303,30 +428,38 @@ fn cli() -> Command {
                     .long("method")
                     .required(true)
                     .value_parser(clap::builder::EnumValueParser::<PrimalityMethods>::new())
+                    .help("Choose the primality Checking algorithm")
                 )
-                .arg(Arg::new("num1")
-                    .short('a')
-                    .long("num1")
+                .arg(Arg::new("num")
+                    .short('n')
+                    .long("num")
                     .required(true)
                     .value_parser(clap::value_parser!(BigInt))
                 )
-                .arg(Arg::new("num2")
-                    .short('b')
-                    .long("num2")
-                    .required(false)
+                .about("Primality checking capabilities.")
+                .help_template(APP_TEMPLATE),
+        )
+        .subcommand(
+            Command::new("miller-rabin-liars")
+                .arg(Arg::new("num")
+                    .short('n')
+                    .long("num")
+                    .required(true)
                     .value_parser(clap::value_parser!(BigInt))
                 )
+                .about("List the Miller-Rabin Liars of a number if any exist")
+                .help_template(APP_TEMPLATE),
         )
         .subcommand(
             Command::new("quit")
                 .alias("exit")
-                .about("Quit the REPL")
-                .help_template(APPLET_TEMPLATE),
-        )
+                .help_template(APP_TEMPLATE),
+        );
+    cmd
 }
 
 fn readline() -> Result<String, String> {
-    write!(std::io::stdout(), "$ ").map_err(|e| e.to_string())?;
+    write!(std::io::stdout(), "nt-tools> ").map_err(|e| e.to_string())?;
     std::io::stdout().flush().map_err(|e| e.to_string())?;
     let mut buffer = String::new();
     std::io::stdin()

@@ -384,4 +384,23 @@ fn cli_nt() {
         }
     }
 }
+
+
+        .subcommand(
+            Command::new("ass1q3")
+                .arg(Arg::new("start")
+                    .short('s')
+                    .long("start")
+                    .required(true)
+                    .value_parser(clap::value_parser!(BigInt))
+                )
+                .arg(Arg::new("end")
+                    .short('e')
+                    .long("end")
+                    .required(true)
+                    .value_parser(clap::value_parser!(BigInt)),
+                )
+                .about("Assignment 1 - Question 3: Miller-Rabin Liars")
+                .help_template(APP_TEMPLATE),
+        )
 ```

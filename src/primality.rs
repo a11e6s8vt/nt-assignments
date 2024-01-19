@@ -8,6 +8,7 @@ use crate::{
 use clap::ValueEnum;
 use fmtastic::Superscript;
 use num_bigint::BigInt;
+use num_integer::Integer;
 use num_iter::{range, range_inclusive, Range};
 use num_traits::{One, Pow, Zero};
 use rayon::prelude::*;
@@ -27,6 +28,11 @@ pub enum PrimalityMethods {
     AKS,
 }
 
+#[derive(clap::ValueEnum, Clone, Debug)]
+pub enum CarmichaelMethods {
+    Fermat,
+    Korselt,
+}
 ///
 /// is_prime calculates if a number is prime by verifying numbers upto √n.
 ///
@@ -194,6 +200,9 @@ fn miller_test(d: &BigInt, n: &BigInt) -> bool {
 ///         2 <= a <= n-2
 ///
 pub fn miller_rabin_test(n: &BigInt, base: Option<&BigInt>) -> (bool, Vec<MillerRabinTable>) {
+    if n.is_even() {
+        println!("Miller-Rabin Primality Check is not defined for even numbers.");
+    }
     let mut table_data: Vec<MillerRabinTable> = Vec::new();
     let _is_prime = false;
     let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
