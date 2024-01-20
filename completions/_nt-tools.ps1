@@ -42,6 +42,7 @@ Register-ArgumentCompleter -Native -CommandName 'nt-tools' -ScriptBlock {
 in set B')
             [CompletionResult]::new('aks-failed-steps-for-n', 'aks-failed-steps-for-n', [CompletionResultType]::ParameterValue, 'Assignment 1 - Question 4c - Choose any three elements of your set A and calculate the value of r used in the AKS primality
 test')
+            [CompletionResult]::new('clear', 'clear', [CompletionResultType]::ParameterValue, 'clear')
             [CompletionResult]::new('quit', 'quit', [CompletionResultType]::ParameterValue, 'quit')
             [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Print this message or the help of the given subcommand(s)')
             break
@@ -212,6 +213,11 @@ test')
             [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help')
             break
         }
+        'nt-tools;clear' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help')
+            break
+        }
         'nt-tools;quit' {
             [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help')
             [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help')
@@ -239,6 +245,7 @@ test')
 in set B')
             [CompletionResult]::new('aks-failed-steps-for-n', 'aks-failed-steps-for-n', [CompletionResultType]::ParameterValue, 'Assignment 1 - Question 4c - Choose any three elements of your set A and calculate the value of r used in the AKS primality
 test')
+            [CompletionResult]::new('clear', 'clear', [CompletionResultType]::ParameterValue, 'clear')
             [CompletionResult]::new('quit', 'quit', [CompletionResultType]::ParameterValue, 'quit')
             [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Print this message or the help of the given subcommand(s)')
             break
@@ -298,6 +305,9 @@ test')
             break
         }
         'nt-tools;help;aks-failed-steps-for-n' {
+            break
+        }
+        'nt-tools;help;clear' {
             break
         }
         'nt-tools;help;quit' {

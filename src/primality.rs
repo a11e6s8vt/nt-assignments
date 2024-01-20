@@ -341,6 +341,7 @@ pub fn carmichael_nums_korselt(n: &BigInt) -> bool {
 ///
 /// AKS Steps
 ///
+#[derive(Debug)]
 pub enum AksSteps {
     Step1,
     Step2,
@@ -418,15 +419,15 @@ pub fn aks(n: &BigInt) -> (bool, AksSteps) {
     }
 
     // Step 4
-    if !(n <= &r) {
-        return (false, AksSteps::Step4);
+    if n <= &r {
+        return (true, AksSteps::Step4);
     }
 
     // Step 5
     let phi_r = euler_totient_phi_counting_coprimes(&r);
     let log_r = abs_log(n).unwrap();
     let upper_bound = phi_r.sqrt() * log_r as u64;
-    let mut x: Vec<BigInt>;
+    let mut x = Vec::<BigInt>::new();
     for a in range(BigInt::one(), upper_bound) {
         x = fastpoly(&vec![a, BigInt::one()], &n, &r);
         if x.par_iter().any(|b| b != &BigInt::zero()) {

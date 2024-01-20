@@ -415,7 +415,7 @@ fn respond(line: &str) -> Result<bool, String> {
             println!("{table1}\n");
 
             let mut table2 = Table::new(&num_map);
-            table2.with(Style::modern()).with(Split::row(5).concat());
+            table2.with(Style::modern()).with(Split::row(10).concat());
             println!("\nNumbers of the form N = P.Q is included in the above table:");
             println!("{table2}\n");
         }
@@ -499,7 +499,7 @@ fn respond(line: &str) -> Result<bool, String> {
                 let json = json!(v);
                 let mut table1 = json_to_table(&json).into_table();
 
-                table1.with(Style::modern()).with(Split::row(5).concat());
+                table1.with(Style::modern()).with(Split::row(20).concat());
                 println!("\nNumbers below failed in {} of AKS Algm:", k);
                 println!("{table1}\n");
             }
@@ -510,6 +510,10 @@ fn respond(line: &str) -> Result<bool, String> {
             write!(std::io::stdout(), "Exiting ...").map_err(|e| e.to_string())?;
             std::io::stdout().flush().map_err(|e| e.to_string())?;
             return Ok(true);
+        }
+        Some(("clear", _matches)) => {
+            clearscreen::clear().unwrap();
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
         }
         Some((name, _matches)) => unimplemented!("{name}"),
         None => unreachable!("subcommand required"),

@@ -351,6 +351,11 @@ test")
                 .help_template(APP_TEMPLATE),
         )
         .subcommand(
+            Command::new("clear")
+                .alias("cls")
+                .help_template(APP_TEMPLATE),
+        )
+        .subcommand(
             Command::new("quit")
                 .alias("exit")
                 .help_template(APP_TEMPLATE),
