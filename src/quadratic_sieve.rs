@@ -1,8 +1,6 @@
 use std::collections::{HashMap, HashSet};
 
-use ndarray::Array;
 use num_bigint::{BigInt, Sign};
-use num_integer::Integer;
 use num_iter::range_inclusive;
 use num_traits::One;
 
@@ -10,7 +8,7 @@ use crate::{prime_factors::PrimeFactors, utils::modular_pow};
 
 fn zeros(size: usize) -> Vec<i32> {
     let mut zero_vec: Vec<i32> = Vec::with_capacity(size);
-    for i in 0..size {
+    for _ in 0..size {
         zero_vec.push(0);
     }
     return zero_vec;

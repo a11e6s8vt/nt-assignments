@@ -17,6 +17,8 @@ use tabled::{
     Table, Tabled,
 };
 
+use crate::factorisations;
+
 const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
     .line_horizontal(HorizontalLine::inherit(Style::modern()))
     .remove_horizontals();
@@ -209,7 +211,7 @@ pub fn miller_rabin_output_print(table_data: &Vec<MillerRabinTable>) {
     let mut table1 = Table::new(table_data);
     table1.with(STYLE_2);
 
-    let output1 = table1.to_string();
+    let _output1 = table1.to_string();
     println!("\n{}\n", table);
     // let mut html_table =
     //     HtmlTable::with_header(Vec::<Vec<String>>::from(Table::builder(table_data)));
@@ -261,7 +263,7 @@ pub fn matrix_print<T: std::fmt::Display + Tabled>(
     println!("\n{table}\n");
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize, Tabled)]
 pub struct PollardsRhoJson {
     i: String,
     x1: String,
@@ -290,6 +292,43 @@ impl PollardsRhoJson {
             x2,
             a2,
             b2,
+        }
+    }
+}
+
+#[derive(Tabled)]
+#[tabled(rename_all = "PascalCase")]
+pub struct PrimitiveRootsTable {
+    prime: String,
+    #[tabled(rename = "𝛟(p-1)")]
+    totient_val: String,
+    #[tabled(rename = "Prim Roots Count using Trial and Error")]
+    count_trial_err: String,
+}
+
+impl PrimitiveRootsTable {
+    pub fn new(prime: String, totient_val: String, count_trial_err: String) -> Self {
+        Self {
+            prime,
+            totient_val,
+            count_trial_err,
+        }
+    }
+}
+
+#[derive(Tabled)]
+#[tabled(rename_all = "PascalCase")]
+pub struct P_k_2P_kTable {
+    number: String,
+    #[tabled(rename = "Prime Factor - p^k, 2p^k")]
+    factorisation: String,
+}
+
+impl P_k_2P_kTable {
+    pub fn new(number: String, factorisation: String) -> Self {
+        Self {
+            number,
+            factorisation,
         }
     }
 }

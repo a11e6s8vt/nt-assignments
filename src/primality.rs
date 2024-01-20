@@ -1,21 +1,16 @@
 use crate::{
     display::{format_miller_rabin_steps_print, MillerRabinTable},
     groups_modulo_n::coprime_nums_less_than_n,
-    groups_modulo_n::{euler_totient_phi_counting_coprimes, multiplicative_order},
+    groups_modulo_n::euler_totient_phi_counting_coprimes,
     prime_factors::PrimeFactors,
     utils::{abs_log, fastpoly, generate_random_int_in_range, modular_pow, Gcd},
 };
 use fmtastic::Superscript;
 use num_bigint::BigInt;
-use num_iter::{range, range_inclusive, Range};
+use num_integer::Integer;
+use num_iter::{range, range_inclusive};
 use num_traits::{One, Pow, Zero};
 use rayon::prelude::*;
-
-use tabled::settings::style::{HorizontalLine, On, Style};
-
-const STYLE_2: Style<On, On, On, On, On, On, 0, 0> = Style::rounded()
-    .line_horizontal(HorizontalLine::inherit(Style::modern()))
-    .remove_horizontals();
 
 ///
 /// is_prime calculates if a number is prime by verifying numbers upto √n.
@@ -184,6 +179,9 @@ fn miller_test(d: &BigInt, n: &BigInt) -> bool {
 ///         2 <= a <= n-2
 ///
 pub fn miller_rabin_test(n: &BigInt, base: Option<&BigInt>) -> (bool, Vec<MillerRabinTable>) {
+    if n.is_even() {
+        println!("Miller-Rabin Primality Check is not defined for even numbers.");
+    }
     let mut table_data: Vec<MillerRabinTable> = Vec::new();
     let _is_prime = false;
     let (zero, one, two) = (BigInt::from(0u64), BigInt::from(1u64), BigInt::from(2u64));
@@ -407,7 +405,7 @@ pub fn aks(n: &BigInt) -> (bool, AksSteps) {
         return (false, AksSteps::Step1);
     }
 
-    let (zero, one) = (BigInt::zero(), BigInt::one());
+    let one = BigInt::one();
 
     // Step 2
     let r = findr(n);
@@ -428,7 +426,7 @@ pub fn aks(n: &BigInt) -> (bool, AksSteps) {
     let phi_r = euler_totient_phi_counting_coprimes(&r);
     let log_r = abs_log(n).unwrap();
     let upper_bound = phi_r.sqrt() * log_r as u64;
-    let mut x = Vec::<BigInt>::new();
+    let mut x: Vec<BigInt>;
     for a in range(BigInt::one(), upper_bound) {
         x = fastpoly(&vec![a, BigInt::one()], &n, &r);
         if x.par_iter().any(|b| b != &BigInt::zero()) {

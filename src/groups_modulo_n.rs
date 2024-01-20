@@ -2,7 +2,6 @@ use core::num;
 
 use num_bigint::BigInt;
 use num_iter::range;
-use num_iter::range_inclusive;
 use num_traits::{One, Zero};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
@@ -161,25 +160,21 @@ pub fn primitive_roots_count_modulo_n(n: &BigInt) -> BigInt {
     match p_factors.len() {
         1 => {
             if let Some(first) = p_factors.pop() {
-                match first.0 {
-                    two => {
-                        if first.1 < 1 || first.1 > 2 {
-                            return zero;
-                        }
+                if first.0 == two {
+                    if first.1 < 1 || first.1 > 2 {
+                        return zero;
                     }
-                    _ => {}
                 }
             }
         }
         2 => {
             let first = p_factors.remove(0);
-            match first.0 {
-                two => {
-                    if first.1 > 1 {
-                        return zero;
-                    }
+            if first.0 == two {
+                if first.1 > 1 {
+                    return zero;
                 }
-                _ => return zero,
+            } else {
+                return zero;
             }
         }
         _ => return zero,
@@ -192,7 +187,7 @@ pub fn primitive_roots_count_modulo_n(n: &BigInt) -> BigInt {
 /// It checks the existence of primitive roots modulo n
 /// and returns the number of primitive roots
 pub fn is_integer_of_form_pk_2pk(n: &BigInt) -> Vec<(BigInt, usize)> {
-    let (zero, two) = (BigInt::zero(), BigInt::from(2u64));
+    let (_zero, two) = (BigInt::zero(), BigInt::from(2u64));
     let mut primes = vec![BigInt::from(2u64)];
     let p_factors = n.prime_factors(&mut primes);
     if p_factors.len() < 1 || p_factors.len() > 2 {
@@ -242,10 +237,8 @@ pub fn multiplicative_order(a: &BigInt, n: &BigInt) -> Option<BigInt> {
         return None;
     }
 
-    let mut primes = vec![BigInt::from(2u64)];
     let phi_n = euler_totient_phi_counting_coprimes(n);
     let divisors_phi_n = divisors_of_n(&phi_n);
-    let mut order = BigInt::zero();
     let all_possible_orders_a = divisors_phi_n
         .par_iter()
         .filter(|x| modular_pow(a, x, n) == BigInt::one())
