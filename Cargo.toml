@@ -1,5 +1,5 @@
 [package]
-name = "nt-assignments"
+name = "nt-tools"
 version = "0.1.0"
 edition = "2021"
 
@@ -11,10 +11,11 @@ num-bigint = { version = "0.4", features = ["rand"] }
 num-traits = "0.2.17"
 clap = { version = "4.4.6", features = ["derive", "cargo"] }
 clap_complete = "4.4.7"
-clap_complete_fig = "4.4.2"
+clap_complete_command = "0.5.1"
 fmtastic = "0.1.0"
 itertools = "0.12.0"
 tabled = "0.15.0"
+json_to_table = "0.7.0"
 rayon = "1.8.0"
 table_to_html = "0.4.0"
 terminal_size = "0.3.0"
@@ -29,3 +30,9 @@ shlex = "1.2.0"
 [dependencies.num-iter]
 version = "0.1.35"
 default-features = false
+
+[build-dependencies]
+clap = { version = "4.4.6", features = ["derive", "cargo"] }
+clap_complete = "4.4"
+clap_mangen = "0.2"
+num-bigint = { version = "0.4", features = ["rand"] }

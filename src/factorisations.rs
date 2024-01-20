@@ -6,7 +6,7 @@ use crate::{
     utils::{modular_pow, Gcd},
 };
 
-pub fn pollards_p_1(n: &BigInt, mut a: BigInt) {
+pub fn pollards_p_1(n: &BigInt, base: &BigInt) {
     if miller_rabin_primality(n) {
         println!("{} is a prime", &n);
         return;
@@ -50,13 +50,14 @@ pub fn pollards_p_1(n: &BigInt, mut a: BigInt) {
         BigInt::from(97u64),
     ];
 
+    let mut b = base.clone();
     for num in prime_powers.iter() {
-        let b = modular_pow(&a, num, n);
+        b = modular_pow(&b, num, n);
         let gcd = n.gcd_euclid(&(&b - BigInt::one()));
-        println!("{:>10} {:>10} {:>10} {:>5}", num, &a, &b, gcd);
-        if &gcd > &BigInt::one() {
+        println!("{:>10} {:>10} {:>10}", num, &b, gcd);
+        if &gcd > &BigInt::one() && &gcd < n {
+            println!("{} = {} x {}", n, &gcd, n / &gcd);
             break;
         }
-        a = b;
     }
 }

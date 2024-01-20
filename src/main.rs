@@ -1,3 +1,6 @@
+#![warn(unused_variables)]
+#![allow(dead_code)]
+mod cli;
 mod cli_ops;
 mod display;
 mod factorisations;
@@ -9,48 +12,37 @@ mod prime_factors;
 mod quadratic_sieve;
 mod utils;
 
-use std::io::Write;
+use std::{clone, collections::HashMap, io::Write};
 
-use clap::{arg, value_parser, Arg, ArgAction, ArgGroup, Command, ValueHint};
-use num_integer::Integer;
-use std::{
-    collections::{BTreeMap, HashMap},
-    fs::{self, File},
-    primitive,
-};
-
-use clap::{builder::Str, Parser};
-use cli_ops::{
-    CarmichaelNumsCommands, Cli, Operations, PFactorsCommands, PrimalityCommands,
-    PrimitiveRootsCommands,
-};
 use factorisations::pollards_p_1;
-use fmtastic::Superscript;
-use groups_modulo_n::{
-    euler_totient_phi, is_integer_of_form_pk_2pk, primitive_roots_trial_n_error,
-};
-use homedir::get_my_home;
+use json_to_table::json_to_table;
 use num_iter::range_inclusive;
 use quadratic_sieve::prepare_matrix;
+use tabled::{
+    settings::{panel::Header, split::Split, Style},
+    Table,
+};
+
+use cli::{cli, CarmichaelMethods, PrimalityMethods};
+use fmtastic::Superscript;
+use serde_json::json;
 
 use display::{matrix_print, Matrix};
 use num_bigint::BigInt;
-use num_traits::{One, Zero};
+use num_traits::{One, ToPrimitive, Zero};
 use presets::{
-    find_primes_in_range_trial_division_parallel, gcd_test_range, list_carmichael_nums,
-    list_prime_factors_in_range,
+    find_primes_in_range_trial_division_parallel, list_carmichael_nums, list_prime_factors_in_range,
 };
 use primality::{aks, carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
-use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use utils::findr;
 
 use crate::{
-    display::MillerRabinJson,
-    presets::{ass1_question3_miller_rabin, search_nums_with_primitive_roots, NumCategory},
-    primality::{
-        is_prime_trial_division_parallel, miller_rabin_primality, AksSteps, CarmichaelMethods,
-        PrimalityMethods,
+    display::{P_k_2P_kTable, PrimitiveRootsTable},
+    groups_modulo_n::{
+        euler_totient_phi, is_integer_of_form_pk_2pk, primitive_roots_trial_n_error,
     },
+    presets::{find_miller_rabin_liars, search_nums_with_primitive_roots, NumCategory},
+    primality::{is_prime_trial_division_parallel, miller_rabin_primality, AksSteps},
     prime_factors::PrimeFactors,
     utils::{modular_pow, Gcd},
 };
@@ -133,13 +125,34 @@ fn respond(line: &str) -> Result<bool, String> {
                 "Composites N = P.Q:".to_string(),
                 &composites.len() / 14,
             );
-            // let (primes, _) = find_primes_in_range_trial_division_parallel(s.clone(), e.clone());
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
+        }
+        Some(("nums-with-primitive-roots", matches)) => {
+            let s = matches.get_one::<BigInt>("start").expect("required");
+            let e = matches.get_one::<BigInt>("end").expect("required");
 
-            // let table_data = &primes
-            //     .iter()
-            //     .map(|x| Matrix::new(x.to_string()))
-            //     .collect::<Vec<Matrix>>();
-            // matrix_print(table_data, "Prime Numbers:".to_string(), &primes.len() / 5);
+            let (nums_with_prim_roots, nums_without_no_prim_roots) =
+                search_nums_with_primitive_roots(s.clone(), e.clone());
+
+            println!(
+                "{}",
+                serde_json::to_string(&HashMap::from([(
+                    "Numbers With Primitve Roots".to_string(),
+                    &nums_with_prim_roots
+                )]))
+                .unwrap()
+            );
+
+            println!("");
+            println!(
+                "{}",
+                serde_json::to_string(&HashMap::from([(
+                    "Numbers Without Primitive Roots".to_string(),
+                    &nums_without_no_prim_roots
+                )]))
+                .unwrap()
+            );
+
             std::io::stdout().flush().map_err(|e| e.to_string())?;
         }
         Some(("carmichael-nums", matches)) => {
@@ -233,16 +246,21 @@ fn respond(line: &str) -> Result<bool, String> {
                         println!("{} is Definitely Composite", n);
                     }
                 }
-                PrimalityMethods::AKS => {}
+                PrimalityMethods::AKS => {
+                    if aks(n).0 {
+                        println!("{} is Prime", n);
+                    } else {
+                        println!("{} is Composite", n);
+                    }
+                }
             }
         }
         Some(("miller-rabin-liars", matches)) => {
             let n = matches.get_one::<BigInt>("num").expect("required");
             let mut primes = vec![BigInt::from(2u64)];
             let p_factors = n.prime_factors(&mut primes);
-            let mut json_out: BTreeMap<String, MillerRabinJson> = BTreeMap::new();
             // call miller-rabin test
-            let (n_minus_one_form, non_witnesses) = ass1_question3_miller_rabin(n);
+            let (_, non_witnesses) = find_miller_rabin_liars(n);
             // Convert prime factors to String format
             let mut form = String::new();
             for (factor, exp) in p_factors {
@@ -250,52 +268,116 @@ fn respond(line: &str) -> Result<bool, String> {
             }
             let mut form = form.trim_end().to_string();
             form.pop();
-            let mr_json = MillerRabinJson::new(n_minus_one_form, form, non_witnesses);
-            json_out.insert(n.to_string(), mr_json);
+            let json = json!(&non_witnesses);
+            let mut table = json_to_table(&json).into_table();
 
-            println!("{}", serde_json::to_string_pretty(&json_out).unwrap());
-            // let my_home = get_my_home()
-            //     .unwrap()
-            //     .unwrap()
-            //     .to_str()
-            //     .unwrap()
-            //     .to_string();
-            // let mut output_dir = String::new();
-            // let mut fname = String::new();
+            table.with(Style::modern()).with(Split::row(5).concat());
+            println!("\nMiller-Rabin Liars for {} = {}", n, form);
+            println!("{table}\n");
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
+        }
+        Some(("quadratic-sieve", matches)) => {
+            let n = matches.get_one::<BigInt>("NUM").expect("required");
+            prepare_matrix(&n);
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
+        }
+        Some(("pollards-p-minus-1", matches)) => {
+            let n = matches.get_one::<BigInt>("NUM").expect("required");
+            let b = matches.get_one::<BigInt>("BASE").expect("required");
+            pollards_p_1(n, b);
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
+        }
+        Some(("pollards-rho", matches)) => {
+            let r = matches
+                .get_one::<BigInt>("primitive-root")
+                .expect("required");
+            let b = matches.get_one::<BigInt>("b").expect("required");
+            let m = matches.get_one::<BigInt>("modulo").expect("required");
+            logarithms::pollards_rho(&r, &b, &m);
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
+        }
+        Some(("gcd", matches)) => {
+            let a = matches.get_one::<BigInt>("NUM1").expect("required");
+            let b = matches.get_one::<BigInt>("NUM2").expect("required");
+            println!("\ngcd({}, {}) = {}\n", a, b, a.gcd_euclid(&b));
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
+        }
+        Some(("aks-findr", matches)) => {
+            let n = matches.get_one::<BigInt>("NUM").expect("required");
+            let r = findr(n);
+            println!("\nAKS 'r' value for {} is = {}", n, r);
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
+        }
+        Some(("list-primitive-roots", matches)) => {
+            let n = matches.get_one::<BigInt>("NUM").expect("required");
+            let primitive_roots = primitive_roots_trial_n_error(&n);
+            println!(
+                "\nPrimitive Roots of n = {}: \n\t{:?}\n",
+                n, primitive_roots
+            );
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
+        }
+        Some(("modular-pow", matches)) => {
+            let b = matches.get_one::<BigInt>("base").expect("required");
+            let e = matches.get_one::<BigInt>("exponent").expect("required");
+            let m = matches.get_one::<BigInt>("modulo").expect("required");
+            let result = modular_pow(b, e, &m);
+            let result = format!(
+                "{}{}(mod {}) = {}",
+                b.to_string(),
+                Superscript(e.to_u32().unwrap()),
+                m,
+                result
+            );
+            println!("\n{}\n", result);
+            // println!("{}", serde_json::to_string_pretty(&result).unwrap());
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
+        }
+        Some(("ass2q2b", matches)) => {
+            let start = matches.get_one::<BigInt>("start").expect("required");
+            let end = matches.get_one::<BigInt>("end").expect("required");
 
-            // if cfg!(windows) {
-            //     output_dir.push_str(&my_home);
-            //     output_dir.push_str("\\ass1-question3");
-            //     println!("Path = {}", &output_dir);
-            //     fname.push_str(&output_dir);
-            //     fname.push_str("\\");
-            //     fname.push_str("question3.json");
-            // } else if cfg!(unix) {
-            //     output_dir.push_str(&my_home);
-            //     output_dir.push_str("/ass1-question3");
-            //     println!("Path = {}", &output_dir);
-            //     fname.push_str(&output_dir);
-            //     fname.push_str("/");
-            //     fname.push_str("question3.json");
-            // }
-            // println!("output dir: {}", &output_dir);
-            // if !fs::metadata(&output_dir).is_ok() {
-            //     let _ = fs::create_dir(&output_dir);
-            // }
-            // match File::create(&fname) {
-            //     Ok(file) => {
-            //         println!("Output has been written to the file: {}", &fname);
-            //         serde_json::to_writer_pretty(file, &json_out).unwrap();
-            //     }
-            //     Err(e) => panic!("Problem creating the file: {:?}", e),
-            // }
-            // let (primes, _) = find_primes_in_range_trial_division_parallel(s.clone(), e.clone());
+            let mut result: Vec<PrimitiveRootsTable> = Vec::new();
+            let (primes_in_range, _) =
+                find_primes_in_range_trial_division_parallel(start.clone(), end.clone());
+            for p in primes_in_range.iter() {
+                let primitive_roots = primitive_roots_trial_n_error(p);
+                let phi_phi_n = euler_totient_phi(&(p - BigInt::one()));
+                let row = PrimitiveRootsTable::new(
+                    p.to_string(),
+                    phi_phi_n.to_string(),
+                    primitive_roots.len().to_string(),
+                );
+                result.push(row);
+            }
+            let mut table = Table::new(&result);
 
-            // let table_data = &primes
-            //     .iter()
-            //     .map(|x| Matrix::new(x.to_string()))
-            //     .collect::<Vec<Matrix>>();
-            // matrix_print(table_data, "Prime Numbers:".to_string(), &primes.len() / 5);
+            table.with(Style::modern());
+            println!("\n{}\n", table.to_string());
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
+        }
+        Some(("ass2q2c", matches)) => {
+            let start = matches.get_one::<BigInt>("start").expect("required");
+            let end = matches.get_one::<BigInt>("end").expect("required");
+
+            let mut result: Vec<P_k_2P_kTable> = Vec::new();
+            for n in range_inclusive(start.clone(), end.clone()) {
+                let p_factors = is_integer_of_form_pk_2pk(&n);
+                if !p_factors.is_empty() {
+                    let mut form: String = String::new();
+                    for (factor, exp) in p_factors {
+                        form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
+                    }
+                    let mut form = form.trim_end().to_string();
+                    form.pop();
+                    result.push(P_k_2P_kTable::new(n.to_string(), form));
+                }
+            }
+
+            let mut table = Table::new(&result);
+            table.with(Style::modern());
+            println!("\nNumbers of the form pᵏ, 2pᵏ:");
+            println!("{table}\n");
             std::io::stdout().flush().map_err(|e| e.to_string())?;
         }
         Some(("quit", _matches)) => {
@@ -308,154 +390,6 @@ fn respond(line: &str) -> Result<bool, String> {
     }
 
     Ok(false)
-}
-
-fn cli() -> Command {
-    // strip out usage
-    const PARSER_TEMPLATE: &str = "\
-        {all-args}
-    ";
-    // strip out name/version
-    const APP_TEMPLATE: &str = "\
-        {about-with-newline}\n\
-        {usage-heading}\n    {usage}\n\
-        \n\
-        {all-args}{after-help}\
-    ";
-
-    let cmd = Command::new("nt-tools")
-        .multicall(true)
-        .arg_required_else_help(true)
-        .subcommand_required(true)
-        .subcommand_value_name("NTAPP")
-        .subcommand_help_heading("NTAPP")
-        .help_template(PARSER_TEMPLATE)
-        .subcommand(
-            Command::new("primes")
-                .arg(
-                    arg!(-s --start <START>)
-                        .required(true)
-                        .value_parser(clap::value_parser!(BigInt)),
-                )
-                .arg(
-                    arg!(-e --end <END>)
-                        .required(true)
-                        .value_parser(clap::value_parser!(BigInt)),
-                )
-                .about("Search for prime numbers between START and END numbers")
-                .help_template(APP_TEMPLATE),
-        )
-        .subcommand(
-            Command::new("composites")
-                .arg(
-                    arg!(-s --start <START>)
-                        .required(true)
-                        .value_parser(clap::value_parser!(BigInt)),
-                )
-                .arg(
-                    arg!(-e --end <END>)
-                        .required(true)
-                        .value_parser(clap::value_parser!(BigInt)),
-                )
-                .about("Search for composite numbers between START and END numbers")
-                .help_template(APP_TEMPLATE),
-        )
-        .subcommand(
-            Command::new("composites-pq")
-                .arg(
-                    arg!(-s --start <START>)
-                        .required(true)
-                        .value_parser(clap::value_parser!(BigInt)),
-                )
-                .arg(
-                    arg!(-e --end <END>)
-                        .required(true)
-                        .value_parser(clap::value_parser!(BigInt)),
-                )
-                .about("Search for composite numbers of the form \"p.q\" between START and END numbers")
-                .help_template(APP_TEMPLATE),
-        )
-        .subcommand(
-            Command::new("carmichael-nums")
-                .arg(Arg::new("method")
-                    .long("method")
-                    .required(true)
-                    .value_parser(clap::builder::EnumValueParser::<CarmichaelMethods>::new())
-                    .help("Choose the algorithm")
-                )
-                .arg(Arg::new("start")
-                    .short('s')
-                    .long("start")
-                    .required(true)
-                    .value_parser(clap::value_parser!(BigInt))
-                )
-                .arg(Arg::new("end")
-                    .short('e')
-                    .long("end")
-                    .required(true)
-                    .value_parser(clap::value_parser!(BigInt)),
-                )
-                .about("Carmichael Number search in a range.")
-                .help_template(APP_TEMPLATE),
-        )
-        .subcommand(
-            Command::new("ifactors")
-                .arg(Arg::new("NUM1")
-                    .short('a')
-                    .long("num1")
-                    .required(true)
-                    .value_parser(clap::value_parser!(BigInt)),
-                )
-                .arg(Arg::new("NUM2")
-                    .short('b')
-                    .long("num2")
-                    .required(false)
-                    .value_parser(clap::value_parser!(BigInt)),
-                )
-                .arg(Arg::new("PQ")
-                    .long("pq")
-                    .action(ArgAction::SetTrue)
-                    .required(false)
-                    .num_args(0)
-                    .requires("NUM2")
-                )
-                .about("Finds the Integer Factorisation of a number.")
-                .help_template(APP_TEMPLATE),
-        )
-        .subcommand(
-            Command::new("primality")
-                .arg(Arg::new("method")
-                    .long("method")
-                    .required(true)
-                    .value_parser(clap::builder::EnumValueParser::<PrimalityMethods>::new())
-                    .help("Choose the primality Checking algorithm")
-                )
-                .arg(Arg::new("num")
-                    .short('n')
-                    .long("num")
-                    .required(true)
-                    .value_parser(clap::value_parser!(BigInt))
-                )
-                .about("Primality checking capabilities.")
-                .help_template(APP_TEMPLATE),
-        )
-        .subcommand(
-            Command::new("miller-rabin-liars")
-                .arg(Arg::new("num")
-                    .short('n')
-                    .long("num")
-                    .required(true)
-                    .value_parser(clap::value_parser!(BigInt))
-                )
-                .about("List the Miller-Rabin Liars of a number if any exist")
-                .help_template(APP_TEMPLATE),
-        )
-        .subcommand(
-            Command::new("quit")
-                .alias("exit")
-                .help_template(APP_TEMPLATE),
-        );
-    cmd
 }
 
 fn readline() -> Result<String, String> {

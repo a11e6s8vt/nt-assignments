@@ -2,8 +2,9 @@ use num_bigint::BigInt;
 use num_integer::Integer;
 use num_iter::range;
 use num_traits::{One, Zero};
+use tabled::{settings::Style, Table};
 
-use crate::display::PollardsRhoJson;
+use crate::{display::PollardsRhoJson, utils::Gcd};
 
 fn new_xab(
     mut x: BigInt,
@@ -32,7 +33,7 @@ fn new_xab(
     (x, ai, bi)
 }
 
-pub fn pollards_rho(a: &BigInt, b: &BigInt, n: &BigInt) -> Vec<PollardsRhoJson> {
+pub fn pollards_rho(a: &BigInt, b: &BigInt, n: &BigInt) {
     let mut result = Vec::<PollardsRhoJson>::new();
     let (mut x1, mut a1, mut b1) = (BigInt::one(), BigInt::zero(), BigInt::zero());
     let (mut x2, mut a2, mut b2) = (x1.clone(), a1.clone(), b1.clone());
@@ -50,9 +51,37 @@ pub fn pollards_rho(a: &BigInt, b: &BigInt, n: &BigInt) -> Vec<PollardsRhoJson> 
             b2.to_string(),
         ));
         if x1 == x2 {
+            let mut table = Table::new(&result);
+
+            table.with(Style::modern());
+            println!("\n{}\n", table.to_string());
+            let mut b2_1 = &b2 - &b1;
+            let mut a1_2 = &a1 - &a2;
+            let d = b2_1.gcd_euclid(&(n - &BigInt::one()));
+
+            if &d == &BigInt::one() {
+                println!(
+                    "Solve the congruence equation: {}x ≡ {} (mod {})",
+                    &b2_1,
+                    &a1_2,
+                    n - 1
+                );
+                break;
+            }
+            if &a1_2 % &d != BigInt::zero() {
+                println!("No solutions!");
+                break;
+            }
+            b2_1 = &b2_1 / &d;
+            a1_2 = &a1_2 / &d;
+
+            println!(
+                "Solve the congruence equation: {}x ≡ {} (mod {})",
+                &b2_1,
+                &a1_2,
+                (n - 1) / d
+            );
             break;
         }
     }
-
-    result
 }

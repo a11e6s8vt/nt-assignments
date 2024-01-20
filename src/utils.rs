@@ -1,14 +1,9 @@
-use std::marker::PhantomPinned;
-
 use num_bigint::{BigInt, BigUint};
 use num_integer::Integer;
-use num_iter::{range, range_inclusive};
+use num_iter::range;
 use num_traits::{One, Zero};
 use num_traits::{Pow, ToPrimitive};
-use rand::seq::index;
 use rand::Rng;
-
-use crate::prime_factors::PrimeFactors;
 
 pub trait Gcd {
     ///
@@ -35,7 +30,15 @@ impl Gcd for BigInt {
         let zero = BigInt::from(0u64);
         let mut a = self.clone();
         let mut b = other.clone();
-        let mut gcd: BigInt = zero.clone();
+        if a.is_zero() {
+            return b;
+        }
+
+        if b.is_zero() {
+            return a;
+        }
+
+        let gcd: BigInt;
         if b > a {
             gcd = b.gcd_euclid(&a);
         } else {
@@ -127,7 +130,7 @@ pub fn fastpoly(base: &Vec<BigInt>, power: &BigInt, r: &BigInt) -> Vec<BigInt> {
     let mut x = Vec::<BigInt>::new();
     let a = &base[0].clone();
 
-    for i in 0..base.len() {
+    for _ in 0..base.len() {
         x.push(BigInt::zero());
     }
     x[0] = BigInt::one();
@@ -151,7 +154,7 @@ pub fn fastpoly(base: &Vec<BigInt>, power: &BigInt, r: &BigInt) -> Vec<BigInt> {
 ///Function used by fastPoly to multiply two polynomials together.
 pub fn polynomial_mul(a: &Vec<BigInt>, b: &Vec<BigInt>, n: &BigInt, r: &BigInt) -> Vec<BigInt> {
     let mut x = Vec::<BigInt>::new();
-    for i in 0..a.len() + b.len() - 1 {
+    for _ in 0..a.len() + b.len() - 1 {
         x.push(BigInt::zero());
     }
     for i in 0..a.len() {

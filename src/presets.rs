@@ -247,7 +247,7 @@ pub fn gcd_test_range(start: &BigInt, end: &BigInt) {
     println!("\n{table}\n");
 }
 
-pub fn ass1_question3_miller_rabin(n: &BigInt) -> (String, Vec<String>) {
+pub fn find_miller_rabin_liars(n: &BigInt) -> (String, Vec<String>) {
     let mut non_witnesses: Vec<String> = Vec::new();
     let mut n_minus_one_form = String::new();
     for base in range(BigInt::from(2u64), n - 1) {
@@ -265,8 +265,6 @@ pub fn ass1_question3_miller_rabin(n: &BigInt) -> (String, Vec<String>) {
 }
 
 pub fn search_nums_with_primitive_roots(start: BigInt, end: BigInt) -> (Vec<String>, Vec<String>) {
-    let mut primes = vec![BigInt::from(2u64)];
-
     let mut nums_with_prim_roots: Vec<String> = Vec::new();
     let mut nums_without_no_prim_roots: Vec<String> = Vec::new();
 
