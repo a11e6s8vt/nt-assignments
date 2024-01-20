@@ -315,7 +315,39 @@ pub fn cli() -> Command {
                         .required(true)
                         .value_parser(clap::value_parser!(BigInt)),
                 )
-                .about("Assignment 2 - Question 2c - Primitive Roots - Euler's Totient Function")
+                .about("Assignment 2 - Question 2c - pᵏ(p > 2, k ≥ 1) or 2pᵏ(p > 2, k ≥ 1)")
+                .help_template(APP_TEMPLATE),
+        )
+        .subcommand(
+            Command::new("ass2q3d")
+                .arg(
+                    arg!(-s --start <START>)
+                        .required(true)
+                        .value_parser(clap::value_parser!(BigInt)),
+                )
+                .arg(
+                    arg!(-e --end <END>)
+                        .required(true)
+                        .value_parser(clap::value_parser!(BigInt)),
+                )
+                .about("Assignment 2 - Question 3d - all numbers of the form n = pq (p and q both odd primes) in your range are included
+in set B")
+                .help_template(APP_TEMPLATE),
+        )
+        .subcommand(
+            Command::new("aks-failed-steps-for-n")
+                .arg(
+                    arg!(-s --start <START>)
+                        .required(true)
+                        .value_parser(clap::value_parser!(BigInt)),
+                )
+                .arg(
+                    arg!(-e --end <END>)
+                        .required(true)
+                        .value_parser(clap::value_parser!(BigInt)),
+                )
+                .about("Assignment 1 - Question 4c - Choose any three elements of your set A and calculate the value of r used in the AKS primality
+test")
                 .help_template(APP_TEMPLATE),
         )
         .subcommand(

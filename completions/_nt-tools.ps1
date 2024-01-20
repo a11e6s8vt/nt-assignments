@@ -37,7 +37,11 @@ Register-ArgumentCompleter -Native -CommandName 'nt-tools' -ScriptBlock {
             [CompletionResult]::new('aks-findr', 'aks-findr', [CompletionResultType]::ParameterValue, 'Finds the ''r'' value for the AKS algorithm.')
             [CompletionResult]::new('list-primitive-roots', 'list-primitive-roots', [CompletionResultType]::ParameterValue, 'List the primitive roots of a number')
             [CompletionResult]::new('ass2q2b', 'ass2q2b', [CompletionResultType]::ParameterValue, 'Assignment 2 - Question 2b - Primitive Roots - Euler''s Totient Function')
-            [CompletionResult]::new('ass2q2c', 'ass2q2c', [CompletionResultType]::ParameterValue, 'Assignment 2 - Question 2c - Primitive Roots - Euler''s Totient Function')
+            [CompletionResult]::new('ass2q2c', 'ass2q2c', [CompletionResultType]::ParameterValue, 'Assignment 2 - Question 2c - pᵏ(p > 2, k ≥ 1) or 2pᵏ(p > 2, k ≥ 1)')
+            [CompletionResult]::new('ass2q3d', 'ass2q3d', [CompletionResultType]::ParameterValue, 'Assignment 2 - Question 3d - all numbers of the form n = pq (p and q both odd primes) in your range are included
+in set B')
+            [CompletionResult]::new('aks-failed-steps-for-n', 'aks-failed-steps-for-n', [CompletionResultType]::ParameterValue, 'Assignment 1 - Question 4c - Choose any three elements of your set A and calculate the value of r used in the AKS primality
+test')
             [CompletionResult]::new('quit', 'quit', [CompletionResultType]::ParameterValue, 'quit')
             [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Print this message or the help of the given subcommand(s)')
             break
@@ -190,6 +194,24 @@ Register-ArgumentCompleter -Native -CommandName 'nt-tools' -ScriptBlock {
             [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help')
             break
         }
+        'nt-tools;ass2q3d' {
+            [CompletionResult]::new('-s', 's', [CompletionResultType]::ParameterName, 's')
+            [CompletionResult]::new('--start', 'start', [CompletionResultType]::ParameterName, 'start')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'e')
+            [CompletionResult]::new('--end', 'end', [CompletionResultType]::ParameterName, 'end')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help')
+            break
+        }
+        'nt-tools;aks-failed-steps-for-n' {
+            [CompletionResult]::new('-s', 's', [CompletionResultType]::ParameterName, 's')
+            [CompletionResult]::new('--start', 'start', [CompletionResultType]::ParameterName, 'start')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'e')
+            [CompletionResult]::new('--end', 'end', [CompletionResultType]::ParameterName, 'end')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help')
+            break
+        }
         'nt-tools;quit' {
             [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help')
             [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help')
@@ -212,7 +234,11 @@ Register-ArgumentCompleter -Native -CommandName 'nt-tools' -ScriptBlock {
             [CompletionResult]::new('aks-findr', 'aks-findr', [CompletionResultType]::ParameterValue, 'Finds the ''r'' value for the AKS algorithm.')
             [CompletionResult]::new('list-primitive-roots', 'list-primitive-roots', [CompletionResultType]::ParameterValue, 'List the primitive roots of a number')
             [CompletionResult]::new('ass2q2b', 'ass2q2b', [CompletionResultType]::ParameterValue, 'Assignment 2 - Question 2b - Primitive Roots - Euler''s Totient Function')
-            [CompletionResult]::new('ass2q2c', 'ass2q2c', [CompletionResultType]::ParameterValue, 'Assignment 2 - Question 2c - Primitive Roots - Euler''s Totient Function')
+            [CompletionResult]::new('ass2q2c', 'ass2q2c', [CompletionResultType]::ParameterValue, 'Assignment 2 - Question 2c - pᵏ(p > 2, k ≥ 1) or 2pᵏ(p > 2, k ≥ 1)')
+            [CompletionResult]::new('ass2q3d', 'ass2q3d', [CompletionResultType]::ParameterValue, 'Assignment 2 - Question 3d - all numbers of the form n = pq (p and q both odd primes) in your range are included
+in set B')
+            [CompletionResult]::new('aks-failed-steps-for-n', 'aks-failed-steps-for-n', [CompletionResultType]::ParameterValue, 'Assignment 1 - Question 4c - Choose any three elements of your set A and calculate the value of r used in the AKS primality
+test')
             [CompletionResult]::new('quit', 'quit', [CompletionResultType]::ParameterValue, 'quit')
             [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Print this message or the help of the given subcommand(s)')
             break
@@ -266,6 +292,12 @@ Register-ArgumentCompleter -Native -CommandName 'nt-tools' -ScriptBlock {
             break
         }
         'nt-tools;help;ass2q2c' {
+            break
+        }
+        'nt-tools;help;ass2q3d' {
+            break
+        }
+        'nt-tools;help;aks-failed-steps-for-n' {
             break
         }
         'nt-tools;help;quit' {

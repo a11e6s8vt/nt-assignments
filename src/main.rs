@@ -18,6 +18,7 @@ use factorisations::pollards_p_1;
 use json_to_table::json_to_table;
 use num_iter::range_inclusive;
 use quadratic_sieve::prepare_matrix;
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use tabled::{
     settings::{panel::Header, split::Split, Style},
     Table,
@@ -37,7 +38,7 @@ use primality::{aks, carmichael_nums_flt, carmichael_nums_korselt, gcd_test};
 use utils::findr;
 
 use crate::{
-    display::{P_k_2P_kTable, PrimitiveRootsTable},
+    display::{NumFactorTable, P_k_2P_kTable, PrimitiveRootsTable},
     groups_modulo_n::{
         euler_totient_phi, is_integer_of_form_pk_2pk, primitive_roots_trial_n_error,
     },
@@ -378,6 +379,131 @@ fn respond(line: &str) -> Result<bool, String> {
             table.with(Style::modern());
             println!("\nNumbers of the form pᵏ, 2pᵏ:");
             println!("{table}\n");
+            std::io::stdout().flush().map_err(|e| e.to_string())?;
+        }
+        Some(("ass2q3d", matches)) => {
+            let start = matches.get_one::<BigInt>("start").expect("required");
+            let end = matches.get_one::<BigInt>("end").expect("required");
+
+            let (_, nums_without_no_prim_roots) =
+                search_nums_with_primitive_roots(start.clone(), end.clone());
+
+            let num_pfactors = list_prime_factors_in_range(&start, &end, NumCategory::CompositesPQ);
+
+            let mut num_map: Vec<NumFactorTable> = Vec::new();
+            for (num, factors) in num_pfactors.1 {
+                if let Ok(_) = nums_without_no_prim_roots.binary_search(&num.to_string()) {
+                    let mut form: String = String::new();
+                    for (factor, exp) in factors {
+                        form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
+                    }
+                    let mut form = form.trim_end().to_string();
+                    form.pop();
+                    // let v: Vec<(String, String)> = factor
+                    //     .iter()
+                    //     .map(|(i, j)| (i.to_string(), j.to_string()))
+                    //     .collect::<Vec<(String, String)>>();
+                    num_map.push(NumFactorTable::new(num.to_string(), form));
+                }
+            }
+
+            let json = json!(&nums_without_no_prim_roots);
+            let mut table1 = json_to_table(&json).into_table();
+
+            table1.with(Style::modern()).with(Split::row(5).concat());
+            println!("\nSet of numbers without primitive roots:");
+            println!("{table1}\n");
+
+            let mut table2 = Table::new(&num_map);
+            table2.with(Style::modern()).with(Split::row(5).concat());
+            println!("\nNumbers of the form N = P.Q is included in the above table:");
+            println!("{table2}\n");
+        }
+        Some(("aks-failed-steps-for-n", matches)) => {
+            let start = matches.get_one::<BigInt>("start").expect("required");
+            let end = matches.get_one::<BigInt>("end").expect("required");
+
+            let mut result: HashMap<String, Vec<String>> = HashMap::new();
+            let composites = list_prime_factors_in_range(start, end, NumCategory::Composites).1;
+            let aks_test_res = composites
+                .par_iter()
+                .map(|(num, _)| (num, aks(num)))
+                .map(|(num, (is_prime, step))| (num.clone(), is_prime, step))
+                .collect::<Vec<(BigInt, bool, AksSteps)>>();
+            for (num, is_prime, step) in aks_test_res.iter() {
+                match step {
+                    AksSteps::Step1 => {
+                        if !is_prime {
+                            if result.get("step1").is_some() {
+                                let s = result.get_mut("step1").unwrap();
+                                s.push(num.to_string());
+                            } else {
+                                result.insert("step1".to_string(), vec![num.to_string()]);
+                            }
+                        }
+                    }
+                    AksSteps::Step2 => {
+                        if !is_prime {
+                            if result.get("step2").is_some() {
+                                let s = result.get_mut("step2").unwrap();
+                                s.push(num.to_string());
+                            } else {
+                                result.insert("step2".to_string(), vec![num.to_string()]);
+                            }
+                        }
+                    }
+                    AksSteps::Step3 => {
+                        if !is_prime {
+                            if result.get("step3").is_some() {
+                                let s = result.get_mut("step3").unwrap();
+                                s.push(num.to_string());
+                            } else {
+                                result.insert("step3".to_string(), vec![num.to_string()]);
+                            }
+                        }
+                    }
+                    AksSteps::Step4 => {
+                        if !is_prime {
+                            if result.get("step4").is_some() {
+                                let s = result.get_mut("step4").unwrap();
+                                s.push(num.to_string());
+                            } else {
+                                result.insert("step4".to_string(), vec![num.to_string()]);
+                            }
+                        }
+                    }
+                    AksSteps::Step5 => {
+                        if !is_prime {
+                            if result.get("step5").is_some() {
+                                let s = result.get_mut("step5").unwrap();
+                                s.push(num.to_string());
+                            } else {
+                                result.insert("step5".to_string(), vec![num.to_string()]);
+                            }
+                        }
+                    }
+                    AksSteps::Success => {
+                        if *is_prime {
+                            if result.get("success").is_some() {
+                                let s = result.get_mut("success").unwrap();
+                                s.push(num.to_string());
+                            } else {
+                                result.insert("success".to_string(), vec![num.to_string()]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (k, v) in result.iter() {
+                let json = json!(v);
+                let mut table1 = json_to_table(&json).into_table();
+
+                table1.with(Style::modern()).with(Split::row(5).concat());
+                println!("\nNumbers below failed in {} of AKS Algm:", k);
+                println!("{table1}\n");
+            }
+
             std::io::stdout().flush().map_err(|e| e.to_string())?;
         }
         Some(("quit", _matches)) => {
