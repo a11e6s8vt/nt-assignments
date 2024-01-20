@@ -1,406 +1,224 @@
+# How To Guide for nt-tools
+
+## Introduction
+This document describes how to use the command line tool developed as part of the assignments.
+
+## How To
+1. Double clicking the “.exe” file will open the app. Below is a screen shot of the landing page of the app.
+
+![Landing Page](/notes/images/landing_page.png?raw=true "Landing Page")
+
+2. Typing “help” or just pressing the “Enter” ←- key will display the help.
+
+![Help Page](/notes/images/help_page.png?raw=true "Help Page")
+
+#### Command Syntax
+1. primes
 ```
-fn cli_nt() {
-    let args = Cli::parse();
-
-    match args.command {
-        Operations::ListPrimes(s) => {
-            let (primes, _) = find_primes_in_range_trial_division_parallel(s.start, s.end);
-
-            let table_data = &primes
-                .iter()
-                .map(|x| Matrix::new(x.to_string()))
-                .collect::<Vec<Matrix>>();
-            matrix_print(table_data, "Prime Numbers:".to_string(), &primes.len() / 5);
-        }
-        Operations::ListComposites(s) => {
-            let (_, composites) = find_primes_in_range_trial_division_parallel(s.start, s.end);
-
-            let table_data = &composites
-                .iter()
-                .map(|x| Matrix::new(x.to_string()))
-                .collect::<Vec<Matrix>>();
-            matrix_print(
-                table_data,
-                "Prime Numbers:".to_string(),
-                &composites.len() / 14,
-            );
-        }
-        Operations::PrimeFactors { num } => {
-            let mut primes = vec![BigInt::from(2u64)];
-            println!("{:?}", num.prime_factors(&mut primes));
-        }
-        Operations::PrimeFactorsRange(s) => match s.command {
-            PFactorsCommands::All(pargs) => {
-                let start = pargs.start;
-                let end = pargs.end;
-
-                let num_pfactors = list_prime_factors_in_range(&start, &end, NumCategory::All);
-
-                matrix_print(
-                    &num_pfactors.0,
-                    "Prime Factorisation - All Numbers In The Range:".to_string(),
-                    &num_pfactors.0.len() / 4,
-                );
-            }
-            PFactorsCommands::Composites(pargs) => {
-                let start = pargs.start;
-                let end = pargs.end;
-
-                let num_pfactors =
-                    list_prime_factors_in_range(&start, &end, NumCategory::Composites);
-                matrix_print(
-                    &num_pfactors.0,
-                    "Prime Factorisation - Only Composites In The Range:".to_string(),
-                    &num_pfactors.0.len() / 4,
-                );
-                //let json = serde_json::to_string(&num_pfactors.0).unwrap();
-                //println!("{}", json);
-                // println!("\n{}\n", num_pfactors.0);
-            }
-            PFactorsCommands::CompositesPQ(pargs) => {
-                let start = pargs.start;
-                let end = pargs.end;
-
-                let num_pfactors =
-                    list_prime_factors_in_range(&start, &end, NumCategory::CompositesPQ);
-                matrix_print(
-                    &num_pfactors.0,
-                    "Prime Factorisation - Composites of the form N = P.Q:".to_string(),
-                    &num_pfactors.0.len() / 4,
-                );
-                //let json = serde_json::to_string(&num_pfactors.0).unwrap();
-                //println!("{}", json);
-                // println!("\n{}\n", num_pfactors.0);
-            }
-        },
-        Operations::Primality(s) => match s.command {
-            PrimalityCommands::GCD(gcd_test_args) => {
-                if let Some(num) = gcd_test_args.num {
-                    let res = gcd_test(&num, 5);
-                    for i in res.iter() {
-                        if i.1 > BigInt::one() {
-                            println!("GCD Test: {} is Composite.", num);
-                            return;
-                        }
-                    }
-
-                    println!("GCD Test: {} is Prime.", num);
-                } else {
-                    if let Some(start) = gcd_test_args.start {
-                        if let Some(end) = gcd_test_args.end {
-                            gcd_test_range(&start, &end);
-                        }
-                    }
-                }
-            }
-        },
-        Operations::MillerRabin { num } => {
-            if miller_rabin_primality(&num) {
-                println!("{} is Prime", num);
-            } else {
-                println!("{} is Composite", num);
-            }
-        }
-        Operations::CarmichaelNums(s) => match s.command {
-            CarmichaelNumsCommands::Korselt(cargs) => {
-                let start = cargs.start;
-                let end = cargs.end;
-                let carmichael_nums = list_carmichael_nums(&start, &end, carmichael_nums_korselt);
-                println!("\n{}\n", carmichael_nums.0);
-            }
-            CarmichaelNumsCommands::FermatLT(cargs) => {
-                let start = cargs.start;
-                let end = cargs.end;
-                let carmichael_nums = list_carmichael_nums(&start, &end, carmichael_nums_flt);
-                println!("\n{}\n", carmichael_nums.0);
-            }
-        },
-        Operations::Ass1Question3(s) => {
-            let mut composites =
-                list_prime_factors_in_range(&s.start, &s.end, NumCategory::Composites).1;
-            // filter only odd composite numbers with only two factors
-            // composites.retain(|(num, p_factors)| p_factors.len() == 2 && num % 2 != BigInt::zero());
-            composites.retain(|(num, p_factors)| num % 2 != BigInt::zero());
-            // take the first five elements for the test
-            // let sample_data = &composites[0..5];
-            println!(
-                "Total Number of Odd Composites with two factors {}",
-                &composites.len()
-            );
-            let mut json_out: BTreeMap<String, MillerRabinJson> = BTreeMap::new();
-            for (num, p_factors) in composites.iter() {
-                println!("Processing the number: {}", num);
-                // call miller-rabin test
-                let (n_minus_one_form, non_witnesses) = ass1_question3_miller_rabin(num);
-                // Convert prime factors to String format
-                let mut form = String::new();
-                for (factor, exp) in p_factors {
-                    form.push_str(&format!("{}{} x ", factor, Superscript(exp.clone())));
-                }
-                let mut form = form.trim_end().to_string();
-                form.pop();
-                if !non_witnesses.is_empty() {
-                    let mr_json = MillerRabinJson::new(n_minus_one_form, form, non_witnesses);
-                    json_out.insert(num.to_string(), mr_json);
-                }
-            }
-
-            let my_home = get_my_home()
-                .unwrap()
-                .unwrap()
-                .to_str()
-                .unwrap()
-                .to_string();
-            let mut output_dir = String::new();
-            let mut fname = String::new();
-
-            if cfg!(windows) {
-                output_dir.push_str(&my_home);
-                output_dir.push_str("\\ass1-question3");
-                println!("Path = {}", &output_dir);
-                fname.push_str(&output_dir);
-                fname.push_str("\\");
-                fname.push_str("question3.json");
-            } else if cfg!(unix) {
-                output_dir.push_str(&my_home);
-                output_dir.push_str("/ass1-question3");
-                println!("Path = {}", &output_dir);
-                fname.push_str(&output_dir);
-                fname.push_str("/");
-                fname.push_str("question3.json");
-            }
-            println!("output dir: {}", &output_dir);
-            if !fs::metadata(&output_dir).is_ok() {
-                let _ = fs::create_dir(&output_dir);
-            }
-            match File::create(&fname) {
-                Ok(file) => {
-                    println!("Output has been written to the file: {}", &fname);
-                    serde_json::to_writer_pretty(file, &json_out).unwrap();
-                }
-                Err(e) => panic!("Problem creating the file: {:?}", e),
-            }
-        }
-        Operations::AKS(s) => {
-            let mut result: HashMap<String, Vec<String>> = HashMap::new();
-            let composites =
-                list_prime_factors_in_range(&s.start, &s.end, NumCategory::Composites).1;
-            let aks_test_res = composites
-                .par_iter()
-                .map(|(num, _)| (num, aks(num)))
-                .map(|(num, (is_prime, step))| (num.clone(), is_prime, step))
-                .collect::<Vec<(BigInt, bool, AksSteps)>>();
-            for (num, is_prime, step) in aks_test_res.iter() {
-                match step {
-                    AksSteps::Step1 => {
-                        if !is_prime {
-                            if result.get("step1").is_some() {
-                                let s = result.get_mut("step1").unwrap();
-                                s.push(num.to_string());
-                            } else {
-                                result.insert("step1".to_string(), vec![num.to_string()]);
-                            }
-                        }
-                    }
-                    AksSteps::Step2 => {
-                        if !is_prime {
-                            if result.get("step2").is_some() {
-                                let s = result.get_mut("step2").unwrap();
-                                s.push(num.to_string());
-                            } else {
-                                result.insert("step2".to_string(), vec![num.to_string()]);
-                            }
-                        }
-                    }
-                    AksSteps::Step3 => {
-                        if !is_prime {
-                            if result.get("step3").is_some() {
-                                let s = result.get_mut("step3").unwrap();
-                                s.push(num.to_string());
-                            } else {
-                                result.insert("step3".to_string(), vec![num.to_string()]);
-                            }
-                        }
-                    }
-                    AksSteps::Step4 => {
-                        if !is_prime {
-                            if result.get("step4").is_some() {
-                                let s = result.get_mut("step4").unwrap();
-                                s.push(num.to_string());
-                            } else {
-                                result.insert("step4".to_string(), vec![num.to_string()]);
-                            }
-                        }
-                    }
-                    AksSteps::Step5 => {
-                        if !is_prime {
-                            if result.get("step5").is_some() {
-                                let s = result.get_mut("step5").unwrap();
-                                s.push(num.to_string());
-                            } else {
-                                result.insert("step5".to_string(), vec![num.to_string()]);
-                            }
-                        }
-                    }
-                    AksSteps::Success => {
-                        if *is_prime {
-                            if result.get("success").is_some() {
-                                let s = result.get_mut("success").unwrap();
-                                s.push(num.to_string());
-                            } else {
-                                result.insert("success".to_string(), vec![num.to_string()]);
-                            }
-                        }
-                    }
-                }
-            }
-
-            println!("{}", serde_json::to_string_pretty(&result).unwrap());
-        }
-        Operations::ModularPower {
-            base,
-            exponent,
-            modulus,
-        } => {
-            println!("{}", modular_pow(&base, &exponent, &modulus));
-        }
-        Operations::FindrAKS { num } => {
-            let r = findr(&num);
-            println!("AKS 'r' value for {} is = {}", num, r);
-        }
-        Operations::PrimitiveRoots(s) => match s.command {
-            PrimitiveRootsCommands::SearchNumsWithPrimitiveRoots(r) => {
-                let start = r.start;
-                let end = r.end;
-
-                let (nums_with_prim_roots, nums_without_no_prim_roots) =
-                    search_nums_with_primitive_roots(start, end);
-
-                println!(
-                    "{}",
-                    serde_json::to_string(&HashMap::from([(
-                        "Numbers With Primitve Roots".to_string(),
-                        &nums_with_prim_roots
-                    )]))
-                    .unwrap()
-                );
-
-                println!("");
-                println!(
-                    "{}",
-                    serde_json::to_string(&HashMap::from([(
-                        "Numbers Without Primitive Roots".to_string(),
-                        &nums_without_no_prim_roots
-                    )]))
-                    .unwrap()
-                );
-            }
-            PrimitiveRootsCommands::ListPrimitiveRoots { n } => {
-                let primitive_roots = primitive_roots_trial_n_error(&n);
-            }
-            PrimitiveRootsCommands::Ass2Question2b(r) => {
-                let start = r.start;
-                let end = r.end;
-
-                let mut result: Vec<HashMap<String, String>> = Vec::new();
-                let (primes_in_range, _) = find_primes_in_range_trial_division_parallel(start, end);
-                for p in primes_in_range.iter() {
-                    let primitive_roots = primitive_roots_trial_n_error(p);
-                    let phi_phi_n = euler_totient_phi(&(p - BigInt::one()));
-                    let mut item: HashMap<String, String> = HashMap::new();
-                    item.insert("Prime".to_string(), p.to_string());
-                    item.insert("Euler_Totient(p-1)".to_string(), phi_phi_n.to_string());
-                    item.insert(
-                        "Prim Roots Count - Trial and Error".to_string(),
-                        primitive_roots.len().to_string(),
-                    );
-                    result.push(item);
-                }
-                println!("{}", serde_json::to_string_pretty(&result).unwrap())
-            }
-            PrimitiveRootsCommands::Ass2Question2c(r) => {
-                let start = r.start;
-                let end = r.end;
-
-                let mut result: Vec<HashMap<String, String>> = Vec::new();
-                for n in range_inclusive(start, end) {
-                    let p_factors = is_integer_of_form_pk_2pk(&n);
-                    if !p_factors.is_empty() {
-                        let mut form: String = String::new();
-                        for (factor, exp) in p_factors {
-                            form.push_str(&format!("{}{} x ", factor, Superscript(exp)));
-                        }
-                        let mut form = form.trim_end().to_string();
-                        form.pop();
-                        result.push(HashMap::from([
-                            ("Number".to_string(), n.to_string()),
-                            ("Form".to_string(), form),
-                        ]));
-                    }
-                }
-
-                println!("{}", serde_json::to_string_pretty(&result).unwrap());
-            }
-            PrimitiveRootsCommands::Ass2Question3d(s) => {
-                let start = s.start;
-                let end = s.end;
-
-                let (_, nums_without_no_prim_roots) =
-                    search_nums_with_primitive_roots(start.clone(), end.clone());
-
-                let num_pfactors =
-                    list_prime_factors_in_range(&start, &end, NumCategory::CompositesPQ);
-
-                let mut num_map: HashMap<String, Vec<(String, String)>> = HashMap::new();
-                for (num, factor) in num_pfactors.1 {
-                    if let Ok(_) = nums_without_no_prim_roots.binary_search(&num.to_string()) {
-                        let v: Vec<(String, String)> = factor
-                            .iter()
-                            .map(|(i, j)| (i.to_string(), j.to_string()))
-                            .collect::<Vec<(String, String)>>();
-                        num_map.insert(num.to_string(), v);
-                    }
-                }
-
-                println!(
-                    "{}",
-                    serde_json::to_string_pretty(&nums_without_no_prim_roots).unwrap()
-                );
-                println!("{}", serde_json::to_string_pretty(&num_map).unwrap());
-            }
-        },
-        Operations::PollardsRhoLog { a, b, n } => {
-            let result = logarithms::pollards_rho(&a, &b, &n);
-            println!("{}", serde_json::to_string_pretty(&result).unwrap())
-        }
-        Operations::GcdEuclid { a, b } => {
-            println!("{}", a.gcd_euclid(&b));
-        }
-        Operations::QuadraticSieve { n } => {
-            prepare_matrix(&n);
-        }
-        Operations::PollardsPOne { n, a } => {
-            pollards_p_1(&n, a);
-        }
-    }
-}
-
-
-        .subcommand(
-            Command::new("ass1q3")
-                .arg(Arg::new("start")
-                    .short('s')
-                    .long("start")
-                    .required(true)
-                    .value_parser(clap::value_parser!(BigInt))
-                )
-                .arg(Arg::new("end")
-                    .short('e')
-                    .long("end")
-                    .required(true)
-                    .value_parser(clap::value_parser!(BigInt)),
-                )
-                .about("Assignment 1 - Question 3: Miller-Rabin Liars")
-                .help_template(APP_TEMPLATE),
-        )
+primes -s 2800 -e 3100
 ```
+
+The below screenshot shows a sample output:
+
+![List of prime numbers in a range](/notes/images/list_primes.png?raw=true "List of prime numbers in a range")
+
+2. composites
+```
+composites --start 2800 --end 3100
+```
+
+The below screenshot shows a sample output:
+
+![List of composite numbers in a range](/notes/images/list_composites.png?raw=true "List of composite numbers in a range")
+
+3. composites-pq
+```
+composites-pq --start 2800 --end 3100
+```
+
+The below screenshot shows a sample output:
+
+![List of composite numbers of the form N = P.Q in a range](/notes/images/composites-pq_list.png?raw=true "List of composite numbers of the form N = P.Q in a range")
+
+4. nums-with-primitive-roots
+
+```
+nums-with-primitive-roots --start 600 --end 750
+```
+
+The below screenshot shows a sample output:
+
+![List of numbers with primitive roots in a range](/notes/images/nums-with-primitive-roots_list.png?raw=true "List of numbers with primitive roots in a range")
+
+5. carmichael-nums
+```
+# Carmichael Numbers using FLT
+1. carmichael-nums --method fermat --start 2800 --end 3100
+# Carmichael Numbers using Korselt criteria
+2. carmichael-nums --method korselt --start 2800 --end 3100
+```
+
+The below screenshot shows a sample output:
+
+![Carmichael Numbers in a range](/notes/images/carmichael-nums_list.png?raw=true "Carmichael Numbers in a range")
+
+6. ifactors
+
+```
+#Integer Factorisation of a single number using trial and error
+1. ifactors --num1 2452
+
+# Integer factorisation of a range of numbers
+2. ifactors --num1 2800 --num2 2850
+```
+
+The below screenshot shows a sample output:
+
+![Integer Factorisation](/notes/images/ifactors.png?raw=true "Integer Factorisation")
+
+7. primality
+
+```
+# Primality check using gcd test
+primality --method gcd --num 71
+# Primality check using trial division
+primality --method trial-division --num 71
+# Primality check using Miller Rabin
+primality --method miller-rabin --num 71
+# Primality check using AKS Algm
+primality --method aks --num 71
+# Primality check using FLT - Not Implemented
+primality --method fermat --num 71
+```
+
+The below screenshot shows a sample output:
+
+![List of prime numbers in a range](/notes/images/primality.png?raw=true "List of prime numbers in a range")
+
+8. miller-rabin-liars
+
+```
+miller-rabin-liars --num 2869
+```
+
+The below screenshot shows a sample output:
+
+![Find the Miller-Rabin Liars of a number](/notes/images/miller-rabin-liars.png?raw=true "Find the Miller-Rabin Liars of a number")
+
+9. gcd
+
+```
+gcd --num1 2000 --num2 200
+```
+
+The below screenshot shows a sample output:
+
+![GCD of two numbers](/notes/images/gcd.png?raw=true "GCD of two numbers")
+
+10. quadratic-sieve
+
+```
+quadratic-sieve --num 391
+```
+
+The below screenshot shows a sample output:
+
+![Quadratic Sieve Evaluation Matrix](/notes/images/quadratic-sieve.png?raw=true "Quadratic Sieve Evaluation Matrix")
+
+11. pollards-p-minus-1
+
+```
+pollards-p-minus-1 --num 78719 --base 13
+```
+
+The below screenshot shows a sample output:
+
+![Pollard’s P-1 Factorisation](/notes/images/pollards-p-minus-one.png?raw=true "Pollard’s P-1 Factorisation")
+
+12. pollards-rho
+
+```
+pollards-rho --primitive-root 21 -b 47 -m 71
+```
+
+The below screenshot shows a sample output:
+
+Figure 14: Discrete Logarithm - Pollard’s Rho
+
+![Discrete Logarithm - Pollard’s Rho](/notes/images/pollards-rho.png?raw=true "Discrete Logarithm - Pollard’s Rho")
+
+13. modular-pow
+
+```
+modular-pow -b 26 -e 32 -m 53
+```
+
+The below screenshot shows a sample output:
+
+![Modular Exponentiation](/notes/images/mod-pow.png?raw=true "Modular Exponentiation")
+
+14. aks-findr
+
+```
+aks-findr --num 71
+```
+
+The below screenshot shows a sample output:
+
+!['r' value of AKS Algm](/notes/images/aks-findr.png?raw=true "'r' value of AKS Algm")
+
+15. list-primitive-roots
+
+```
+list-primitive-roots --num 17
+```
+
+The below screenshot shows a sample output:
+
+![List Primitive Roots of a number](/notes/images/list_primitive-roots.png?raw=true "List Primitive Roots of a number")
+
+16. ass2q2b
+
+```
+ass2q2b --start 50 --end 100
+```
+
+The below screenshot shows a sample output:
+
+![Assignment No. 2 Question 2(b) - Number of Primitive Roots](/notes/images/primitive-roots-count.png?raw=true "Assignment No. 2 Question 2(b) - Number of Primitive Roots")
+
+17. ass2q2c
+
+```
+ass2q2c --start 50 --end 100
+```
+
+The below screenshot shows a sample output:
+
+![Number’s of the form p^k, 2p^k](/notes/images/p_k_2p_k.png?raw=true "Number’s of the form p^k, 2p^k")
+
+18. ass2q3d
+
+```
+ass2q3d --start 2800 --end 2850
+```
+
+The below screenshot shows a sample output:
+
+![Primitive Roots & Numbers of form N = P.Q](/notes/images/ass2q3d.png?raw=true "Primitive Roots & Numbers of form N = P.Q")
+
+19. aks-failed-steps-for-n
+
+```
+aks-failed-steps-for-n --start 2800 --end 3100
+```
+
+The below screenshot shows a sample output:
+
+![List of numbers failed the AKS at each of steps](/notes/images/aks-failure-steps.png?raw=true "List of numbers failed the AKS at each of steps")
+
+20. clear or cls
+
+Clears the screen.
+
+21. quit or exit
